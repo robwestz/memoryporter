@@ -1,0 +1,41 @@
+# Portable Agent Kit
+
+Komplett, portabelt toolkit för autonom AI-driven utveckling.
+Kopiera till ett nytt projekt, kör bootstrap, börja bygga.
+
+## Snabbstart
+
+```bash
+cp -r portable-kit/ mitt-projekt/
+cd mitt-projekt
+./bootstrap.sh
+# Fyll i AGENTS.md med projektets stack och verify-kommandon
+# Starta Claude Code
+```
+
+## Innehåll
+
+| Mapp | Filer | Funktion |
+|------|-------|----------|
+| `knowledge/` | 38 | Gamechangers (varför), skills (hur), agentritningar (vem) |
+| `skill-engine/` | 10 | 5-stegs beslutspipeline med 38 short skills |
+| `skill-creator/` | 22 | Skill-fabrik: skapa, testa, iterera, paketera |
+| `protocols/` | 3 | Kvalitetsprotokoll, orkestrering, arkitekturaudit |
+| `conventions/` | 3 | Regler, principer, maskinläsbart manifest |
+| `scaffolds/` | 3 | Projektmallar: Rust, TypeScript, Python |
+| `runtime/` | 60 | 4 Rust crates: ob1, mini, snowball, gateway |
+| `.cursor/` | 5 | IDE-integration (Cursor skills + rules) |
+
+## Hur det fungerar
+
+1. **CLAUDE.md** läses av agenten vid sessionsstart — den wires allt
+2. **AGENTS.md** innehåller projektspecifika verify-kommandon och regler
+3. Agenten följer uppgiftsrouting: trivial → direkt, komplex → skill-engine pipeline
+4. Kvalitetsprotokollet (5 faser) appliceras på allt substantiellt arbete
+
+## Krav
+
+- Claude Code (eller Cursor med Claude)
+- Rust toolchain (installeras automatiskt av bootstrap.sh)
+- ANTHROPIC_API_KEY (för runtime-binärerna)
+# memoryporter
