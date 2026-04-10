@@ -1,0 +1,13 @@
+{
+  "name": "Project Wiki",
+  "description": "Generate a gorgeous static HTML wiki for any project repository, with charts, dependency graphs, and an in-page configurator.",
+  "category": "skills",
+  "author": { "name": "Robin Westerlund", "github": "" },
+  "version": "0.1.0",
+  "requires": { "open_brain": false, "services": [], "tools": ["python>=3.9"] },
+  "tags": ["wiki", "documentation", "static-site", "visualization", "codebase-analysis"],
+  "difficulty": "intermediate",
+  "estimated_time": "1 minute to generate",
+  "created": "2026-04-10",
+  "updated": "2026-04-10"
+}
