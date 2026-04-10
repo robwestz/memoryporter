@@ -2,9 +2,9 @@
 
 import { escapeHtml, formatBytes } from "../utils.js";
 
-const PAD = 1;
-const MIN_LABEL_W = 60;
-const MIN_LABEL_H = 18;
+const TM_PAD = 1;
+const TM_MIN_LABEL_W = 60;
+const TM_MIN_LABEL_H = 18;
 
 export function drawTreemap(container, root, opts = {}) {
   if (!container) return;
@@ -27,10 +27,10 @@ export function drawTreemap(container, root, opts = {}) {
         return `
           <g class="tm-cell" tabindex="0" aria-label="${escapeHtml(tip)}">
             <title>${escapeHtml(tip)}</title>
-            <rect x="${r.x + PAD}" y="${r.y + PAD}"
-                  width="${Math.max(r.w - PAD * 2, 0)}" height="${Math.max(r.h - PAD * 2, 0)}"
+            <rect x="${r.x + TM_PAD}" y="${r.y + TM_PAD}"
+                  width="${Math.max(r.w - TM_PAD * 2, 0)}" height="${Math.max(r.h - TM_PAD * 2, 0)}"
                   rx="3" fill="${colorByLanguage(r.language)}" />
-            ${r.w > MIN_LABEL_W && r.h > MIN_LABEL_H ? `<text x="${r.x + 6}" y="${r.y + 14}" class="tm-label">${escapeHtml(truncate(r.name, 16))}</text>` : ""}
+            ${r.w > TM_MIN_LABEL_W && r.h > TM_MIN_LABEL_H ? `<text x="${r.x + 6}" y="${r.y + 14}" class="tm-label">${escapeHtml(truncate(r.name, 16))}</text>` : ""}
           </g>
         `;
       }).join("")}

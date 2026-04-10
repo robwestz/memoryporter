@@ -4,7 +4,7 @@ import { md } from "../markdown.js";
 import { drawDonut } from "../charts/donut.js";
 import { escapeHtml, formatBytes, formatNumber } from "../utils.js";
 
-export function render(main, state) {
+export function renderOverview(main, state) {
   const { data, settings } = state;
   const stats = data.stats || {};
   const languages = data.languages || { breakdown: [] };

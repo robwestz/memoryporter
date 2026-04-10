@@ -3,9 +3,9 @@
 import * as store from "./store.js";
 import { escapeHtml } from "./utils.js";
 
-let index = null;
-let modalEl = null;
-let activeIdx = 0;
+let searchIndex = null;
+let searchModalEl = null;
+let searchActiveIdx = 0;
 
 function buildIndex(data) {
   const items = [];
@@ -68,7 +68,7 @@ function fuzzy(query, label) {
 }
 
 export function initSearch() {
-  index = buildIndex(store.get().data);
+  searchIndex = buildIndex(store.get().data);
   document.addEventListener("keydown", handleGlobalKey);
 }
 
@@ -77,7 +77,7 @@ function handleGlobalKey(e) {
     e.preventDefault();
     openSearch();
   }
-  if (modalEl) {
+  if (searchModalEl) {
     if (e.key === "Escape") closeSearch();
     if (e.key === "ArrowDown") {
       e.preventDefault();
@@ -88,7 +88,7 @@ function handleGlobalKey(e) {
       moveActive(-1);
     }
     if (e.key === "Enter") {
-      const active = modalEl.querySelector(".search-result.is-active");
+      const active = searchModalEl.querySelector(".search-result.is-active");
       if (active) {
         window.location.hash = active.getAttribute("href");
         closeSearch();
@@ -98,12 +98,12 @@ function handleGlobalKey(e) {
 }
 
 export function openSearch() {
-  if (modalEl) return;
-  if (!index) index = buildIndex(store.get().data);
+  if (searchModalEl) return;
+  if (!searchIndex) searchIndex = buildIndex(store.get().data);
 
-  modalEl = document.createElement("div");
-  modalEl.className = "modal-backdrop search-modal-bd";
-  modalEl.innerHTML = `
+  searchModalEl = document.createElement("div");
+  searchModalEl.className = "modal-backdrop search-modal-bd";
+  searchModalEl.innerHTML = `
     <div class="modal search-modal" role="dialog" aria-modal="true" aria-label="Search">
       <input type="text" class="search-input" placeholder="Search files, symbols, headings, pages…" autofocus aria-label="Search query" />
       <ul class="search-results" id="search-results" role="listbox"></ul>
@@ -112,13 +112,13 @@ export function openSearch() {
       </div>
     </div>
   `;
-  modalEl.addEventListener("click", e => {
-    if (e.target === modalEl) closeSearch();
+  searchModalEl.addEventListener("click", e => {
+    if (e.target === searchModalEl) closeSearch();
   });
-  document.getElementById("modal-root").appendChild(modalEl);
+  document.getElementById("modal-root").appendChild(searchModalEl);
 
-  const input = modalEl.querySelector(".search-input");
-  const list = modalEl.querySelector("#search-results");
+  const input = searchModalEl.querySelector(".search-input");
+  const list = searchModalEl.querySelector("#search-results");
 
   function performSearch() {
     const q = input.value.trim();
@@ -126,7 +126,7 @@ export function openSearch() {
       list.innerHTML = "";
       return;
     }
-    const scored = index
+    const scored = searchIndex
       .map(it => ({ it, score: fuzzy(q, it.label) }))
       .filter(x => x.score > 0)
       .sort((a, b) => b.score - a.score)
@@ -141,7 +141,7 @@ export function openSearch() {
           </a>
         </li>
       `).join("");
-    activeIdx = 0;
+    searchActiveIdx = 0;
     list.querySelectorAll("a").forEach(a => {
       a.addEventListener("click", () => closeSearch());
     });
@@ -151,16 +151,16 @@ export function openSearch() {
 }
 
 function moveActive(delta) {
-  const items = modalEl.querySelectorAll(".search-result");
+  const items = searchModalEl.querySelectorAll(".search-result");
   if (items.length === 0) return;
-  items[activeIdx]?.classList.remove("is-active");
-  activeIdx = (activeIdx + delta + items.length) % items.length;
-  items[activeIdx].classList.add("is-active");
-  items[activeIdx].scrollIntoView({ block: "nearest" });
+  items[searchActiveIdx]?.classList.remove("is-active");
+  searchActiveIdx = (searchActiveIdx + delta + items.length) % items.length;
+  items[searchActiveIdx].classList.add("is-active");
+  items[searchActiveIdx].scrollIntoView({ block: "nearest" });
 }
 
 export function closeSearch() {
-  modalEl?.remove();
-  modalEl = null;
-  activeIdx = 0;
+  searchModalEl?.remove();
+  searchModalEl = null;
+  searchActiveIdx = 0;
 }

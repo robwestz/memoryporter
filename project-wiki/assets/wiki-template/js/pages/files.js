@@ -2,7 +2,7 @@
 
 import { escapeHtml, formatNumber, formatBytes } from "../utils.js";
 
-export function render(main, state) {
+export function renderFiles(main, state) {
   const { data } = state;
   const files = (data.file_index?.files || []).slice().sort((a, b) => a.path.localeCompare(b.path));
 

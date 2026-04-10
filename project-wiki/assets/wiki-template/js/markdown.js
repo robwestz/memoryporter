@@ -3,10 +3,10 @@
 // links, bold, italic, lists (ul/ol), blockquotes, horizontal rules.
 // ~120 LOC, sufficient for README rendering. Not a CommonMark conformant.
 
-const ESC = { "&": "&amp;", "<": "&lt;", ">": "&gt;" };
+const MD_ESC = { "&": "&amp;", "<": "&lt;", ">": "&gt;" };
 
 function escape(s) {
-  return String(s).replace(/[&<>]/g, c => ESC[c]);
+  return String(s).replace(/[&<>]/g, c => MD_ESC[c]);
 }
 
 export function md(src) {

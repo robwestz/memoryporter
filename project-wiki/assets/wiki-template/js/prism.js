@@ -84,17 +84,17 @@ const ALIASES = {
   svelte: "html",
 };
 
-const ESC = { "&": "&amp;", "<": "&lt;", ">": "&gt;" };
+const PRISM_ESC = { "&": "&amp;", "<": "&lt;", ">": "&gt;" };
 
-function escapeHtml(s) {
-  return String(s).replace(/[&<>]/g, c => ESC[c]);
+function prismEscapeHtml(s) {
+  return String(s).replace(/[&<>]/g, c => PRISM_ESC[c]);
 }
 
-export function highlight(code, language) {
+export function prismHighlight(code, language) {
   if (!code) return "";
   const langKey = ALIASES[(language || "").toLowerCase()];
   const pats = PATTERNS[langKey];
-  if (!pats) return escapeHtml(code);
+  if (!pats) return prismEscapeHtml(code);
 
   // Tokenize using placeholder substitution to avoid double-processing
   const tokens = [];
@@ -105,10 +105,10 @@ export function highlight(code, language) {
       return `\u0000T${idx}\u0000`;
     });
   });
-  let escaped = escapeHtml(working);
+  let escaped = prismEscapeHtml(working);
   escaped = escaped.replace(/\u0000T(\d+)\u0000/g, (_m, i) => {
     const t = tokens[+i];
-    return `<span class="tk-${t.cls}">${escapeHtml(t.text)}</span>`;
+    return `<span class="tk-${t.cls}">${prismEscapeHtml(t.text)}</span>`;
   });
   return escaped;
 }

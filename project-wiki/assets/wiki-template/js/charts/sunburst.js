@@ -2,12 +2,12 @@
 
 import { escapeHtml, formatBytes, formatNumber } from "../utils.js";
 
-const SIZE = 480;
-const CX = 240;
-const CY = 240;
-const MAX_R = 220;
-const RING_W = MAX_R / 5;
-const CENTER_R = 30;
+const SB_SIZE = 480;
+const SB_CX = 240;
+const SB_CY = 240;
+const SB_MAX_R = 220;
+const SB_RING_W = SB_MAX_R / 5;
+const SB_CENTER_R = 30;
 
 export function drawSunburst(container, root) {
   if (!container || !root) {
@@ -22,8 +22,8 @@ export function drawSunburst(container, root) {
       slices.push({
         node,
         depth,
-        rIn: (depth - 1) * RING_W + CENTER_R,
-        rOut: depth * RING_W + CENTER_R,
+        rIn: (depth - 1) * SB_RING_W + SB_CENTER_R,
+        rOut: depth * SB_RING_W + SB_CENTER_R,
         a0,
         a1,
       });
@@ -51,12 +51,12 @@ export function drawSunburst(container, root) {
   };
 
   container.innerHTML = `
-    <svg viewBox="0 0 ${SIZE} ${SIZE}" class="chart-svg sunburst-svg" role="img" aria-label="Folder structure sunburst">
+    <svg viewBox="0 0 ${SB_SIZE} ${SB_SIZE}" class="chart-svg sunburst-svg" role="img" aria-label="Folder structure sunburst">
       <g>
         ${slices.map(s => {
           const tip = `${s.node.name} — ${s.node.type === "file" ? formatBytes(s.node.size) : `${formatNumber(s.node.file_count)} files`}`;
           return `
-            <path d="${arcPath(CX, CY, s.rOut, s.rIn, s.a0, s.a1)}"
+            <path d="${arcPath(SB_CX, SB_CY, s.rOut, s.rIn, s.a0, s.a1)}"
                   fill="${colorFor(s)}"
                   stroke="var(--bg)"
                   stroke-width="1"
@@ -69,8 +69,8 @@ export function drawSunburst(container, root) {
             </path>
           `;
         }).join("")}
-        <circle cx="${CX}" cy="${CY}" r="${CENTER_R - 2}" fill="var(--bg-elevated)" stroke="var(--border)" />
-        <text x="${CX}" y="${CY + 4}" text-anchor="middle" class="sb-center">${escapeHtml(truncate(root.name, 12))}</text>
+        <circle cx="${SB_CX}" cy="${SB_CY}" r="${SB_CENTER_R - 2}" fill="var(--bg-elevated)" stroke="var(--border)" />
+        <text x="${SB_CX}" y="${SB_CY + 4}" text-anchor="middle" class="sb-center">${escapeHtml(truncate(root.name, 12))}</text>
       </g>
     </svg>
   `;

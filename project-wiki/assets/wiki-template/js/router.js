@@ -2,13 +2,13 @@
 // Static imports so the bundler can topo-sort everything into one JS payload.
 
 import * as store from "./store.js";
-import { render as renderOverview } from "./pages/overview.js";
-import { render as renderStructure } from "./pages/structure.js";
-import { render as renderFiles } from "./pages/files.js";
-import { render as renderModules } from "./pages/modules.js";
-import { render as renderDeps } from "./pages/deps.js";
-import { render as renderActivity } from "./pages/activity.js";
-import { render as renderSearchResults } from "./pages/search-results.js";
+import { renderOverview } from "./pages/overview.js";
+import { renderStructure } from "./pages/structure.js";
+import { renderFiles } from "./pages/files.js";
+import { renderModules } from "./pages/modules.js";
+import { renderDeps } from "./pages/deps.js";
+import { renderActivity } from "./pages/activity.js";
+import { renderSearchResults } from "./pages/search-results.js";
 
 const PAGES = {
   overview: renderOverview,

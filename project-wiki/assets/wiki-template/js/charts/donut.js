@@ -3,11 +3,11 @@
 
 import { escapeHtml, formatNumber } from "../utils.js";
 
-const SIZE = 320;
-const CX = 160;
-const CY = 160;
-const R_OUTER = 140;
-const R_INNER = 84;
+const DONUT_SIZE = 320;
+const DONUT_CX = 160;
+const DONUT_CY = 160;
+const DONUT_R_OUTER = 140;
+const DONUT_R_INNER = 84;
 
 export function drawDonut(container, items) {
   if (!container) return;
@@ -33,10 +33,10 @@ export function drawDonut(container, items) {
 
   container.classList.add("with-legend");
   container.innerHTML = `
-    <svg viewBox="0 0 ${SIZE} ${SIZE}" role="img" aria-label="Language breakdown donut chart" class="chart-svg donut-svg">
+    <svg viewBox="0 0 ${DONUT_SIZE} ${DONUT_SIZE}" role="img" aria-label="Language breakdown donut chart" class="chart-svg donut-svg">
       <g class="donut-slices">
         ${slices.map(s => `
-          <path d="${arcPath(CX, CY, R_OUTER, R_INNER, s.start, s.end)}"
+          <path d="${arcPath(DONUT_CX, DONUT_CY, DONUT_R_OUTER, DONUT_R_INNER, s.start, s.end)}"
                 fill="${s.color}"
                 data-idx="${s.idx}"
                 data-name="${escapeHtml(s.name)}"
@@ -47,8 +47,8 @@ export function drawDonut(container, items) {
           </path>
         `).join("")}
       </g>
-      <text x="${CX}" y="${CY - 6}" text-anchor="middle" class="donut-center-num">${formatNumber(total)}</text>
-      <text x="${CX}" y="${CY + 18}" text-anchor="middle" class="donut-center-label">lines</text>
+      <text x="${DONUT_CX}" y="${DONUT_CY - 6}" text-anchor="middle" class="donut-center-num">${formatNumber(total)}</text>
+      <text x="${DONUT_CX}" y="${DONUT_CY + 18}" text-anchor="middle" class="donut-center-label">lines</text>
     </svg>
     <ul class="legend" role="list">
       ${slices.map(s => `

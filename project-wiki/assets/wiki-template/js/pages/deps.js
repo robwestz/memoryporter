@@ -3,7 +3,7 @@
 import { drawForceGraph } from "../charts/force-graph.js";
 import { escapeHtml, formatNumber } from "../utils.js";
 
-export function render(main, state) {
+export function renderDeps(main, state) {
   const { data, settings } = state;
   const manifests = data.dependencies?.manifests || [];
 

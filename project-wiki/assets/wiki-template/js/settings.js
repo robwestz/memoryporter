@@ -35,15 +35,15 @@ const THEMES = [
   { id: "solar",    label: "Solar",    swatch: "linear-gradient(135deg, #18120d 0%, #fb923c 50%, #f472b6 100%)" },
 ];
 
-let modalEl = null;
+let settingsModalEl = null;
 
 export function openSettings({ firstVisit = false } = {}) {
-  if (modalEl) return;
+  if (settingsModalEl) return;
   const { settings, theme } = store.get();
 
-  modalEl = document.createElement("div");
-  modalEl.className = "modal-backdrop";
-  modalEl.innerHTML = `
+  settingsModalEl = document.createElement("div");
+  settingsModalEl.className = "modal-backdrop";
+  settingsModalEl.innerHTML = `
     <div class="modal settings-modal" role="dialog" aria-modal="true" aria-label="Configure wiki">
       ${firstVisit ? `<div class="settings-welcome">Welcome — pick what you'd like to see. Settings persist across visits.</div>` : ""}
       <header class="settings-head">
@@ -59,41 +59,41 @@ export function openSettings({ firstVisit = false } = {}) {
     </div>
   `;
 
-  modalEl.addEventListener("click", e => {
-    if (e.target === modalEl) close();
+  settingsModalEl.addEventListener("click", e => {
+    if (e.target === settingsModalEl) close();
   });
-  modalEl.querySelector("#settings-close").addEventListener("click", close);
+  settingsModalEl.querySelector("#settings-close").addEventListener("click", close);
 
-  modalEl.querySelectorAll(".theme-card").forEach(el => {
+  settingsModalEl.querySelectorAll(".theme-card").forEach(el => {
     el.addEventListener("click", () => {
       store.set({ theme: el.dataset.theme });
-      modalEl.querySelectorAll(".theme-card").forEach(c => c.classList.toggle("is-active", c === el));
+      settingsModalEl.querySelectorAll(".theme-card").forEach(c => c.classList.toggle("is-active", c === el));
     });
   });
 
-  modalEl.querySelectorAll("[data-density]").forEach(el => {
+  settingsModalEl.querySelectorAll("[data-density]").forEach(el => {
     el.addEventListener("click", () => {
       store.setSettings({ density: el.dataset.density });
-      modalEl.querySelectorAll("[data-density]").forEach(b => {
+      settingsModalEl.querySelectorAll("[data-density]").forEach(b => {
         b.classList.toggle("btn-primary", b === el);
         b.classList.toggle("btn", true);
       });
     });
   });
 
-  modalEl.querySelectorAll("input[type=checkbox][data-key]").forEach(el => {
+  settingsModalEl.querySelectorAll("input[type=checkbox][data-key]").forEach(el => {
     el.addEventListener("change", () => store.setSettings({ [el.dataset.key]: el.checked }));
   });
 
-  modalEl.querySelector("#settings-apply").addEventListener("click", () => {
+  settingsModalEl.querySelector("#settings-apply").addEventListener("click", () => {
     store.markVisited();
     close();
   });
 
-  document.getElementById("modal-root").appendChild(modalEl);
+  document.getElementById("modal-root").appendChild(settingsModalEl);
 
   // Focus the first interactive element for keyboard accessibility
-  setTimeout(() => modalEl.querySelector("button, [tabindex]")?.focus(), 50);
+  setTimeout(() => settingsModalEl.querySelector("button, [tabindex]")?.focus(), 50);
 }
 
 function renderSection(section, settings, theme) {
@@ -142,6 +142,6 @@ function renderSection(section, settings, theme) {
 }
 
 function close() {
-  modalEl?.remove();
-  modalEl = null;
+  settingsModalEl?.remove();
+  settingsModalEl = null;
 }

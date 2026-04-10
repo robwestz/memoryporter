@@ -2,12 +2,12 @@
 
 import { escapeHtml } from "../utils.js";
 
-const CELL = 12;
-const GAP = 3;
-const WEEKS = 53;
-const DAYS = 7;
-const PAD_L = 28;
-const PAD_T = 18;
+const HM_CELL = 12;
+const HM_GAP = 3;
+const HM_WEEKS = 53;
+const HM_DAYS = 7;
+const HM_PAD_L = 28;
+const HM_PAD_T = 18;
 
 export function drawHeatmap(container, commits, opts = {}) {
   if (!container) return;
@@ -19,7 +19,7 @@ export function drawHeatmap(container, commits, opts = {}) {
   // Bucket commits by day (UTC midnight)
   const now = opts.endDate ? new Date(opts.endDate) : new Date();
   const start = new Date(now);
-  start.setUTCDate(start.getUTCDate() - (WEEKS * 7 - 1));
+  start.setUTCDate(start.getUTCDate() - (HM_WEEKS * 7 - 1));
   start.setUTCHours(0, 0, 0, 0);
 
   const buckets = new Map(); // dayKey → count
@@ -32,26 +32,26 @@ export function drawHeatmap(container, commits, opts = {}) {
   }
 
   const max = Math.max(...buckets.values(), 1);
-  const w = WEEKS * (CELL + GAP) + PAD_L + 8;
-  const h = DAYS * (CELL + GAP) + PAD_T + 8;
+  const w = HM_WEEKS * (HM_CELL + HM_GAP) + HM_PAD_L + 8;
+  const h = HM_DAYS * (HM_CELL + HM_GAP) + HM_PAD_T + 8;
 
   let cellsHtml = "";
-  for (let week = 0; week < WEEKS; week++) {
-    for (let day = 0; day < DAYS; day++) {
+  for (let week = 0; week < HM_WEEKS; week++) {
+    for (let day = 0; day < HM_DAYS; day++) {
       const date = new Date(start);
       date.setUTCDate(start.getUTCDate() + week * 7 + day);
       if (date > now) continue;
       const key = date.toISOString().slice(0, 10);
       const count = buckets.get(key) || 0;
       const intensity = count === 0 ? 0 : Math.min(count / max, 1);
-      const x = PAD_L + week * (CELL + GAP);
-      const y = PAD_T + day * (CELL + GAP);
+      const x = HM_PAD_L + week * (HM_CELL + HM_GAP);
+      const y = HM_PAD_T + day * (HM_CELL + HM_GAP);
       const color = colorFor(intensity);
       const tip = count
         ? `${key}: ${count} commit${count > 1 ? "s" : ""}`
         : `${key}: no activity`;
       cellsHtml += `
-        <rect x="${x}" y="${y}" width="${CELL}" height="${CELL}" rx="2"
+        <rect x="${x}" y="${y}" width="${HM_CELL}" height="${HM_CELL}" rx="2"
               fill="${color}" class="hm-cell" tabindex="${count ? "0" : "-1"}"
               aria-label="${escapeHtml(tip)}">
           <title>${escapeHtml(tip)}</title>
@@ -65,7 +65,7 @@ export function drawHeatmap(container, commits, opts = {}) {
   const dayLabelsHtml = dayLabels
     .map((lbl, d) =>
       lbl
-        ? `<text x="${PAD_L - 6}" y="${PAD_T + d * (CELL + GAP) + 9}" text-anchor="end" class="hm-label">${lbl}</text>`
+        ? `<text x="${HM_PAD_L - 6}" y="${HM_PAD_T + d * (HM_CELL + HM_GAP) + 9}" text-anchor="end" class="hm-label">${lbl}</text>`
         : ""
     )
     .join("");

@@ -53,6 +53,16 @@ JS_IMPORT_RE = re.compile(
     r'^import\s+(?:\*\s+as\s+\w+|\{[^}]+\}|\w+)(?:\s*,\s*(?:\*\s+as\s+\w+|\{[^}]+\}|\w+))?\s+from\s+["\']([^"\']+)["\'];?\s*$',
     re.MULTILINE,
 )
+# Capture `import * as <alias> from "./mod.js"` so we can synthesize a namespace const
+JS_NS_IMPORT_RE = re.compile(
+    r'^import\s+\*\s+as\s+(\w+)\s+from\s+["\']([^"\']+)["\'];?\s*$',
+    re.MULTILINE,
+)
+# Capture exported names: `export function X`, `export const X`, `export class X`, etc.
+JS_EXPORT_NAME_RE = re.compile(
+    r'^export\s+(?:async\s+)?(?:function|const|let|var|class)\s+(\w+)',
+    re.MULTILINE,
+)
 JS_EXPORT_RE = re.compile(r'^export\s+(default\s+)?', re.MULTILINE)
 URL_FONT_RE = re.compile(r'url\(([^)]+)\)')
 
@@ -137,9 +147,16 @@ def bundle_js(entry: Path, root: Path) -> str:
     - Only relative imports.
     - Imports at top of file only — no dynamic await import().
     - export function/const/class — no `export default`, no `export { … }` aggregators.
+
+    Special handling for `import * as foo from "./bar.js"`: we synthesize a
+    `const foo = { ...bar's exports... };` namespace at the top of the IIFE.
     """
     visited: list[Path] = []
     seen: set[Path] = set()
+    # Map module path → list of exported names (collected before stripping)
+    exports_by_module: dict[Path, list[str]] = {}
+    # Set of (alias, source_module_path) namespace imports, deduped
+    namespace_imports: set[tuple[str, Path]] = set()
 
     def visit(path: Path):
         if path in seen:
@@ -151,6 +168,18 @@ def bundle_js(entry: Path, root: Path) -> str:
             text = path.read_text(encoding="utf-8")
         except OSError:
             return
+
+        # Collect exports BEFORE stripping
+        exports_by_module[path] = JS_EXPORT_NAME_RE.findall(text)
+
+        # Collect namespace imports
+        for m in JS_NS_IMPORT_RE.finditer(text):
+            alias = m.group(1)
+            rel = m.group(2)
+            if rel.startswith("."):
+                target = (path.parent / rel).resolve()
+                namespace_imports.add((alias, target))
+
         # Recurse into deps first (dependencies appear before dependents)
         for m in JS_IMPORT_RE.finditer(text):
             rel = m.group(1)
@@ -170,11 +199,37 @@ def bundle_js(entry: Path, root: Path) -> str:
             continue
         # Strip imports — they become same-scope references after concat
         text = JS_IMPORT_RE.sub("", text)
-        # Strip the `export` keyword — bindings become module-scope (which is now IIFE-scope)
+        # Strip the `export` keyword — bindings become module-scope
         text = JS_EXPORT_RE.sub("", text)
         rel = path.relative_to(root).as_posix() if path.is_relative_to(root) else path.name
         parts.append(f"// === {rel} ===\n{text}")
 
+    # Safety check: warn if two modules export the same name (single-IIFE scope means
+    # the second one will silently override the first or throw a SyntaxError).
+    name_to_modules: dict[str, list[Path]] = {}
+    for path, names in exports_by_module.items():
+        for n in names:
+            name_to_modules.setdefault(n, []).append(path)
+    collisions = {n: paths for n, paths in name_to_modules.items() if len(paths) > 1}
+    if collisions:
+        import sys as _sys
+        for name, paths in collisions.items():
+            rels = [p.relative_to(root).as_posix() if p.is_relative_to(root) else p.name for p in paths]
+            print(f"  WARNING bundler: '{name}' exported by multiple modules: {rels}", file=_sys.stderr)
+
+    # Synthesize namespace consts for `import * as foo from "./bar.js"`
+    # These reference the now-module-scope bindings (function declarations are
+    # hoisted, so this works even if placed at the top of the IIFE).
+    namespace_decls = []
+    for alias, target in sorted(namespace_imports, key=lambda x: x[0]):
+        names = exports_by_module.get(target, [])
+        if not names:
+            continue
+        names_str = ", ".join(sorted(set(names)))
+        namespace_decls.append(f"const {alias} = {{ {names_str} }};")
+
+    ns_block = "// === namespace imports ===\n" + "\n".join(namespace_decls) + "\n" if namespace_decls else ""
+
     # Wrap in an IIFE so module-scope bindings don't leak to window
-    return "(() => {\n" + "\n\n".join(parts) + "\n})();"
+    return "(() => {\n" + ns_block + "\n".join(parts) + "\n})();"
 

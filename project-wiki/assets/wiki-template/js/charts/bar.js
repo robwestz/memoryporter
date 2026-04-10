@@ -3,10 +3,10 @@
 import { escapeHtml, formatNumber } from "../utils.js";
 
 const BAR_H = 22;
-const GAP = 8;
-const LABEL_W = 240;
-const VALUE_W = 60;
-const PAD_R = 16;
+const BAR_GAP = 8;
+const BAR_LABEL_W = 240;
+const BAR_VALUE_W = 60;
+const BAR_PAD_R = 16;
 
 export function drawBar(container, items, opts = {}) {
   if (!container) return;
@@ -17,8 +17,8 @@ export function drawBar(container, items, opts = {}) {
 
   const max = Math.max(...items.map(x => x.value || 0), 1);
   const w = container.clientWidth || 720;
-  const innerW = Math.max(w - LABEL_W - VALUE_W - PAD_R, 80);
-  const totalH = items.length * (BAR_H + GAP);
+  const innerW = Math.max(w - BAR_LABEL_W - BAR_VALUE_W - BAR_PAD_R, 80);
+  const totalH = items.length * (BAR_H + BAR_GAP);
 
   container.innerHTML = `
     <svg viewBox="0 0 ${w} ${totalH}" class="chart-svg bar-svg" role="img" aria-label="${escapeHtml(opts.label || "Bar chart")}" preserveAspectRatio="xMinYMin meet">
@@ -29,15 +29,15 @@ export function drawBar(container, items, opts = {}) {
         </linearGradient>
       </defs>
       ${items.map((it, i) => {
-        const y = i * (BAR_H + GAP);
+        const y = i * (BAR_H + BAR_GAP);
         const bw = ((it.value || 0) / max) * innerW;
         const tip = `${escapeHtml(it.label)}: ${formatNumber(it.value)}`;
         return `
           <g class="bar-row" tabindex="0" aria-label="${tip}">
             <title>${tip}</title>
-            <text x="${LABEL_W - 12}" y="${y + BAR_H / 2 + 4}" text-anchor="end" class="bar-label">${escapeHtml(truncate(it.label, 36))}</text>
-            <rect x="${LABEL_W}" y="${y}" width="${bw}" height="${BAR_H}" rx="6" fill="url(#bar-grad)" class="bar-rect" />
-            <text x="${LABEL_W + bw + 8}" y="${y + BAR_H / 2 + 4}" class="bar-value">${formatNumber(it.value)}</text>
+            <text x="${BAR_LABEL_W - 12}" y="${y + BAR_H / 2 + 4}" text-anchor="end" class="bar-label">${escapeHtml(truncate(it.label, 36))}</text>
+            <rect x="${BAR_LABEL_W}" y="${y}" width="${bw}" height="${BAR_H}" rx="6" fill="url(#bar-grad)" class="bar-rect" />
+            <text x="${BAR_LABEL_W + bw + 8}" y="${y + BAR_H / 2 + 4}" class="bar-value">${formatNumber(it.value)}</text>
           </g>
         `;
       }).join("")}

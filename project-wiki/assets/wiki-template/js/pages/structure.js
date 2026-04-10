@@ -4,7 +4,7 @@ import { drawSunburst } from "../charts/sunburst.js";
 import { drawTreemap } from "../charts/treemap.js";
 import { escapeHtml, formatBytes, formatNumber } from "../utils.js";
 
-export function render(main, state) {
+export function renderStructure(main, state) {
   const { data, settings } = state;
   const root = data.structure;
   const meta = data.meta || {};

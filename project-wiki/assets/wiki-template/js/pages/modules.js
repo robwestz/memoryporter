@@ -3,7 +3,7 @@
 import { md } from "../markdown.js";
 import { escapeHtml, formatBytes, formatNumber } from "../utils.js";
 
-export function render(main, state) {
+export function renderModules(main, state) {
   const { data, settings } = state;
   const root = data.structure;
   const modules = (root?.children || []).filter(c => c.type === "dir");

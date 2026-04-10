@@ -4,7 +4,7 @@ import { drawHeatmap } from "../charts/heatmap.js";
 import { drawTimeline } from "../charts/timeline.js";
 import { escapeHtml, formatNumber, formatRelativeTime } from "../utils.js";
 
-export function render(main, state) {
+export function renderActivity(main, state) {
   const { data, settings } = state;
   const git = data.git || { available: false };
 
