@@ -24,6 +24,7 @@ from analyzers import (  # noqa: E402
     repo_stats, languages, structure, dependencies,
     git_log, readme, changelog, symbols, file_index,
 )
+from render import render  # noqa: E402
 
 
 def gather_data(repo_root: Path) -> dict:
@@ -66,11 +67,23 @@ def main() -> int:
     data = gather_data(repo)
     print(f"[project-wiki] walked {data['meta']['file_count_walked']} files")
 
-    # render.py lands in Task 10 — for now just dump the JSON.
-    args.output.mkdir(parents=True, exist_ok=True)
-    out_json = args.output / "data.json"
-    out_json.write_text(json.dumps(data, indent=2), encoding="utf-8")
-    print(f"[project-wiki] wrote {out_json}")
+    template_dir = SCRIPT_DIR.parent / "assets" / "wiki-template"
+    if not (template_dir / "index.html").exists():
+        # Phase A fallback: HTML shell lands in Task 11. Until then dump data.json
+        # so the analyzer pipeline still smoke-tests end-to-end.
+        print(f"[project-wiki] wiki-template/index.html not present — dumping data.json only")
+        args.output.mkdir(parents=True, exist_ok=True)
+        out_json = args.output / "data.json"
+        out_json.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"[project-wiki] wrote {out_json}")
+        return 0
+
+    index_path = render(data, template_dir, args.output)
+    print(f"[project-wiki] wrote wiki to {args.output}")
+    print(f"[project-wiki] open {index_path} in your browser")
+    if args.open:
+        import webbrowser
+        webbrowser.open(index_path.as_uri())
 
     return 0
 
