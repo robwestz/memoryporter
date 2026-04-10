@@ -6,6 +6,9 @@ import { renderTopbar } from "./topbar.js";
 import { renderPage } from "./router.js";
 import { initSearch } from "./search.js";
 import { openSettings } from "./settings.js";
+// Static-import prism so files page can call window.__prism_highlight synchronously
+import { highlight as prismHighlight } from "./prism.js";
+window.__prism_highlight = prismHighlight;
 
 function readData() {
   const tag = document.getElementById("wiki-data");

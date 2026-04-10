@@ -3,6 +3,7 @@
 import * as store from "./store.js";
 import { icon } from "./icons.js";
 import { escapeHtml } from "./utils.js";
+import { openSettings } from "./settings.js";
 
 const ALL_PAGES = [
   { id: "overview",  label: "Overview",     icon: "home",        setting: null },
@@ -47,6 +48,6 @@ export function renderNav() {
   `;
 
   document.getElementById("nav-open-settings")?.addEventListener("click", () => {
-    import("./settings.js").then(m => m.openSettings());
+    openSettings();
   });
 }

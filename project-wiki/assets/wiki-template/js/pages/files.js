@@ -79,14 +79,7 @@ export function render(main, state) {
     return escapeHtml(text);
   }
 
-  // Lazy-import prism for the syntax highlighter
-  import("../prism.js").then(m => {
-    window.__prism_highlight = m.highlight;
-    renderFile(activePath);
-  }).catch(() => {
-    renderFile(activePath);
-  });
-
+  // Prism is loaded statically by app.js — window.__prism_highlight is already set
   renderFile(activePath);
 
   main.querySelectorAll(".file-item").forEach(el => {

@@ -3,6 +3,8 @@
 import * as store from "./store.js";
 import { icon } from "./icons.js";
 import { escapeHtml } from "./utils.js";
+import { openSearch } from "./search.js";
+import { openSettings } from "./settings.js";
 
 export function renderTopbar() {
   const { data } = store.get();
@@ -31,10 +33,10 @@ export function renderTopbar() {
   });
 
   document.getElementById("topbar-search")?.addEventListener("click", () => {
-    import("./search.js").then(m => m.openSearch?.());
+    openSearch();
   });
 
   document.getElementById("topbar-settings")?.addEventListener("click", () => {
-    import("./settings.js").then(m => m.openSettings());
+    openSettings();
   });
 }

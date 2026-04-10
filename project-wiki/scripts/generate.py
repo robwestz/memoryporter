@@ -24,7 +24,7 @@ from analyzers import (  # noqa: E402
     repo_stats, languages, structure, dependencies,
     git_log, readme, changelog, symbols, file_index,
 )
-from render import render  # noqa: E402
+from render import render, bundle_single_file  # noqa: E402
 
 
 def gather_data(repo_root: Path) -> dict:
@@ -54,7 +54,9 @@ def gather_data(repo_root: Path) -> dict:
 def main() -> int:
     p = argparse.ArgumentParser(description="Generate a static wiki for a project repo.")
     p.add_argument("--repo", required=True, type=Path, help="Path to the project repository")
-    p.add_argument("--output", required=True, type=Path, help="Where to write the generated wiki")
+    p.add_argument("--output", required=True, type=Path, help="Where to write the generated wiki (file path for single mode, dir for folder mode)")
+    p.add_argument("--mode", choices=["single", "folder"], default="single",
+                   help="single = one self-contained .html file (default). folder = multi-file directory.")
     p.add_argument("--open", action="store_true", help="Open the result in the default browser")
     args = p.parse_args()
 
@@ -69,21 +71,34 @@ def main() -> int:
 
     template_dir = SCRIPT_DIR.parent / "assets" / "wiki-template"
     if not (template_dir / "index.html").exists():
-        # Phase A fallback: HTML shell lands in Task 11. Until then dump data.json
-        # so the analyzer pipeline still smoke-tests end-to-end.
-        print(f"[project-wiki] wiki-template/index.html not present — dumping data.json only")
+        # Defensive fallback — should never trigger now that the template is in place
+        print(f"[project-wiki] wiki-template/index.html not present — dumping data.json only", file=sys.stderr)
         args.output.mkdir(parents=True, exist_ok=True)
         out_json = args.output / "data.json"
         out_json.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
         print(f"[project-wiki] wrote {out_json}")
         return 0
 
-    index_path = render(data, template_dir, args.output)
-    print(f"[project-wiki] wrote wiki to {args.output}")
-    print(f"[project-wiki] open {index_path} in your browser")
-    if args.open:
-        import webbrowser
-        webbrowser.open(index_path.as_uri())
+    if args.mode == "single":
+        # Decide output path: if it ends in .html use it; if it's a dir, write <repo>.html inside
+        if args.output.suffix == ".html":
+            out_html = args.output
+        else:
+            args.output.mkdir(parents=True, exist_ok=True)
+            out_html = args.output / f"{repo.name}.html"
+        bundle_single_file(data, template_dir, out_html)
+        size_kb = out_html.stat().st_size // 1024
+        print(f"[project-wiki] wrote single-file wiki to {out_html} ({size_kb} KB)")
+        if args.open:
+            import webbrowser
+            webbrowser.open(out_html.as_uri())
+    else:
+        index_path = render(data, template_dir, args.output)
+        print(f"[project-wiki] wrote folder-mode wiki to {args.output}")
+        print(f"[project-wiki] open {index_path} in your browser")
+        if args.open:
+            import webbrowser
+            webbrowser.open(index_path.as_uri())
 
     return 0
 
