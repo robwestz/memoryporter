@@ -68,6 +68,27 @@
       "when_to_use": ["roadmap", "extending the kit", "avoiding false completeness"]
     },
     {
+      "id": "meta-skill-200k-blueprint",
+      "path": "knowledge/meta-skills/200k-blueprint/SKILL.md",
+      "type": "meta-skill",
+      "summary": "Turn a product concept into a blueprint before code is written.",
+      "when_to_use": ["new product", "architecture planning", "stack selection", "build order definition"]
+    },
+    {
+      "id": "meta-skill-skill-forge",
+      "path": "knowledge/meta-skills/skill-forge/SKILL.md",
+      "type": "meta-skill",
+      "summary": "Package knowledge or workflows into marketplace-ready skill bundles.",
+      "when_to_use": ["skill creation", "skill packaging", "turning a workflow into a reusable skill"]
+    },
+    {
+      "id": "meta-skill-kb-document-factory",
+      "path": "knowledge/meta-skills/kb-document-factory/SKILL.md",
+      "type": "meta-skill",
+      "summary": "Standardize how knowledge base documents are authored and reviewed.",
+      "when_to_use": ["knowledge base authoring", "document restructuring", "KB quality review"]
+    },
+    {
       "id": "gc-generic-runtime",
       "path": "knowledge/gamechangers/gc_generic_runtime.md",
       "type": "gamechanger",

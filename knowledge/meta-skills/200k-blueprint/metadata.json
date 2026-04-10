@@ -1,0 +1,20 @@
+{
+  "name": "200k Blueprint",
+  "description": "Turn any product concept into a complete technical blueprint — architecture, stack, quality gates, skill map, and build order. The first step of every 200k-repo production line.",
+  "category": "meta-skills",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robwestz"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["AI client with web search and file writing"]
+  },
+  "tags": ["blueprint", "architecture", "product-design", "200k-standard", "planning", "stack-selection", "quality-gates"],
+  "difficulty": "intermediate",
+  "estimated_time": "20 minutes",
+  "created": "2026-04-10",
+  "updated": "2026-04-10"
+}

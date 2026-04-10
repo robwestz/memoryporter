@@ -8,13 +8,13 @@ Komplett katalog over allt innehall i kunskapsbasen och relaterade resurser.
 
 | Fil | Beskrivning |
 |-----|-------------|
-| `knowledge/INDEX.md` | Denna fil — katalog over allt innehall |
+| `knowledge/INDEX.md` | Denna fil - katalog over allt innehall |
 | `knowledge/ONBOARDING.md` | Snabbstart: hur man anvander kitet (las forst) |
 | `knowledge/GAPS.md` | Kanda luckor i kitet och byggordning for att fylla dem |
 
 ---
 
-## Gamechangers (VARFOR — arkitekturinsikter)
+## Gamechangers (VARFOR - arkitekturinsikter)
 
 15 filer i `knowledge/gamechangers/`. Varje beskriver ett monster som fundamentalt forandrar agentarkitektur.
 
@@ -38,7 +38,7 @@ Komplett katalog over allt innehall i kunskapsbasen och relaterade resurser.
 
 ---
 
-## Skills (HUR — implementationsrecept)
+## Skills (HUR - implementationsrecept)
 
 15 filer i `knowledge/skills/`. Varje ar ett steg-for-steg-recept for att bygga en specifik agentkapacitet.
 
@@ -52,17 +52,29 @@ Komplett katalog over allt innehall i kunskapsbasen och relaterade resurser.
 | 6 | `skill_sub_agent_spawning.md` | Spawna bakgrundsagenter med begransade verktyg och isolerade konversationskontexter |
 | 7 | `skill_config_hierarchy.md` | Flernivaers konfiguration med deep merge, scope-tracking och MCP-deduplicering |
 | 8 | `skill_doctor_pattern.md` | Enhetligt /doctor-kommando som validerar API-nycklar, anslutningar, config och verktyg |
-| 9 | `skill_token_budget.md` | Tokenanvandning med pre-turn-budgetkontroll — stoppa fore overforbrukning |
+| 9 | `skill_token_budget.md` | Tokenanvandning med pre-turn-budgetkontroll - stoppa fore overforbrukning |
 | 10 | `skill_tool_pool_assembly.md` | Per-session-verktygset via 3-lagers filtrering: mode, feature flags, deny-listor |
 | 11 | `skill_memory_system.md` | 8-moduls minnesystem med relevanspoang, aldring och harkomstsparing |
 | 12 | `skill_staged_boot.md` | 7-stegs boot-pipeline med trust-gating fore forsta prompten |
 | 13 | `skill_streaming_renderer.md` | Terminalmjukvara for streaming-markdown med fence-medveten buffring |
-| 14 | `skill_system_event_logging.md` | Strukturerad handelslogg — skiljer "vad systemet gjorde" fran "vad vi sa" |
+| 14 | `skill_system_event_logging.md` | Strukturerad handelslogg - skiljer "vad systemet gjorde" fran "vad vi sa" |
 | 15 | `skill_workflow_state.md` | Workflow-tillstand med idempotensnycklar och crash-sakra checkpoints |
 
 ---
 
-## Agentritningar (VEM — spawnbara roller)
+## Meta-skills (HUR MAN BYGGER HUR)
+
+3 mappar i `knowledge/meta-skills/`. Varje beskriver en produktionslina som genererar andra artefakter, inte bara ett enskilt arbetsmoment.
+
+| Meta-skill | Plats | Beskrivning |
+|------------|-------|-------------|
+| 200k Blueprint | `knowledge/meta-skills/200k-blueprint/` | Forvandlar en produktide till en komplett teknisk blueprint med stackval, kvalitetsgrindar, skill-map och byggordning |
+| Skill Forge | `knowledge/meta-skills/skill-forge/` | Paketerar kunskap, arbetsfloden eller kodbaser till marketplace-redo skill-paket med templates, metadata och quality gate |
+| KB Document Factory | `knowledge/meta-skills/kb-document-factory/` | Standardiserar hur knowledge base-artiklar skrivs, struktureras och kvalitetssakras |
+
+---
+
+## Agentritningar (VEM - spawnbara roller)
 
 5 filer i `knowledge/agents/`. Varje definierar en agent med specifik roll, behorighet och verktyg.
 
@@ -106,8 +118,9 @@ Komplett katalog over allt innehall i kunskapsbasen och relaterade resurser.
 |----------|-------|-------|
 | Gamechangers | 15 | `knowledge/gamechangers/` |
 | Skills | 15 | `knowledge/skills/` |
+| Meta-skills | 3 | `knowledge/meta-skills/` |
 | Agentritningar | 5 | `knowledge/agents/` |
 | Protokoll | 3 | `protocols/` |
 | Scaffolds | 3 | `scaffolds/` |
 | Metadata-filer | 3 | `knowledge/` |
-| **Totalt** | **44** | |
+| **Totalt** | **47** | |
