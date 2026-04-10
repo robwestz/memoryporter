@@ -1,0 +1,65 @@
+wing: portable_kit
+rooms:
+- name: conventions
+  description: Files from conventions/
+  keywords:
+  - conventions
+  - conventions
+- name: knowledge
+  description: Files from knowledge/
+  keywords:
+  - knowledge
+  - knowledge
+- name: mempalace
+  description: Files from mempalace/
+  keywords:
+  - mempalace
+  - mempalace
+- name: protocols
+  description: Files from protocols/
+  keywords:
+  - protocols
+  - protocols
+- name: runtime
+  description: Files from runtime/
+  keywords:
+  - runtime
+  - runtime
+- name: scaffolds
+  description: Files from scaffolds/
+  keywords:
+  - scaffolds
+  - scaffolds
+- name: skill_creator
+  description: Files from skill-creator/
+  keywords:
+  - skill_creator
+  - skill-creator
+- name: skill_engine
+  description: Files from skill-engine/
+  keywords:
+  - skill_engine
+  - skill-engine
+- name: design
+  description: Files from assets/
+  keywords:
+  - design
+  - assets
+- name: testing
+  description: Files from tests/
+  keywords:
+  - testing
+  - tests
+- name: research
+  description: Files from references/
+  keywords:
+  - research
+  - references
+- name: scripts
+  description: Files from scripts/
+  keywords:
+  - scripts
+  - scripts
+- name: general
+  description: Files that don't fit other rooms
+  keywords: []

@@ -1,0 +1,20 @@
+{
+  "name": "KB Document Factory",
+  "description": "Governs creation, formatting, and quality enforcement for all knowledge base documents. Ensures consistent structure, LLM-parseable layouts, and craftsmanship standards across domain articles, method guides, quality gates, component specs, and reports.",
+  "category": "skills",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robwestz"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": true,
+    "services": [],
+    "tools": ["AI client with file writing capability"]
+  },
+  "tags": ["skill", "knowledge-base", "document-format", "templates", "quality-enforcement", "craftsmanship"],
+  "difficulty": "intermediate",
+  "estimated_time": "5 minutes",
+  "created": "2026-04-09",
+  "updated": "2026-04-09"
+}

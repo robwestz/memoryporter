@@ -1,0 +1,694 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "portable-agent-kit",
+  "version": "2.0.0",
+  "purpose": "Portable baseline files for agentic development — knowledge, skills, runtime, and orchestration.",
+  "resources": [
+    {
+      "id": "entrypoint-claude-md",
+      "path": "CLAUDE.md",
+      "type": "entrypoint",
+      "summary": "Agent operations manual — session start, task routing, quality protocol, guardrails.",
+      "when_to_use": ["session start", "first use of this kit"]
+    },
+    {
+      "id": "entrypoint-agents-md",
+      "path": "AGENTS.md",
+      "type": "entrypoint",
+      "summary": "Project-specific rules, verify commands, stack info.",
+      "when_to_use": ["session start", "verify commands", "project rules"]
+    },
+    {
+      "id": "entrypoint-bootstrap",
+      "path": "bootstrap.sh",
+      "type": "script",
+      "summary": "One command: build everything, validate, report ready.",
+      "when_to_use": ["initial setup", "full rebuild"]
+    },
+    {
+      "id": "readme-human",
+      "path": "README.md",
+      "type": "documentation",
+      "summary": "Human-oriented overview and install steps for the kit.",
+      "when_to_use": ["first-time human install", "linking from monorepo docs"]
+    },
+    {
+      "id": "doc-conventions-for-agents",
+      "path": "conventions/FOR_AGENTS.md",
+      "type": "agent-manifest",
+      "summary": "Canonical agent manifest — rules and conventions for agents working in this kit.",
+      "when_to_use": ["always on first use of this kit"]
+    },
+    {
+      "id": "doc-conventions-principles",
+      "path": "conventions/PRINCIPLES.md",
+      "type": "guidance",
+      "summary": "Short solo-dev / harness defaults: clarity, explicit policy, staged complexity.",
+      "when_to_use": ["design decisions", "pushback on over-engineering", "default architecture stance"]
+    },
+    {
+      "id": "knowledge-index",
+      "path": "knowledge/INDEX.md",
+      "type": "catalog",
+      "summary": "Catalog of all knowledge base content — gamechangers, skills, agents.",
+      "when_to_use": ["discovering available knowledge", "session start"]
+    },
+    {
+      "id": "knowledge-onboarding",
+      "path": "knowledge/ONBOARDING.md",
+      "type": "documentation",
+      "summary": "Quick start guide for using the kit.",
+      "when_to_use": ["first-time use", "onboarding"]
+    },
+    {
+      "id": "knowledge-gaps",
+      "path": "knowledge/GAPS.md",
+      "type": "documentation",
+      "summary": "Known gaps and build order for missing components.",
+      "when_to_use": ["roadmap", "extending the kit", "avoiding false completeness"]
+    },
+    {
+      "id": "gc-generic-runtime",
+      "path": "knowledge/gamechangers/gc_generic_runtime.md",
+      "type": "gamechanger",
+      "summary": "Swap components without touching the core.",
+      "when_to_use": ["runtime architecture", "plugin design"]
+    },
+    {
+      "id": "gc-auto-compaction",
+      "path": "knowledge/gamechangers/gc_auto_compaction.md",
+      "type": "gamechanger",
+      "summary": "Infinite conversations via automatic context compaction.",
+      "when_to_use": ["context window management", "long conversations"]
+    },
+    {
+      "id": "gc-permission-escalation",
+      "path": "knowledge/gamechangers/gc_permission_escalation.md",
+      "type": "gamechanger",
+      "summary": "Graduated trust per tool.",
+      "when_to_use": ["access control", "tool permissions"]
+    },
+    {
+      "id": "gc-session-snapshot",
+      "path": "knowledge/gamechangers/gc_session_snapshot.md",
+      "type": "gamechanger",
+      "summary": "One file = complete state.",
+      "when_to_use": ["session persistence", "state management"]
+    },
+    {
+      "id": "gc-pre-turn-budget",
+      "path": "knowledge/gamechangers/gc_pre_turn_budget.md",
+      "type": "gamechanger",
+      "summary": "Stop BEFORE over-consumption.",
+      "when_to_use": ["cost control", "token budgeting"]
+    },
+    {
+      "id": "gc-staged-boot",
+      "path": "knowledge/gamechangers/gc_staged_boot.md",
+      "type": "gamechanger",
+      "summary": "Context before the first prompt.",
+      "when_to_use": ["boot sequence", "agent initialization"]
+    },
+    {
+      "id": "gc-doctor-pattern",
+      "path": "knowledge/gamechangers/gc_doctor_pattern.md",
+      "type": "gamechanger",
+      "summary": "Know what is broken.",
+      "when_to_use": ["health checks", "diagnostics"]
+    },
+    {
+      "id": "gc-memory-system",
+      "path": "knowledge/gamechangers/gc_memory_system.md",
+      "type": "gamechanger",
+      "summary": "Memory with provenance.",
+      "when_to_use": ["persistent memory", "knowledge management"]
+    },
+    {
+      "id": "gc-subagent-spawning",
+      "path": "knowledge/gamechangers/gc_subagent_spawning.md",
+      "type": "gamechanger",
+      "summary": "Parallel agents with the right tools.",
+      "when_to_use": ["multi-agent", "parallel work"]
+    },
+    {
+      "id": "gc-tool-pool-assembly",
+      "path": "knowledge/gamechangers/gc_tool_pool_assembly.md",
+      "type": "gamechanger",
+      "summary": "Right tools, right context.",
+      "when_to_use": ["tool selection", "dynamic tool loading"]
+    },
+    {
+      "id": "gc-multi-transport-mcp",
+      "path": "knowledge/gamechangers/gc_multi_transport_mcp.md",
+      "type": "gamechanger",
+      "summary": "Connect to ALL tool servers.",
+      "when_to_use": ["MCP integration", "tool servers"]
+    },
+    {
+      "id": "gc-shell-hooks",
+      "path": "knowledge/gamechangers/gc_shell_hooks.md",
+      "type": "gamechanger",
+      "summary": "Extend behavior without recompilation.",
+      "when_to_use": ["extensibility", "hook systems"]
+    },
+    {
+      "id": "gc-scoped-config",
+      "path": "knowledge/gamechangers/gc_scoped_config.md",
+      "type": "gamechanger",
+      "summary": "Right config at the right level.",
+      "when_to_use": ["configuration hierarchy", "multi-level config"]
+    },
+    {
+      "id": "gc-markdown-streaming",
+      "path": "knowledge/gamechangers/gc_markdown_streaming.md",
+      "type": "gamechanger",
+      "summary": "Never break code blocks mid-render.",
+      "when_to_use": ["streaming output", "markdown rendering"]
+    },
+    {
+      "id": "gc-sse-incremental",
+      "path": "knowledge/gamechangers/gc_sse_incremental.md",
+      "type": "gamechanger",
+      "summary": "Handle all chunk sizes.",
+      "when_to_use": ["SSE streaming", "incremental processing"]
+    },
+    {
+      "id": "skill-build-agentic-loop",
+      "path": "knowledge/skills/skill_build_agentic_loop.md",
+      "type": "knowledge-skill",
+      "summary": "How to build a multi-turn agentic loop.",
+      "when_to_use": ["building agent runtime", "agentic loop implementation"]
+    },
+    {
+      "id": "skill-tool-permission-system",
+      "path": "knowledge/skills/skill_tool_permission_system.md",
+      "type": "knowledge-skill",
+      "summary": "How to build a tool permission system.",
+      "when_to_use": ["access control implementation"]
+    },
+    {
+      "id": "skill-session-management",
+      "path": "knowledge/skills/skill_session_management.md",
+      "type": "knowledge-skill",
+      "summary": "How to implement session persistence.",
+      "when_to_use": ["session save/restore"]
+    },
+    {
+      "id": "skill-mcp-client",
+      "path": "knowledge/skills/skill_mcp_client.md",
+      "type": "knowledge-skill",
+      "summary": "How to build an MCP client.",
+      "when_to_use": ["MCP integration", "tool server connection"]
+    },
+    {
+      "id": "skill-hook-system",
+      "path": "knowledge/skills/skill_hook_system.md",
+      "type": "knowledge-skill",
+      "summary": "How to build a hook system.",
+      "when_to_use": ["extensibility", "lifecycle hooks"]
+    },
+    {
+      "id": "skill-sub-agent-spawning",
+      "path": "knowledge/skills/skill_sub_agent_spawning.md",
+      "type": "knowledge-skill",
+      "summary": "How to spawn sub-agents.",
+      "when_to_use": ["parallel agents", "sub-agent orchestration"]
+    },
+    {
+      "id": "skill-config-hierarchy",
+      "path": "knowledge/skills/skill_config_hierarchy.md",
+      "type": "knowledge-skill",
+      "summary": "How to implement scoped config hierarchy.",
+      "when_to_use": ["configuration management"]
+    },
+    {
+      "id": "skill-doctor-pattern",
+      "path": "knowledge/skills/skill_doctor_pattern.md",
+      "type": "knowledge-skill",
+      "summary": "How to implement a doctor health check.",
+      "when_to_use": ["health checks", "diagnostics implementation"]
+    },
+    {
+      "id": "skill-token-budget",
+      "path": "knowledge/skills/skill_token_budget.md",
+      "type": "knowledge-skill",
+      "summary": "How to implement token budgeting.",
+      "when_to_use": ["cost control", "budget enforcement"]
+    },
+    {
+      "id": "skill-tool-pool-assembly",
+      "path": "knowledge/skills/skill_tool_pool_assembly.md",
+      "type": "knowledge-skill",
+      "summary": "How to assemble tool pools dynamically.",
+      "when_to_use": ["dynamic tool selection"]
+    },
+    {
+      "id": "skill-memory-system",
+      "path": "knowledge/skills/skill_memory_system.md",
+      "type": "knowledge-skill",
+      "summary": "How to build file-based memory.",
+      "when_to_use": ["persistent memory implementation"]
+    },
+    {
+      "id": "skill-staged-boot",
+      "path": "knowledge/skills/skill_staged_boot.md",
+      "type": "knowledge-skill",
+      "summary": "How to implement staged boot sequence.",
+      "when_to_use": ["agent initialization", "boot sequence"]
+    },
+    {
+      "id": "skill-streaming-renderer",
+      "path": "knowledge/skills/skill_streaming_renderer.md",
+      "type": "knowledge-skill",
+      "summary": "How to build a streaming markdown renderer.",
+      "when_to_use": ["streaming output", "markdown rendering"]
+    },
+    {
+      "id": "skill-system-event-logging",
+      "path": "knowledge/skills/skill_system_event_logging.md",
+      "type": "knowledge-skill",
+      "summary": "How to implement system event logging.",
+      "when_to_use": ["logging", "observability"]
+    },
+    {
+      "id": "skill-workflow-state",
+      "path": "knowledge/skills/skill_workflow_state.md",
+      "type": "knowledge-skill",
+      "summary": "How to manage workflow state.",
+      "when_to_use": ["state machines", "workflow management"]
+    },
+    {
+      "id": "agent-deep-analyst",
+      "path": "knowledge/agents/agent_deep_analyst.md",
+      "type": "agent-blueprint",
+      "summary": "ReadOnly agent — analyze codebases.",
+      "when_to_use": ["code analysis", "codebase exploration"]
+    },
+    {
+      "id": "agent-skill-synthesizer",
+      "path": "knowledge/agents/agent_skill_synthesizer.md",
+      "type": "agent-blueprint",
+      "summary": "WorkspaceWrite agent — transform knowledge into skills.",
+      "when_to_use": ["skill creation", "knowledge transformation"]
+    },
+    {
+      "id": "agent-gamechanger-scout",
+      "path": "knowledge/agents/agent_gamechanger_scout.md",
+      "type": "agent-blueprint",
+      "summary": "ReadOnly agent — find transformative patterns.",
+      "when_to_use": ["pattern discovery", "architecture research"]
+    },
+    {
+      "id": "agent-snowball-orchestrator",
+      "path": "knowledge/agents/agent_snowball_orchestrator.md",
+      "type": "agent-blueprint",
+      "summary": "DangerFullAccess agent — orchestrate pipelines.",
+      "when_to_use": ["pipeline orchestration", "complex multi-step tasks"]
+    },
+    {
+      "id": "agent-pattern-combinator",
+      "path": "knowledge/agents/agent_pattern_combinator.md",
+      "type": "agent-blueprint",
+      "summary": "WorkspaceWrite agent — combine patterns.",
+      "when_to_use": ["pattern composition", "cross-cutting concerns"]
+    },
+    {
+      "id": "skill-engine-protocol",
+      "path": "skill-engine/PROTOCOL.md",
+      "type": "protocol",
+      "summary": "5-step state machine (Intake, Resolve, Eval, Adapt, Verify) with gates.",
+      "when_to_use": ["complex tasks", "skill pipeline execution"]
+    },
+    {
+      "id": "skill-engine-readme",
+      "path": "skill-engine/README.md",
+      "type": "documentation",
+      "summary": "Overview of the skill-engine decision motor.",
+      "when_to_use": ["understanding skill-engine"]
+    },
+    {
+      "id": "skill-engine-intake",
+      "path": "skill-engine/intake.md",
+      "type": "protocol-step",
+      "summary": "Step 1: Capture intent as testable YAML.",
+      "when_to_use": ["intake phase", "intent capture"]
+    },
+    {
+      "id": "skill-engine-resolver",
+      "path": "skill-engine/resolver.md",
+      "type": "protocol-step",
+      "summary": "Step 2: Find/score best skill candidate.",
+      "when_to_use": ["skill selection", "resolve phase"]
+    },
+    {
+      "id": "skill-engine-eval",
+      "path": "skill-engine/eval-engine.md",
+      "type": "protocol-step",
+      "summary": "Step 3: Bidirectional analysis — forward check + backward profile.",
+      "when_to_use": ["skill evaluation"]
+    },
+    {
+      "id": "skill-engine-adapter",
+      "path": "skill-engine/adapter.md",
+      "type": "protocol-step",
+      "summary": "Steps 4-5: Adapt skill and verify output.",
+      "when_to_use": ["skill adaptation", "verification"]
+    },
+    {
+      "id": "skill-engine-skill-spec",
+      "path": "skill-engine/skill-spec.md",
+      "type": "schema",
+      "summary": "YAML format specification for skills.",
+      "when_to_use": ["creating skills", "skill format reference"]
+    },
+    {
+      "id": "skill-engine-explicit-skills",
+      "path": "skill-engine/explicit-skills.md",
+      "type": "skill-corpus",
+      "summary": "19 capability skills (explicit).",
+      "when_to_use": ["skill lookup", "resolve phase"]
+    },
+    {
+      "id": "skill-engine-implicit-skills",
+      "path": "skill-engine/implicit-skills.md",
+      "type": "skill-corpus",
+      "summary": "19 architecture skills (implicit).",
+      "when_to_use": ["skill lookup", "resolve phase"]
+    },
+    {
+      "id": "skill-engine-loader-blueprint",
+      "path": "skill-engine/loader-blueprint.md",
+      "type": "documentation",
+      "summary": "Skill selection and ranking algorithm.",
+      "when_to_use": ["skill loading", "meta-agent selection"]
+    },
+    {
+      "id": "skill-creator-main",
+      "path": "skill-creator/SKILL.md",
+      "type": "protocol",
+      "summary": "Main spec: create and iterate skills — interview, draft, test, grade.",
+      "when_to_use": ["creating new skills", "skill iteration"]
+    },
+    {
+      "id": "skill-creator-grader",
+      "path": "skill-creator/agents/grader.md",
+      "type": "agent-spec",
+      "summary": "Grade assertions against output.",
+      "when_to_use": ["skill evaluation", "output grading"]
+    },
+    {
+      "id": "skill-creator-comparator",
+      "path": "skill-creator/agents/comparator.md",
+      "type": "agent-spec",
+      "summary": "Blind A/B comparison.",
+      "when_to_use": ["skill comparison", "A/B testing"]
+    },
+    {
+      "id": "skill-creator-analyzer",
+      "path": "skill-creator/agents/analyzer.md",
+      "type": "agent-spec",
+      "summary": "Pattern detection and improvements.",
+      "when_to_use": ["skill analysis", "pattern detection"]
+    },
+    {
+      "id": "skill-creator-ref-schemas",
+      "path": "skill-creator/references/schemas.md",
+      "type": "reference",
+      "summary": "Skill YAML schemas.",
+      "when_to_use": ["skill format reference"]
+    },
+    {
+      "id": "skill-creator-ref-output-patterns",
+      "path": "skill-creator/references/output-patterns.md",
+      "type": "reference",
+      "summary": "Common output patterns for skills.",
+      "when_to_use": ["skill output design"]
+    },
+    {
+      "id": "skill-creator-ref-workflows",
+      "path": "skill-creator/references/workflows.md",
+      "type": "reference",
+      "summary": "Skill creation workflows.",
+      "when_to_use": ["skill creation process"]
+    },
+    {
+      "id": "skill-creator-ref-best-practices",
+      "path": "skill-creator/references/best_practices_for_skill_creators.md",
+      "type": "reference",
+      "summary": "Best practices for skill creators.",
+      "when_to_use": ["skill quality", "skill creation"]
+    },
+    {
+      "id": "skill-creator-eval-viewer",
+      "path": "skill-creator/eval-viewer/viewer.html",
+      "type": "tool",
+      "summary": "Interactive HTML viewer for skill evaluation results.",
+      "when_to_use": ["reviewing skill evaluations"]
+    },
+    {
+      "id": "skill-creator-eval-generator",
+      "path": "skill-creator/eval-viewer/generate_review.py",
+      "type": "script",
+      "summary": "Generate review data for the eval viewer.",
+      "when_to_use": ["generating eval reports"]
+    },
+    {
+      "id": "skill-creator-script-run-eval",
+      "path": "skill-creator/scripts/run_eval.py",
+      "type": "script",
+      "summary": "Run skill evaluation.",
+      "when_to_use": ["evaluating skills"]
+    },
+    {
+      "id": "skill-creator-script-init-skill",
+      "path": "skill-creator/scripts/init_skill.py",
+      "type": "script",
+      "summary": "Initialize a new skill from template.",
+      "when_to_use": ["creating new skill scaffold"]
+    },
+    {
+      "id": "skill-creator-script-package-skill",
+      "path": "skill-creator/scripts/package_skill.py",
+      "type": "script",
+      "summary": "Package a skill for distribution.",
+      "when_to_use": ["packaging skills"]
+    },
+    {
+      "id": "skill-creator-script-quick-validate",
+      "path": "skill-creator/scripts/quick_validate.py",
+      "type": "script",
+      "summary": "Quick validation of a skill.",
+      "when_to_use": ["validating skills"]
+    },
+    {
+      "id": "skill-creator-script-improve-description",
+      "path": "skill-creator/scripts/improve_description.py",
+      "type": "script",
+      "summary": "Improve skill descriptions.",
+      "when_to_use": ["refining skill descriptions"]
+    },
+    {
+      "id": "skill-creator-script-aggregate-benchmark",
+      "path": "skill-creator/scripts/aggregate_benchmark.py",
+      "type": "script",
+      "summary": "Aggregate benchmark results across evaluations.",
+      "when_to_use": ["benchmark analysis"]
+    },
+    {
+      "id": "skill-creator-script-generate-report",
+      "path": "skill-creator/scripts/generate_report.py",
+      "type": "script",
+      "summary": "Generate evaluation reports.",
+      "when_to_use": ["reporting"]
+    },
+    {
+      "id": "skill-creator-script-run-loop",
+      "path": "skill-creator/scripts/run_loop.py",
+      "type": "script",
+      "summary": "Run iterative skill improvement loop.",
+      "when_to_use": ["iterating on skills"]
+    },
+    {
+      "id": "skill-creator-script-utils",
+      "path": "skill-creator/scripts/utils.py",
+      "type": "library",
+      "summary": "Shared utilities for skill-creator scripts.",
+      "when_to_use": ["internal dependency"]
+    },
+    {
+      "id": "protocol-small-model-premium",
+      "path": "protocols/small-model-premium.md",
+      "type": "protocol",
+      "summary": "5-phase quality protocol: contract, decompose, execute, adversarial pass, delta summary.",
+      "when_to_use": ["implementation", "debugging", "architecture", "code review", "multi-step tasks"]
+    },
+    {
+      "id": "protocol-agent-orchestration",
+      "path": "protocols/agent-orchestration.md",
+      "type": "protocol",
+      "summary": "Fan-out/pipeline/supervisor patterns for multi-agent coordination.",
+      "when_to_use": ["parallel agents", "multi-agent work", "orchestration"]
+    },
+    {
+      "id": "protocol-architecture-audit",
+      "path": "protocols/architecture-audit.md",
+      "type": "protocol",
+      "summary": "12-primitive production audit for agent systems.",
+      "when_to_use": ["pre-production review", "agent architecture assessment"]
+    },
+    {
+      "id": "scaffold-rust-agent",
+      "path": "scaffolds/rust-agent.md",
+      "type": "scaffold",
+      "summary": "Rust project template: Cargo workspace, trait-based runtime.",
+      "when_to_use": ["new Rust agent project"]
+    },
+    {
+      "id": "scaffold-typescript-agent",
+      "path": "scaffolds/typescript-agent.md",
+      "type": "scaffold",
+      "summary": "TypeScript project template: Node.js CLI, interface-based.",
+      "when_to_use": ["new TypeScript agent project"]
+    },
+    {
+      "id": "scaffold-python-agent",
+      "path": "scaffolds/python-agent.md",
+      "type": "scaffold",
+      "summary": "Python project template: Click CLI, ABC-based.",
+      "when_to_use": ["new Python agent project"]
+    },
+    {
+      "id": "cursor-skill-premium-protocol",
+      "path": ".cursor/skills/small-model-premium-protocol/SKILL.md",
+      "type": "cursor-skill",
+      "summary": "Phased quality protocol for stronger outputs from smaller models.",
+      "when_to_use": ["implementation", "debugging", "architecture", "code review"]
+    },
+    {
+      "id": "cursor-skill-project-baseline",
+      "path": ".cursor/skills/project-agent-baseline/SKILL.md",
+      "type": "cursor-skill",
+      "summary": "Stack-agnostic rules for AGENTS.md, verification discipline, skill layout.",
+      "when_to_use": ["repo onboarding", "adding agent docs", "defining verify commands"]
+    },
+    {
+      "id": "cursor-rule-starter-defaults",
+      "path": ".cursor/rules/agentic-starter-defaults.mdc",
+      "type": "cursor-rule",
+      "summary": "alwaysApply rule wiring premium-protocol + project-baseline skills.",
+      "when_to_use": ["after merging kit into repo", "Cursor project rules"]
+    },
+    {
+      "id": "claude-settings",
+      "path": ".claude/settings.json",
+      "type": "config",
+      "summary": "Claude Code hooks config — mempalace save on Stop, pre-compact hook.",
+      "when_to_use": ["configuring Claude Code hooks", "mempalace integration"]
+    },
+    {
+      "id": "mempalace-package",
+      "path": "mempalace/pyproject.toml",
+      "type": "package-config",
+      "summary": "Mempalace Python package — MCP memory server with knowledge graph, mining, search.",
+      "when_to_use": ["mempalace setup", "dependency management"]
+    },
+    {
+      "id": "mempalace-readme",
+      "path": "mempalace/README.md",
+      "type": "documentation",
+      "summary": "Mempalace overview and usage guide.",
+      "when_to_use": ["understanding mempalace", "setup instructions"]
+    },
+    {
+      "id": "mempalace-mcp-server",
+      "path": "mempalace/mempalace/mcp_server.py",
+      "type": "mcp-server",
+      "summary": "MCP server exposing mempalace memory tools.",
+      "when_to_use": ["MCP integration", "memory tools"]
+    },
+    {
+      "id": "mempalace-cli",
+      "path": "mempalace/mempalace/cli.py",
+      "type": "cli",
+      "summary": "Command-line interface for mempalace operations.",
+      "when_to_use": ["mempalace CLI usage"]
+    },
+    {
+      "id": "mempalace-hooks-save",
+      "path": "mempalace/hooks/mempal_save_hook.sh",
+      "type": "hook",
+      "summary": "Claude Code Stop hook — saves conversation memories.",
+      "when_to_use": ["session end", "memory persistence"]
+    },
+    {
+      "id": "mempalace-hooks-precompact",
+      "path": "mempalace/hooks/mempal_precompact_hook.sh",
+      "type": "hook",
+      "summary": "Claude Code PreCompact hook — preserves memories before compaction.",
+      "when_to_use": ["context compaction", "memory preservation"]
+    },
+    {
+      "id": "mempalace-claude-plugin",
+      "path": "mempalace/.claude-plugin/plugin.json",
+      "type": "plugin-config",
+      "summary": "Claude Code plugin manifest for mempalace.",
+      "when_to_use": ["plugin installation", "Claude Code integration"]
+    },
+    {
+      "id": "mempalace-codex-plugin",
+      "path": "mempalace/.codex-plugin/plugin.json",
+      "type": "plugin-config",
+      "summary": "Codex plugin manifest for mempalace.",
+      "when_to_use": ["Codex integration"]
+    },
+    {
+      "id": "runtime-workspace",
+      "path": "runtime/Cargo.toml",
+      "type": "package-config",
+      "summary": "Rust workspace root — 4 crates: ob1-runtime, mini-runtime, snowball-agent, claw-gateway.",
+      "when_to_use": ["Rust build", "runtime development"]
+    },
+    {
+      "id": "runtime-dockerfile",
+      "path": "runtime/Dockerfile",
+      "type": "container",
+      "summary": "Docker build for the Rust runtime.",
+      "when_to_use": ["containerized deployment"]
+    },
+    {
+      "id": "runtime-docker-compose",
+      "path": "runtime/docker-compose.yml",
+      "type": "container",
+      "summary": "Docker Compose config for runtime services.",
+      "when_to_use": ["multi-service deployment"]
+    },
+    {
+      "id": "runtime-ob1",
+      "path": "runtime/crates/ob1-runtime/Cargo.toml",
+      "type": "rust-crate",
+      "summary": "Full agentic runtime — 18 primitives, sessions, budget, permissions.",
+      "when_to_use": ["full-featured agent runtime"]
+    },
+    {
+      "id": "runtime-mini",
+      "path": "runtime/crates/mini-runtime/Cargo.toml",
+      "type": "rust-crate",
+      "summary": "Lightweight agentic CLI runtime.",
+      "when_to_use": ["simple agent runtime", "faster startup"]
+    },
+    {
+      "id": "runtime-snowball",
+      "path": "runtime/crates/snowball-agent/Cargo.toml",
+      "type": "rust-crate",
+      "summary": "Knowledge extraction agent — analyzes codebases, extracts patterns.",
+      "when_to_use": ["codebase analysis", "knowledge extraction"]
+    },
+    {
+      "id": "runtime-claw-gateway",
+      "path": "runtime/crates/claw-gateway/Cargo.toml",
+      "type": "rust-crate",
+      "summary": "HTTP API gateway bridging agent runtimes.",
+      "when_to_use": ["HTTP API", "web interface to agents"]
+    }
+  ]
+}

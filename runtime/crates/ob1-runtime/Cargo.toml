@@ -1,0 +1,19 @@
+[package]
+name = "ob1-runtime"
+version = "0.1.0"
+edition = "2021"
+description = "OB1 agentic runtime — Day 1 primitives: tool registry, permissions, sessions, workflow state, budget, streaming, logging, verification."
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+reqwest = { version = "0.11", features = ["json", "blocking"] }
+glob = "0.3"
+walkdir = "2"
+
+[[bin]]
+name = "ob1"
+path = "src/main.rs"
+
+[dev-dependencies]
+tempfile = "3"

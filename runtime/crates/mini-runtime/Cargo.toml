@@ -1,0 +1,19 @@
+[package]
+name = "mini-runtime"
+version = "0.1.0"
+edition = "2021"
+description = "Minimal agentic runtime implementing 4 gamechangers: generic trait-based loop, permission escalation, shell hooks, and auto-compaction."
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+reqwest = { version = "0.11", features = ["json", "blocking"] }
+glob = "0.3"
+walkdir = "2"
+
+[[bin]]
+name = "claw-mini"
+path = "src/main.rs"
+
+[dev-dependencies]
+tempfile = "3"

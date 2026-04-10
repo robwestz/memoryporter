@@ -1,0 +1,42 @@
+---
+description: >-
+  For substantive coding, debugging, multi-file refactors, or agent-doc work,
+  apply the agentic-starter-kit skills — small-model-premium-protocol (phases +
+  Delta summary) and project-agent-baseline (AGENTS.md, merge hygiene). Use
+  verify commands only from AGENTS.md or equivalent; note gaps honestly.
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# Agentic starter kit — Cursor rule
+
+## When this applies
+
+Use for **non-trivial** work: implementation, architecture, debugging across files, adding or merging agent documentation, skills, or manifests.
+
+Skip for purely social replies or single acknowledged facts with no engineering risk.
+
+## Required behaviors
+
+1. **Skill `small-model-premium-protocol`**  
+   Run internal phases 0–3; always end with a visible **Delta summary** (Assumptions / Risks / What was NOT verified).
+
+2. **Skill `project-agent-baseline`**  
+   When touching `AGENTS.md`, `.cursor/skills/`, `conventions/FOR_AGENTS.md`, or `conventions/MANIFEST.json`, follow merge hygiene and a single canonical verify section.
+
+3. **Verification**  
+   Use commands documented in **`AGENTS.md`** (or `CLAUDE.md` / project README if that is the team’s source of truth). If none exist, state that in the Delta summary and suggest minimal commands — do not invent scripts without evidence.
+
+## Skills location
+
+After merging the kit, skills live under:
+
+`.cursor/skills/small-model-premium-protocol/SKILL.md`  
+`.cursor/skills/project-agent-baseline/SKILL.md`
+
+Read full `SKILL.md` bodies when the task matches their descriptions.
+
+## Manifest
+
+First-time orientation: `conventions/FOR_AGENTS.md` (canonical English). Structured index: `conventions/MANIFEST.json`. Architectural defaults: `conventions/PRINCIPLES.md`.

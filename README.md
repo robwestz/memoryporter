@@ -19,11 +19,12 @@ cd mitt-projekt
 |------|-------|----------|
 | `knowledge/` | 38 | Gamechangers (varför), skills (hur), agentritningar (vem) |
 | `skill-engine/` | 10 | 5-stegs beslutspipeline med 38 short skills |
-| `skill-creator/` | 22 | Skill-fabrik: skapa, testa, iterera, paketera |
+| `skill-creator/` | 21 | Skill-fabrik: skapa, testa, iterera, paketera |
 | `protocols/` | 3 | Kvalitetsprotokoll, orkestrering, arkitekturaudit |
 | `conventions/` | 3 | Regler, principer, maskinläsbart manifest |
 | `scaffolds/` | 3 | Projektmallar: Rust, TypeScript, Python |
 | `runtime/` | 60 | 4 Rust crates: ob1, mini, snowball, gateway |
+| `mempalace/` | 136 | Minnessystem: ChromaDB + knowledge graph + MCP-server + hooks |
 | `.cursor/` | 5 | IDE-integration (Cursor skills + rules) |
 
 ## Hur det fungerar
@@ -38,4 +39,3 @@ cd mitt-projekt
 - Claude Code (eller Cursor med Claude)
 - Rust toolchain (installeras automatiskt av bootstrap.sh)
 - ANTHROPIC_API_KEY (för runtime-binärerna)
-# memoryporter
