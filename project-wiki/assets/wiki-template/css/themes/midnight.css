@@ -1,1 +1,20 @@
-/* Midnight theme. Filled in Task 13 — defaults from tokens.css are already midnight. */
+/* Midnight — default theme. Deep navy + electric purple/cyan accents. */
+
+[data-theme="midnight"] {
+  --bg:           #0a0e1a;
+  --bg-elevated:  #161b29;
+  --bg-overlay:   #1e2538;
+  --bg-glass:     rgba(22, 27, 41, 0.72);
+  --border:       #2d3548;
+  --border-strong:#3b465f;
+  --text:         #f1f5f9;
+  --text-muted:   #94a3b8;
+  --text-faint:   #64748b;
+  --accent:       #7c3aed;
+  --accent-soft:  #a78bfa;
+  --accent-translucent: rgba(124, 58, 237, 0.35);
+  --accent-2:     #06b6d4;
+  --success:      #10b981;
+  --warning:      #f59e0b;
+  --danger:       #ef4444;
+}

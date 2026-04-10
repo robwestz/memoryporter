@@ -1,1 +1,20 @@
-/* Aurora theme. Filled in Task 14. */
+/* Aurora — purple/teal/violet vibe */
+
+[data-theme="aurora"] {
+  --bg:           #0d0a1f;
+  --bg-elevated:  #1a1431;
+  --bg-overlay:   #251c44;
+  --bg-glass:     rgba(26, 20, 49, 0.72);
+  --border:       #382b5e;
+  --border-strong:#4d3a7d;
+  --text:         #f3f0ff;
+  --text-muted:   #b3a7d4;
+  --text-faint:   #7a6da0;
+  --accent:       #c084fc;
+  --accent-soft:  #d8b4fe;
+  --accent-translucent: rgba(192, 132, 252, 0.35);
+  --accent-2:     #2dd4bf;
+  --success:      #34d399;
+  --warning:      #fbbf24;
+  --danger:       #f87171;
+}

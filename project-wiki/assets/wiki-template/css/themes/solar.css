@@ -1,1 +1,20 @@
-/* Solar theme. Filled in Task 14. */
+/* Solar — warm orange/red dark mode */
+
+[data-theme="solar"] {
+  --bg:           #18120d;
+  --bg-elevated:  #261b13;
+  --bg-overlay:   #36281b;
+  --bg-glass:     rgba(38, 27, 19, 0.72);
+  --border:       #4a3624;
+  --border-strong:#634a32;
+  --text:         #fef3e2;
+  --text-muted:   #d4b896;
+  --text-faint:   #9c7d5a;
+  --accent:       #fb923c;
+  --accent-soft:  #fdba74;
+  --accent-translucent: rgba(251, 146, 60, 0.35);
+  --accent-2:     #f472b6;
+  --success:      #84cc16;
+  --warning:      #facc15;
+  --danger:       #dc2626;
+}
