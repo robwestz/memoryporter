@@ -1,0 +1,26 @@
+{
+  "skill_name": "project-wiki",
+  "evals": [
+    {
+      "id": 1,
+      "name": "python-package",
+      "prompt": "Generate a project wiki for the mempalace package at portable-kit/mempalace. Use the default Midnight theme and single-file mode. Save it to /tmp/wiki-mempalace.html and open it.",
+      "expected_output": "Self-contained .html file at /tmp/wiki-mempalace.html (~1-2 MB). verify.py passes. Overview hero shows 'mempalace'. Languages breakdown includes Python. README rendered. Dependencies page shows pyproject.toml parsed.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "rust-monorepo",
+      "prompt": "Build a wiki for portable-kit/runtime — it's a Rust workspace with multiple crates. Use folder mode so I can host it. I want to see the dependency graph and git activity.",
+      "expected_output": "Wiki folder at the chosen output path. Dependencies page parses Cargo.toml from each crate. Force-directed graph shows multiple crates. If git history exists, activity heatmap shows it. verify.py passes in folder mode.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "minimal-no-git",
+      "prompt": "Make a wiki for /tmp/empty-test (a directory with just a README.md and one Python file, no git history). Use Aurora theme.",
+      "expected_output": "Wiki generates without errors. Activity page shows 'no git history' empty state. Overview shows the README. Stats show file_count=2. Theme is Aurora (purple/teal). Single-file output.",
+      "files": []
+    }
+  ]
+}
