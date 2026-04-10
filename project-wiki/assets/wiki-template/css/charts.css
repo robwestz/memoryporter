@@ -1,1 +1,82 @@
-/* Chart-specific styles. Filled in Tasks 19+. */
+/* Chart-specific styles */
+
+.chart-container {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-5);
+  place-items: center;
+}
+@media (min-width: 720px) {
+  .chart-container.with-legend {
+    grid-template-columns: 1fr 1fr;
+    place-items: center start;
+  }
+}
+
+.chart-svg {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+}
+
+/* ───── Donut ───── */
+.donut-svg path {
+  transition: transform var(--t-base) var(--easing-out),
+              filter var(--t-base) var(--easing-out);
+  cursor: pointer;
+}
+.donut-svg path:hover,
+.donut-svg path:focus-visible {
+  filter: brightness(1.15) drop-shadow(0 0 12px currentColor);
+  outline: none;
+}
+.donut-center-num {
+  fill: var(--text);
+  font-size: 26px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+}
+.donut-center-label {
+  fill: var(--text-faint);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ───── Legend ───── */
+.legend {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  width: 100%;
+  max-width: 280px;
+}
+.legend-item {
+  display: grid;
+  grid-template-columns: 16px 1fr auto;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: var(--fs-14);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-sm);
+  transition: background var(--t-fast);
+}
+.legend-item:hover {
+  background: var(--bg-overlay);
+}
+.legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.legend-name {
+  color: var(--text);
+}
+.legend-value {
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
