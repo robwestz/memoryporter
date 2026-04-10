@@ -1,20 +1,57 @@
-// app.js — Phase A stub. Real bootstrap lands in Task 15.
-console.log("project-wiki: app.js stub loaded — full bootstrap arrives in Task 15");
-const tag = document.getElementById("wiki-data");
-if (tag) {
+// app.js — bootstraps the wiki
+
+import * as store from "./store.js";
+import { renderNav } from "./nav.js";
+import { renderTopbar } from "./topbar.js";
+import { renderPage } from "./router.js";
+import { initSearch } from "./search.js";
+import { openSettings } from "./settings.js";
+
+function readData() {
+  const tag = document.getElementById("wiki-data");
+  if (!tag) throw new Error("Missing #wiki-data script tag");
+  const text = tag.textContent || "{}";
+  return JSON.parse(text);
+}
+
+function getPageFromHash() {
+  const h = window.location.hash.replace(/^#\/?/, "");
+  return h || "overview";
+}
+
+function bootstrap() {
+  let data;
   try {
-    const data = JSON.parse(tag.textContent || "{}");
+    data = readData();
+  } catch (err) {
     document.getElementById("main").innerHTML = `
-      <div style="padding: 32px; max-width: 720px; margin: 64px auto; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 16px;">
-        <h1 style="margin-bottom: 16px;">${data.meta?.repo_name || "?"}</h1>
-        <p style="color: var(--text-muted); margin-bottom: 24px;">
-          Phase A stub — render pipeline alive. ${data.meta?.file_count_walked || 0} files walked.
-          Real UI lands in Task 11+.
-        </p>
-        <pre style="background: var(--bg); padding: 16px; border-radius: 10px; overflow: auto; max-height: 300px; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">${JSON.stringify(Object.keys(data), null, 2)}</pre>
+      <div class="card" style="margin: 64px auto; max-width: 480px;">
+        <h2>Failed to load wiki data</h2>
+        <p style="color: var(--text-muted); margin-top: 8px;">${String(err)}</p>
       </div>
     `;
-  } catch (err) {
-    document.getElementById("main").textContent = "Failed to parse wiki data: " + err;
+    return;
   }
+
+  store.init(data);
+  renderNav();
+  renderTopbar();
+  renderPage(getPageFromHash());
+  initSearch();
+
+  window.addEventListener("hashchange", () => renderPage(getPageFromHash()));
+  store.subscribe(() => {
+    renderNav();
+    renderPage(getPageFromHash());
+  });
+
+  if (store.isFirstVisit()) {
+    setTimeout(() => openSettings({ firstVisit: true }), 600);
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", bootstrap);
+} else {
+  bootstrap();
 }
