@@ -1,1 +1,31 @@
-/* Syntax highlight theme. Filled in Task 34. */
+/* Syntax highlight token colors — theme-aware via CSS variable overrides */
+
+.tk-comment {
+  color: var(--text-faint);
+  font-style: italic;
+}
+.tk-string {
+  color: #a5d6a7;
+}
+.tk-keyword {
+  color: #c792ea;
+  font-weight: 500;
+}
+.tk-number {
+  color: #ffcb6b;
+}
+.tk-function {
+  color: #82aaff;
+}
+
+/* Aurora variant — softer purples + greens */
+[data-theme="aurora"] .tk-string { color: #b4f8c8; }
+[data-theme="aurora"] .tk-keyword { color: #d8b4fe; }
+[data-theme="aurora"] .tk-number { color: #fde68a; }
+[data-theme="aurora"] .tk-function { color: #93c5fd; }
+
+/* Solar variant — warm hues */
+[data-theme="solar"] .tk-string { color: #fde68a; }
+[data-theme="solar"] .tk-keyword { color: #fb923c; }
+[data-theme="solar"] .tk-number { color: #fcd34d; }
+[data-theme="solar"] .tk-function { color: #fda4af; }
