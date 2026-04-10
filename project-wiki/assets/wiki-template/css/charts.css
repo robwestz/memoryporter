@@ -80,3 +80,148 @@
   color: var(--text-faint);
   font-variant-numeric: tabular-nums;
 }
+
+/* ───── Bar ───── */
+.bar-svg {
+  max-width: none;
+}
+.bar-label {
+  fill: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+.bar-value {
+  fill: var(--text);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.bar-rect {
+  transition: filter var(--t-base) var(--easing-out);
+}
+.bar-row:hover .bar-rect,
+.bar-row:focus-visible .bar-rect {
+  filter: brightness(1.15);
+  outline: none;
+}
+
+/* ───── Sunburst ───── */
+.sunburst-svg .sb-slice {
+  transition: filter var(--t-base) var(--easing-out);
+  cursor: pointer;
+}
+.sunburst-svg .sb-slice:hover,
+.sunburst-svg .sb-slice:focus-visible {
+  filter: brightness(1.25);
+  outline: none;
+}
+.sb-center {
+  fill: var(--text);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ───── Treemap ───── */
+.treemap-svg {
+  max-width: none;
+}
+.tm-cell {
+  transition: filter var(--t-base) var(--easing-out);
+  cursor: pointer;
+}
+.tm-cell:hover rect,
+.tm-cell:focus-visible rect {
+  filter: brightness(1.2);
+  outline: none;
+}
+.tm-label {
+  fill: white;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* ───── Force graph ───── */
+.fg-svg {
+  max-width: none;
+  cursor: grab;
+}
+.fg-svg:active {
+  cursor: grabbing;
+}
+.fg-edge {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+  stroke-opacity: 0.6;
+}
+.fg-node {
+  cursor: grab;
+  transition: filter var(--t-base) var(--easing-out);
+}
+.fg-node:hover,
+.fg-node:focus-visible {
+  filter: brightness(1.2) drop-shadow(0 0 8px var(--accent));
+  outline: none;
+}
+.fg-label {
+  fill: var(--text-muted);
+  font-size: 11px;
+  font-family: var(--font-sans);
+  pointer-events: none;
+}
+
+/* ───── Heatmap ───── */
+.heatmap-svg {
+  max-width: none;
+}
+.hm-cell {
+  transition: filter var(--t-base) var(--easing-out);
+}
+.hm-cell:hover,
+.hm-cell:focus-visible {
+  filter: brightness(1.4);
+  outline: none;
+}
+.hm-label {
+  fill: var(--text-faint);
+  font-size: 10px;
+  font-family: var(--font-sans);
+}
+.hm-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-12);
+  margin-top: var(--sp-3);
+}
+.hm-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+/* ───── Timeline ───── */
+.timeline-svg {
+  max-width: none;
+}
+.tl-dot {
+  cursor: pointer;
+  transition: filter var(--t-base) var(--easing-out);
+}
+.tl-dot:hover circle,
+.tl-dot:focus-visible circle {
+  r: 7;
+  filter: drop-shadow(0 0 6px var(--accent));
+  outline: none;
+}
+.tl-label {
+  fill: var(--text-faint);
+  font-size: 10px;
+}
+
+/* ───── Sparkline ───── */
+.sparkline-svg {
+  display: inline-block;
+  vertical-align: middle;
+}
