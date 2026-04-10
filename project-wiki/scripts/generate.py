@@ -22,7 +22,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 from walker import walk  # noqa: E402
 from analyzers import (  # noqa: E402
     repo_stats, languages, structure, dependencies,
-    git_log, readme, changelog, symbols,
+    git_log, readme, changelog, symbols, file_index,
 )
 
 
@@ -45,6 +45,7 @@ def gather_data(repo_root: Path) -> dict:
         "readme": readme.run(repo_root),
         "changelog": changelog.run(repo_root),
         "symbols": symbols.run(repo_root),
+        "file_index": file_index.run(repo_root),
     }
     return data
 
