@@ -20,7 +20,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
 from walker import walk  # noqa: E402
-from analyzers import repo_stats, languages, structure, dependencies  # noqa: E402
+from analyzers import repo_stats, languages, structure, dependencies, git_log  # noqa: E402
 
 
 def gather_data(repo_root: Path) -> dict:
@@ -38,6 +38,7 @@ def gather_data(repo_root: Path) -> dict:
         "languages": languages.run(repo_root),
         "structure": structure.run(repo_root),
         "dependencies": dependencies.run(repo_root),
+        "git": git_log.run(repo_root),
     }
     return data
 
