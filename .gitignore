@@ -39,3 +39,7 @@ Thumbs.db
 *.log
 tmp/
 temp/
+
+# project-wiki local test outputs
+.wiki-test/
+.wiki-test-*/

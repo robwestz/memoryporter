@@ -20,6 +20,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
 from walker import walk  # noqa: E402
+from analyzers import repo_stats  # noqa: E402
 
 
 def gather_data(repo_root: Path) -> dict:
@@ -33,8 +34,8 @@ def gather_data(repo_root: Path) -> dict:
             "generator_version": "0.1.0",
             "file_count_walked": len(files),
         },
+        "stats": repo_stats.run(repo_root),
     }
-    # Analyzers will be plugged in over the next tasks.
     return data
 
 
