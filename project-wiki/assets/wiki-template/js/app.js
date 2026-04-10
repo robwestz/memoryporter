@@ -8,7 +8,9 @@ import { initSearch } from "./search.js";
 import { openSettings } from "./settings.js";
 // Static-import prism so files page can call window.__prism_highlight synchronously
 import { highlight as prismHighlight } from "./prism.js";
+import { md } from "./markdown.js";
 window.__prism_highlight = prismHighlight;
+window.__md = md;
 
 function readData() {
   const tag = document.getElementById("wiki-data");

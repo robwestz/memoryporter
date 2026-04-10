@@ -27,12 +27,34 @@ const VISITED_KEY = "project-wiki:visited:v1";
 
 export function init(initialData) {
   state.data = initialData;
+
+  // Apply sidecar config defaults BEFORE reading user overrides from localStorage,
+  // so user choices still win.
+  const sidecarCfg = initialData?.sidecar?.config || {};
+  if (sidecarCfg.theme?.preset) {
+    state.theme = sidecarCfg.theme.preset;
+  }
+  if (sidecarCfg.pages) {
+    for (const [key, val] of Object.entries(sidecarCfg.pages)) {
+      const settingKey = "show" + key.charAt(0).toUpperCase() + key.slice(1);
+      if (typeof val === "boolean" && settingKey in state.settings) {
+        state.settings[settingKey] = val;
+      }
+    }
+  }
+  if (sidecarCfg.extras) {
+    if ("charts" in sidecarCfg.extras) state.settings.showCharts = !!sidecarCfg.extras.charts;
+    if ("ai_explanations" in sidecarCfg.extras) state.settings.showAIExplanations = !!sidecarCfg.extras.ai_explanations;
+  }
+
+  // User overrides — these always win
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
     if (raw) state.settings = { ...state.settings, ...JSON.parse(raw) };
     const theme = localStorage.getItem(THEME_KEY);
     if (theme) state.theme = theme;
   } catch {}
+
   document.documentElement.dataset.theme = state.theme;
 }
 

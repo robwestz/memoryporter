@@ -1,0 +1,28 @@
+# {{REPO_NAME}}.wiki — companion config for project-wiki
+# Edit this file by hand. Re-run `generate` to apply changes.
+
+[meta]
+title = "{{REPO_NAME}}"
+tagline = ""
+order = "explore"
+
+[theme]
+preset = "midnight"
+custom_css = "theme.css"
+
+[pages]
+overview = true
+structure = true
+files = true
+modules = true
+deps = true
+activity = true
+
+[extras]
+charts = true
+ai_explanations = false
+search = true
+
+[branding]
+icon_path = ""
+home_url = ""

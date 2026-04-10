@@ -94,6 +94,29 @@ Add a CSS file in `assets/wiki-template/css/themes/<name>.css` that scopes color
 
 Create a JS file in `assets/wiki-template/js/charts/<name>.js` exporting `draw<Name>(container, data, opts)`. Use `donut.js` as a reference template. Reads colors from CSS variables for theme awareness.
 
+## Sidecar enrichments — `<repo>.wiki/`
+
+The skill supports an optional companion-directory pattern for repos you want to enrich over time without polluting the source. Run:
+
+```bash
+python scripts/generate.py --init-sidecar /path/to/repo
+```
+
+This creates `/path/to/repo.wiki/` with:
+
+| File | What it's for |
+|------|--------------|
+| `wiki.toml` | Per-project config: theme, enabled pages, branding |
+| `annotations/overview.md` | Custom overview that replaces or extends the auto-rendered README |
+| `annotations/modules/<name>.md` | Hand-written explanation of a module, shown on the Modules page |
+| `annotations/files/<path>.md` | Per-file note shown above the source in the file viewer |
+| `theme.css` | Project-specific CSS variable overrides applied after the chosen theme |
+| `cache/ai-explanations.json` | Cache of LLM-generated module summaries |
+
+The generator picks up the sidecar automatically if it exists at `<repo-parent>/<repo-name>.wiki/`. Source repo stays untouched. If no sidecar exists, the wiki still works — it just has no enrichments. Full reference: `references/sidecar-format.md`.
+
+**Trigger phrases for sidecar features:** "init a wiki sidecar", "annotate this repo's wiki", "add a custom explanation for the auth module", "remember my notes between regenerates", "set up persistent wiki content for this repo".
+
 ## Verification
 
 After generating, run:

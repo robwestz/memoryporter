@@ -102,6 +102,12 @@ def bundle_single_file(repo_data: dict, template_dir: Path, output_path: Path) -
     json_payload = json.dumps(repo_data, ensure_ascii=False).replace("</", "<\\/")
     html = html.replace(PLACEHOLDER, json_payload)
 
+    # 5. Append sidecar's theme.css overrides last so they win the cascade
+    sidecar_data = repo_data.get("sidecar") or {}
+    if sidecar_data.get("theme_css"):
+        extra_style = f'<style data-source="sidecar/theme.css">\n{sidecar_data["theme_css"]}\n</style>'
+        html = html.replace("</head>", f"{extra_style}\n</head>")
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(html, encoding="utf-8")
     return output_path

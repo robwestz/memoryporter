@@ -22,7 +22,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 from walker import walk  # noqa: E402
 from analyzers import (  # noqa: E402
     repo_stats, languages, structure, dependencies,
-    git_log, readme, changelog, symbols, file_index,
+    git_log, readme, changelog, symbols, file_index, sidecar,
 )
 from render import render, bundle_single_file  # noqa: E402
 
@@ -47,18 +47,30 @@ def gather_data(repo_root: Path) -> dict:
         "changelog": changelog.run(repo_root),
         "symbols": symbols.run(repo_root),
         "file_index": file_index.run(repo_root),
+        "sidecar": sidecar.run(repo_root),
     }
     return data
 
 
 def main() -> int:
     p = argparse.ArgumentParser(description="Generate a static wiki for a project repo.")
-    p.add_argument("--repo", required=True, type=Path, help="Path to the project repository")
-    p.add_argument("--output", required=True, type=Path, help="Where to write the generated wiki (file path for single mode, dir for folder mode)")
+    p.add_argument("--repo", type=Path, help="Path to the project repository")
+    p.add_argument("--output", type=Path, help="Where to write the generated wiki (file path for single mode, dir for folder mode)")
     p.add_argument("--mode", choices=["single", "folder"], default="single",
                    help="single = one self-contained .html file (default). folder = multi-file directory.")
     p.add_argument("--open", action="store_true", help="Open the result in the default browser")
+    p.add_argument("--init-sidecar", type=Path, metavar="REPO",
+                   help="Bootstrap a <repo>.wiki/ sidecar next to REPO and exit")
+    p.add_argument("--force", action="store_true", help="With --init-sidecar: overwrite existing wiki.toml")
     args = p.parse_args()
+
+    # Sidecar init mode — short-circuit before normal generation
+    if args.init_sidecar is not None:
+        from init_sidecar import bootstrap
+        return bootstrap(args.init_sidecar, force=args.force)
+
+    if not args.repo or not args.output:
+        p.error("--repo and --output are required for generation (or use --init-sidecar)")
 
     repo = args.repo.resolve()
     if not repo.is_dir():

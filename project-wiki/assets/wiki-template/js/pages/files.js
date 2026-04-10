@@ -38,14 +38,21 @@ export function render(main, state) {
 
   const viewer = document.getElementById("files-viewer");
 
+  const fileNotes = state.data.sidecar?.annotations?.files || {};
+
   function renderFile(path) {
     const file = files.find(f => f.path === path);
     if (!file) return;
     main.querySelectorAll(".file-item").forEach(el => {
       el.classList.toggle("is-active", el.dataset.path === path);
     });
+    const note = fileNotes[path];
+    const noteHtml = note
+      ? `<div class="card markdown-body file-note" style="margin-bottom: var(--sp-3);">${(window.__md ? window.__md(note) : escapeHtml(note))}</div>`
+      : "";
     if (!file.preview) {
       viewer.innerHTML = `
+        ${noteHtml}
         <header class="viewer-head">
           <h3>${escapeHtml(file.path)}</h3>
           <div class="badge">${escapeHtml(file.language || "binary")}</div>
@@ -55,6 +62,7 @@ export function render(main, state) {
       return;
     }
     viewer.innerHTML = `
+      ${noteHtml}
       <header class="viewer-head">
         <h3>${escapeHtml(file.path)}</h3>
         <div class="viewer-meta">

@@ -48,16 +48,16 @@ export function render(main, state) {
       </section>
     ` : ""}
 
-    ${readme.found ? `
-      <section class="card markdown-body">
-        ${md(readme.raw)}
-      </section>
-    ` : `
-      <section class="card">
-        <h2>No README found</h2>
-        <p class="muted">Add a README.md to the repo root to see it rendered here.</p>
-      </section>
-    `}
+    ${(() => {
+      const sidecarOverview = data.sidecar?.annotations?.overview;
+      if (sidecarOverview) {
+        return `<section class="card markdown-body">${md(sidecarOverview)}</section>`;
+      }
+      if (readme.found) {
+        return `<section class="card markdown-body">${md(readme.raw)}</section>`;
+      }
+      return `<section class="card"><h2>No README found</h2><p class="muted">Add a README.md or a sidecar annotation to fill this section.</p></section>`;
+    })()}
   `;
 
   if (settings.showLanguages && settings.showCharts) {
