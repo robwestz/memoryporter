@@ -1,0 +1,20 @@
+{
+  "name": "API Contract Review",
+  "description": "Review API contracts (OpenAPI, Swagger, GraphQL, REST) for completeness, consistency, and breaking-change risk. Produces structured review with critical issues, warnings, and passed checks.",
+  "category": "skills",
+  "author": {
+    "name": "Example Author",
+    "github": "example"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["AI client with file reading capability"]
+  },
+  "tags": ["api", "contract", "review", "openapi", "swagger", "graphql", "breaking-changes", "audit"],
+  "difficulty": "intermediate",
+  "estimated_time": "10 minutes",
+  "created": "2026-04-10",
+  "updated": "2026-04-10"
+}

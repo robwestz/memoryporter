@@ -1,0 +1,20 @@
+{
+  "name": "Status Report Generator",
+  "description": "Generate structured project status reports from Git history, issue trackers, and conversation context. Supports multiple audience templates (team, management, client) for the same underlying data.",
+  "category": "skills",
+  "author": {
+    "name": "Example Author",
+    "github": "example"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["AI client with git access and file writing"]
+  },
+  "tags": ["status-report", "sprint", "stakeholder", "reporting", "git", "project-management"],
+  "difficulty": "beginner",
+  "estimated_time": "5 minutes",
+  "created": "2026-04-10",
+  "updated": "2026-04-10"
+}
