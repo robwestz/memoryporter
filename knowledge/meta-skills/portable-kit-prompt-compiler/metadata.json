@@ -1,0 +1,28 @@
+{
+  "name": "Portable-Kit Prompt Compiler",
+  "description": "Meta-skill that briefs external LLMs on writing prompts for Claude Code running in portable-kit. Outputs a copy-pasteable template + rubric the external LLM fills in. Compiled prompts activate correct skills, run parallel where independent, verify themselves via showcase-presenter, and produce reusable artifacts.",
+  "category": "meta-skill",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robwestz"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["Claude Code or compatible AI client", "external LLM with file reading"]
+  },
+  "tags": [
+    "meta-skill",
+    "prompt-engineering",
+    "cross-llm",
+    "handoff",
+    "template",
+    "rubric",
+    "compounding-output"
+  ],
+  "difficulty": "beginner",
+  "estimated_time": "2 minutes to hand off, varies for the compile",
+  "created": "2026-04-14",
+  "updated": "2026-04-14"
+}
