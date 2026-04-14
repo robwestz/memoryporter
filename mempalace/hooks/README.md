@@ -136,3 +136,54 @@ Example output:
 ## Cost
 
 **Zero extra tokens.** The hooks are bash scripts that run locally. They don't call any API. The only "cost" is the AI spending a few seconds organizing memories at each checkpoint — and it's doing that with context it already has loaded.
+
+---
+
+## compact-warning.sh — Two-Stage Compaction Trigger
+
+Separate concern from MemPalace saves: proactive visibility into context-window pressure, so compaction never fires too late to be useful.
+
+### Mechanism
+
+| Stage | Trigger | How |
+|-------|---------|-----|
+| **Hard (~88%)** | `autoCompactWindow: 880000` in settings.json | Native Claude Code auto-compact fires at 880k tokens (for 1M-context models) |
+| **Soft (~75%)** | Stop hook `compact-warning.sh` | Estimates context from transcript byte size, emits `systemMessage` warning |
+
+### Install — Claude Code
+
+Add to `~/.claude/settings.json` (global) — merge with existing keys:
+
+```json
+{
+  "autoCompactWindow": 880000,
+  "hooks": {
+    "Stop": [{
+      "hooks": [{
+        "type": "command",
+        "command": "bash \"$HOME/.claude/hooks/compact-warning.sh\"",
+        "timeout": 5
+      }]
+    }]
+  }
+}
+```
+
+Then copy the script and mark executable:
+
+```bash
+mkdir -p "$HOME/.claude/hooks"
+cp mempalace/hooks/compact-warning.sh "$HOME/.claude/hooks/"
+chmod +x "$HOME/.claude/hooks/compact-warning.sh"
+```
+
+### Tuning
+
+Defaults assume Opus with 1M context. For 200k-context models, edit the script:
+- `soft_threshold` → ~680000 (75% of 200k × 4.5 bytes/token)
+- `hard_threshold` → ~800000 (~88%)
+- Drop `autoCompactWindow` to `176000` (88% of 200k), or remove it to use the model default
+
+### Known limitation
+
+Transcript `.jsonl` grows additively and doesn't shrink after compaction. In very long sessions that have already compacted, byte-size over-estimates current context — the soft warning will fire earlier than necessary. Over-warning is safer than under-warning; ignore the soft warning if you just compacted.
