@@ -7,6 +7,43 @@ description: systematic repo intake, constraint mapping, option generation, and 
 
 Apply the same mandatory system to every repo before proposing change. Build the core understanding first, stop and present several valid paths, then continue through the chosen path with the same evidence and audit discipline.
 
+## The systematics (never changes)
+
+```
+STAGE 1: CORE                       STAGE 2: BRANCH
+─────────────────────               ──────────────────────────────
+01-request-brief                    01-branch-charter
+02-repo-map                         02-evidence-plan
+03-constraint-map          ┌──────▶ 03-validation-plan
+04-purpose-chain           │        04-subskill-opportunities
+05-failure-mode-atlas      │
+06-options-matrix ─── STOP ┘  (user chooses)
+
+STATE MACHINE
+  core-in-progress ──[strict audit passes]──▶ awaiting-user-choice
+                                                    │
+                                                    ▼
+                                              branch-active
+
+EVIDENCE CLASSES (tag every bullet)
+  [OBSERVED]   [DERIVED]   [ASSUMED]   [OPEN-RISK]
+```
+
+Six core artifacts + four branch artifacts = ten structured files. The
+state machine prevents skipping the stop-for-options rule. Evidence tags
+prevent mixing fact with guess. This is the contract — everything else
+is content.
+
+## Where to run it
+
+- **Installed globally (`~/.claude/skills/repo-strategy-orchestrator/`)**:
+  the skill files live there; case workspaces live in your project.
+  Use `--workspace /path/to/your/project/workspace` (any dir you own) —
+  NOT inside `~/.claude/skills/`.
+- **Used in-repo (portable-kit)**: scripts resolve their own paths via
+  `Path(__file__)`, so running them from anywhere works. Workspace
+  defaults to `./workspace` relative to current directory.
+
 ## Mandatory rules
 
 1. Initialize a case workspace before analysis. Run `scripts/bootstrap_case.py <case-slug> "<goal>" --workspace <path>`. The case starts at `stage: core-in-progress` and writes an entry to `<workspace>/cases.jsonl`.
@@ -33,7 +70,7 @@ Apply the same mandatory system to every repo before proposing change. Build the
 - For the standard path types and custom-path adaptation, read `references/branch-catalog.md`.
 - For evidence rules, constraint handling, and anti-simplification checks, read `references/evidence-standard.md`.
 - For future specialization and subskill creation, read `references/subskill-patterns.md`.
-- For the ready-to-run portable-kit build prompt that recreates this package, read `templates/master-build-prompt.md`.
+- For the ready-to-run portable-kit build prompt that recreates this package, read `examples/portable-kit-rebuild.md`.
 
 ## Core workflow
 

@@ -118,6 +118,16 @@ Repo hint: {args.repo}
         print(f"  - {dst}")
     print(f"  - case.json (stage=core-in-progress, schema_version={SCHEMA_VERSION})")
     print(f"  - index updated: {index_path}")
+    print()
+    print("NEXT — the systematics:")
+    print("  1. Fill core artifacts 01..06 in order; do not skip any.")
+    print("  2. Tag bullets with [OBSERVED] / [DERIVED] / [ASSUMED] / [OPEN-RISK].")
+    print("     Hard constraints must NOT be [ASSUMED].")
+    print("  3. Options matrix must have >=3 options + user slot + filled")
+    print("     Anti-simplification review (4 questions x options).")
+    print("  4. Run mechanical_audit.py --strict. On pass, stage advances")
+    print("     to awaiting-user-choice. That is the stop point — present")
+    print("     options, wait for the user, then scaffold_branch.py.")
     return 0
 
 
