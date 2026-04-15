@@ -1,0 +1,115 @@
+---
+client: [VARIABLE: CLIENT_NAME]
+period: [VARIABLE: YYYY-MM]
+period_label: [VARIABLE: "April 2026"]
+generated: [VARIABLE: 2026-04-15]
+channel: [VARIABLE: monthly]
+language: sv
+---
+
+# Månadsrapport — [VARIABLE: CLIENT_NAME]
+## [VARIABLE: PERIOD_LABEL]
+
+---
+
+## Sammanfattning
+
+[VARIABLE: 3 meningar. Största rörelsen + viktigaste insikten + vad vi gör härnäst. Inget fluff.]
+
+---
+
+## Nyckeltal
+
+| Metric | Denna period | Föregående | Δ | Trend |
+|--------|--------------|------------|---|-------|
+| Clicks (GSC) | [VARIABLE] | [VARIABLE] | [VARIABLE: +X% or -X%] | [VARIABLE: ↑ / ↓ / →] |
+| Impressions (GSC) | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| CTR (GSC) | [VARIABLE: X.X%] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Avg position (GSC) | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Sessions (GA4) | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Conversions (GA4) | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Domain Rating (Ahrefs) | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Referring domains | [VARIABLE] | [VARIABLE] | [VARIABLE: +X new, -Y lost] | [VARIABLE] |
+
+---
+
+## Vad gick bra
+
+[VARIABLE: 2-4 konkreta wins. Varje med: VAD som hände + VARFÖR det hände + BEVIS.]
+
+Exempel på format (ta bort detta exempel innan leverans):
+> **[Win-rubrik]**
+> [Siffra eller förändring]. Drivet av [konkret orsak: page/query/kampanj/länk].
+> Bevis: [direkt länk eller tabellreferens].
+
+---
+
+## Vad behöver åtgärdas
+
+[VARIABLE: 1-3 issues. Varje med: VAD + VARFÖR det är ett problem + FÖRESLAGEN ÅTGÄRD.]
+
+Fabricera inte problem. Om månaden var neutral — skriv "Inga kritiska issues identifierade. Fortsatt monitoring rekommenderas." och lämna sektionen kort.
+
+---
+
+## Topp-sidor (GSC)
+
+| Sida | Clicks | Δ | Position | Δ |
+|------|--------|---|----------|---|
+| [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+
+Topp 10. Flagga med ⚠️ om position försämras > 3 positioner.
+
+---
+
+## Topp-queries (GSC)
+
+| Query | Clicks | Δ | Position | CTR |
+|-------|--------|---|----------|-----|
+| [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+
+Topp 10. Markera med 🎯 nya queries som kommit in i topp 10 denna period.
+
+---
+
+## Backlink-rörelser (Ahrefs)
+
+| Förändring | Antal |
+|------------|-------|
+| Nya referring domains | [VARIABLE] |
+| Förlorade referring domains | [VARIABLE] |
+| Nettoförändring | [VARIABLE: +/-X] |
+
+**Noteworthy nya länkar** (DR ≥ 40):
+- [VARIABLE: domän + kort kontext] eller "Inga i denna kategori denna period."
+
+**Förlorade länkar att återskaffa** (om några var värdefulla):
+- [VARIABLE] eller "Inga kritiska förluster."
+
+---
+
+## Fokus nästa period
+
+[VARIABLE: 1-3 konkreta åtgärder. "Konkret" = kan omvandlas till en uppgift med tidsestimat.]
+
+Exempel på format:
+1. **[Åtgärd]** — motivering baserad på denna periods data. Estimerad tid/omfattning.
+
+Inte: "fortsätt med SEO." Utan: "Optimera /page-slug för [keyword] — ligger position 5, CTR 3.2% som är under snitt för positionen."
+
+---
+
+## Bilaga — Datakällor
+
+Rapporten baseras på:
+- Google Search Console: [VARIABLE: site URL]
+- Google Analytics 4: [VARIABLE: property ID eller "ej tillgängligt"]
+- Ahrefs Site Explorer: [VARIABLE: domain eller "ej tillgängligt"]
+- Rapportperiod: [VARIABLE: YYYY-MM-DD → YYYY-MM-DD]
+- Jämförelseperiod: [VARIABLE: YYYY-MM-DD → YYYY-MM-DD] (föregående månad)
+
+Råtabeller finns i `reports/[VARIABLE: YYYY-MM]/raw/` för reproducerbarhet.
+
+---
+
+*Rapport genererad [VARIABLE: 2026-04-15] av performance-report-generator v1.0.0. Granskad av: [VARIABLE: NAMN eller "ej granskad"].*

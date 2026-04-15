@@ -1,0 +1,31 @@
+{
+  "name": "Performance Report Generator",
+  "description": "Genererar klient-färdiga SEO/performance-rapporter från GSC, GA4 och Ahrefs-data med svenskt narrativ. Per-klient YAML-config → månads- eller kvartalsrapport i markdown, konverterbar till PDF/email/dashboard-embed. Översätter metrics till insikter med driver-förklaringar, inte bara siffertabeller.",
+  "category": "meta-skill",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robwestz"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": ["Ahrefs MCP (för GSC + backlinks)", "Google Analytics Data API (optional, för GA4)"],
+    "tools": ["Claude Code eller kompatibel AI-klient", "pandoc (optional, för PDF/HTML-konvertering)"]
+  },
+  "tags": [
+    "meta-skill",
+    "reporting",
+    "seo",
+    "performance",
+    "client-delivery",
+    "gsc",
+    "ga4",
+    "ahrefs",
+    "agency",
+    "swedish-output"
+  ],
+  "difficulty": "intermediate",
+  "estimated_time": "15-30 minuter per rapport efter första klient-setup (1-2h för setup)",
+  "created": "2026-04-15",
+  "updated": "2026-04-15"
+}

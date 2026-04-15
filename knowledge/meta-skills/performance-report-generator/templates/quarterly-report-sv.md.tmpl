@@ -1,0 +1,116 @@
+---
+client: [VARIABLE: CLIENT_NAME]
+period: [VARIABLE: YYYY-QN]
+period_label: [VARIABLE: "Q1 2026"]
+generated: [VARIABLE: 2026-04-15]
+channel: [VARIABLE: quarterly]
+language: sv
+---
+
+# Kvartalsrapport — [VARIABLE: CLIENT_NAME]
+## [VARIABLE: PERIOD_LABEL]
+
+---
+
+## Exekutiv sammanfattning
+
+[VARIABLE: 4-5 meningar. Kvartalets största rörelse + hur kvartalet trendade månad-för-månad + vad som drev det + vad nästa kvartal handlar om.]
+
+---
+
+## Kvartalsnyckeltal
+
+| Metric | Q-värde | Föreg. Q | QoQ Δ | YoY Δ |
+|--------|---------|----------|-------|-------|
+| Clicks (GSC) | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Impressions (GSC) | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| CTR (GSC) | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Avg position | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Sessions (GA4) | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Conversions (GA4) | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Domain Rating | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Referring domains | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+
+---
+
+## Månadsvis trend inom kvartalet
+
+| Månad | Clicks | Impressions | Position | Sessions |
+|-------|--------|-------------|----------|----------|
+| [VARIABLE: M1] | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| [VARIABLE: M2] | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| [VARIABLE: M3] | [VARIABLE] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+
+**Mönster i kvartalet**: [VARIABLE: 1-2 meningar om accelererande / avmattande / stabilt trend.]
+
+---
+
+## Största rörelserna (topp 5)
+
+För varje: förändring + driver + bevis.
+
+[VARIABLE: 5 poster, rankade efter affärsrelevans × magnitud. Varje 3-4 rader.]
+
+---
+
+## Strategiska wins
+
+[VARIABLE: 2-3 wins på strategisk nivå — saker som förändrar spelplanen, inte bara periodmässiga rörelser. Exempel: genombrott på ny query-kluster, nytt innehållsformat som rankar, teknisk fix som rörde flera sidor.]
+
+---
+
+## Strategiska issues & risker
+
+[VARIABLE: 1-3 issues på strategisk nivå. Exempel: konkurrent har passerat för nyckelqueries, teknisk skuld som påverkar flera sidor, kategori som tappar trend.]
+
+---
+
+## Backlink-profil
+
+| Metric | Kvartalet | Föreg. | Δ |
+|--------|-----------|--------|---|
+| Nya referring domains | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Förlorade | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Netto | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+| Domain Rating | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+
+**Anchor-distribution** (för risk-monitoring):
+[VARIABLE: summering om diversifiering ser sund ut eller om det finns koncentration]
+
+**Toxicitet / Disavow-kandidater**:
+[VARIABLE: identifierade SPAM-länkar om några, eller "Inga flaggade denna period"]
+
+---
+
+## Konkurrensbild
+
+[VARIABLE: OPTIONAL om klientens profil har competitor_domains definierade. Annars skriv "Ej konfigurerat — lägg till i client profile vid behov."]
+
+| Domän | DR | RD | Rörelse QoQ |
+|-------|----|----|-------------|
+| [VARIABLE: konkurrent 1] | [VARIABLE] | [VARIABLE] | [VARIABLE] |
+
+---
+
+## Focus nästa kvartal
+
+Strategiskt (1-2 punkter):
+
+[VARIABLE]
+
+Taktiskt (3-5 punkter):
+
+[VARIABLE]
+
+---
+
+## Bilaga — Datakällor & metodologi
+
+- Datakällor: [VARIABLE]
+- Jämförelseperiod: [VARIABLE]
+- YoY-jämförelse: [VARIABLE: YES med datum / NO om första kvartalet]
+- Råtabeller: `reports/[VARIABLE]/raw/`
+
+---
+
+*Kvartalsrapport genererad [VARIABLE: 2026-04-15] av performance-report-generator v1.0.0.*

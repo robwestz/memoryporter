@@ -1,0 +1,59 @@
+# Client profile — performance-report-generator
+# Kopiera till clients/<client-slug>/profile.yaml och fyll i.
+
+client_name: "[KLIENTNAMN]"            # Visas i rapporten
+client_slug: "[klient-slug]"           # kebab-case, används som mappnamn
+language: sv                           # sv | en
+
+cadence: monthly                       # monthly | quarterly
+report_channel: markdown               # markdown | pdf | email-html | dashboard-embed
+
+# Datakällor — fyll i de som finns, lämna utkommenterat för det som saknas
+
+data_sources:
+  gsc:
+    site_url: "https://[klientens-domän].se/"
+    # Hämtas via Ahrefs MCP gsc-* tools (kräver att klientens GSC är kopplad i Ahrefs)
+
+  ga4:
+    property_id: "[GA4_PROPERTY_ID]"   # t.ex. "123456789"
+    # Kräver Google Analytics Data API access
+
+  ahrefs:
+    domain: "[klientens-domän].se"
+    project_id: null                   # optional, om konfigurerat i Ahrefs
+
+# Rapport-metadata
+brand:
+  primary_color: "#000000"             # används vid PDF-konvertering
+  logo_path: null                      # relativ path till logo om PDF
+
+# Competitors för kvartalsrapporter
+competitor_domains:
+  - "konkurrent1.se"
+  - "konkurrent2.se"
+  - "konkurrent3.se"
+
+# Leverans
+delivery:
+  internal_reviewer: "[NAMN]"          # vem på byrån granskar innan utskick
+  send_to:
+    - "[klientens-kontakt]@[klient].se"
+  cc:
+    - "[internt-cc]@byrå.se"
+  auto_send: false                     # ALLTID false i v1 — mänsklig gate
+
+# Override — om någon sektion ska skippas för denna klient
+sections_enabled:
+  summary: true
+  kpis: true
+  wins: true
+  issues: true
+  top_pages: true
+  top_queries: true
+  backlinks: true
+  next_focus: true
+  appendix: true
+
+# History-tracking
+history_file: "history.md"             # append-only log av skickade rapporter
