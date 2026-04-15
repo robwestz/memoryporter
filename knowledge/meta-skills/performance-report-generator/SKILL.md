@@ -78,33 +78,51 @@ Obligatoriska fält:
 
 ### 2. FETCH DATA
 
-Se `references/data-source-rubric.md` för vilka MCP-tool / API / CSV som
-matchar vilken datakälla. Prioritet:
+**Primär metod (v1 default): PDF-ingestion av Looker Studio-dashboard.**
 
-| Datakälla | Bäst via | Fallback |
-|-----------|----------|----------|
-| GSC | Ahrefs MCP `gsc-*` tools | Direct GSC API |
-| Ahrefs | Ahrefs MCP `site-explorer-*`, `rank-tracker-*` | — (MCP räcker) |
-| GA4 | Google Analytics Data API | CSV från Looker Studio export |
-| Meta Ads | Meta Marketing API | **CSV från Looker Studio (v1 default)** |
-| Google Ads | Google Ads API | **CSV från Looker Studio (v1 default)** |
-| Länkrapport | Google Sheets API | **CSV från internt tracking-system** |
+Klienten har redan en aggregerad dashboard som innehåller allt. Skillen
+ska INTE re-aggregera från råa källor. Istället:
 
-CSV-fallback-mönster: klient gör en-gångs-export från Looker Studio per
-period och lägger i `clients/<slug>/csv_imports/<source>-<YYYY-MM>.csv`.
-Skillen läser CSV om ingen API-config finns. Detta är **v1 default** för
-Meta Ads / Google Ads / länkrapport eftersom API-setup per klient är tungt.
+1. Human eller automation exporterar Looker Studio-rapporten som PDF
+   (Fil → Ladda ned → PDF; ~20 sekunder)
+2. PDF sparas till `clients/<slug>/snapshots/<YYYY-MM>/dashboard.pdf`
+3. Skillen läser PDF:en via vision-modellen, extraherar alla metrics och
+   tabeller per sektion
+4. Föregående periods PDF (sparad förra månaden) används för delta-beräkning
 
-Hämta MINST:
+Se `references/looker-pdf-extraction.md` för:
+- Extraktionsmönster per sektion (overview, GSC, Ahrefs, Meta Ads, Google Ads, länkleverans)
+- Edge cases (tomma kvadranter, chart-only-sektioner utan tabell, flersidig PDF)
+- Kvalitetskontroll (sanity check siffror mot chart-trender)
+
+**Sekundär metod (v2): API-fetch från underliggande källor.**
+
+Används bara om PDF inte finns ELLER om specifik klient kräver djupare
+data än dashboarden visar. Se `references/data-source-rubric.md`.
+
+**Tertiär metod (v3): per-source CSV-import.**
+
+Manuell CSV-export från enskilda chart när PDF-pipeline är trasig för en
+specifik källa. Sista utvägen.
+
+Prioritet i ordning:
+
+| Metod | När |
+|-------|-----|
+| PDF-ingestion | Default för alla klienter |
+| API-fetch | Om dashboard saknas eller djupdykning krävs |
+| CSV-import | Fallback om både PDF och API misslyckas |
+
+Hämtade datapunkter (oavsett metod) ska minst täcka:
 - GSC: clicks, impressions, CTR, avg position (period + föregående), top 10 pages + top 10 queries
 - Ahrefs: domain rating, referring domains delta, top referring domains
-- GA4: sessions, totalUsers, conversions (om konfigurerat)
+- GA4: sessions, totalUsers, conversions
 - Meta Ads: spend, impressions, clicks, conversions, top 5 kampanjer
 - Google Ads: cost, clicks, conversions, impression share, top 5 kampanjer
 - Länkrapport: alla levererade länkar för perioden med DR + status
 
-Spara råa tabeller i `.tmp/<client>-<period>/raw/*.json` (normaliserade
-från respektive källa). CSV-importer kan stanna som CSV i raw/.
+Spara extraktionsresultat i `.tmp/<client>-<period>/raw/extracted.json`
+för reproducerbarhet. PDF:en själv stannar i `clients/<slug>/snapshots/`.
 
 ### 3. NARRATIVE PASS
 
