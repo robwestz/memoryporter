@@ -83,8 +83,11 @@ for skill in "${SKILL_ARR[@]}"; do
     src="$KIT/knowledge/meta-skills/$skill"
   elif [ -d "$KIT/knowledge/skills/$skill" ]; then
     src="$KIT/knowledge/skills/$skill"
+  elif [ -d "$HOME/.claude/skills/$skill" ]; then
+    src="$HOME/.claude/skills/$skill"
+    echo "  (from global ~/.claude/skills)" >&2
   else
-    echo "WARN: skill not found in kit: $skill (skipping)" >&2
+    echo "WARN: skill not found in kit or ~/.claude/skills: $skill (skipping)" >&2
     continue
   fi
 
