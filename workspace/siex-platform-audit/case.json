@@ -1,0 +1,18 @@
+{
+  "schema_version": 2,
+  "case_slug": "siex-platform-audit",
+  "goal": "map SIE-X end-to-end, identify missing core/engine/pipeline files, name the gamechanger gaps, produce a platform blueprint consumers (Bacowr + writer-tool + future verticals) can depend on without fragment-imports",
+  "repo_hint": "D:/sie_x/",
+  "created_at": "2026-04-15T17:46:08+00:00",
+  "skill": "repo-strategy-orchestrator",
+  "stage": "branch-active",
+  "branches": [
+    {
+      "branch_name": "doc-first-audit",
+      "branch_key": "research-spike",
+      "branch_label": "research spike",
+      "created_at": "2026-04-15T19:46:34+00:00"
+    }
+  ],
+  "advanced_at": "2026-04-15T17:51:28+00:00"
+}
