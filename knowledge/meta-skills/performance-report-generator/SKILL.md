@@ -44,6 +44,21 @@ via embed-iframe / Google Docs-import.
 | Dashboard byggande från noll | Nej — det är Data Studio-arbete |
 | Kund har INGEN dashboard än | Nej — skapa dashboard först, sedan kan denna skill mata den |
 
+## Dashboard som strukturreferens
+
+Klientens Looker Studio-dashboard är **sanningens struktur** — rapporten
+speglar samma sektioner och samma KPI-urval som klienten är van vid.
+Agenten hämtar INTE data från Looker Studio (ingen export-API), men
+profile.yaml:s `dashboard.sections`-lista styr vilka rapportsektioner
+som aktiveras. Typisk full uppsättning:
+
+- Overview (exekutiv sammanfattning + KPI-tabell)
+- Ahrefs (DR, refdomains, organic keywords, top pages)
+- Search Console (clicks, impressions, CTR, position, top queries/pages)
+- Meta Ads (spend, conversions, top kampanjer)
+- Google Ads (cost, conversions, impression share, top kampanjer)
+- Link delivery (byråns levererade länkar denna period)
+
 ## Process
 
 ```
@@ -63,22 +78,33 @@ Obligatoriska fält:
 
 ### 2. FETCH DATA
 
-Se `references/data-source-rubric.md` för vilka MCP-tool / API som matchar
-vilken datakälla. Prioritet:
+Se `references/data-source-rubric.md` för vilka MCP-tool / API / CSV som
+matchar vilken datakälla. Prioritet:
 
-| Datakälla | Bäst via |
-|-----------|----------|
-| GSC | Ahrefs MCP `gsc-*` tools (redan konfigurerat i portable-kit) |
-| GA4 | Google Analytics Data API (kräver service account JSON) |
-| Ahrefs | Ahrefs MCP `site-explorer-*`, `rank-tracker-*` tools |
+| Datakälla | Bäst via | Fallback |
+|-----------|----------|----------|
+| GSC | Ahrefs MCP `gsc-*` tools | Direct GSC API |
+| Ahrefs | Ahrefs MCP `site-explorer-*`, `rank-tracker-*` | — (MCP räcker) |
+| GA4 | Google Analytics Data API | CSV från Looker Studio export |
+| Meta Ads | Meta Marketing API | **CSV från Looker Studio (v1 default)** |
+| Google Ads | Google Ads API | **CSV från Looker Studio (v1 default)** |
+| Länkrapport | Google Sheets API | **CSV från internt tracking-system** |
+
+CSV-fallback-mönster: klient gör en-gångs-export från Looker Studio per
+period och lägger i `clients/<slug>/csv_imports/<source>-<YYYY-MM>.csv`.
+Skillen läser CSV om ingen API-config finns. Detta är **v1 default** för
+Meta Ads / Google Ads / länkrapport eftersom API-setup per klient är tungt.
 
 Hämta MINST:
-- Totalclicks, impressions, CTR, avg position (period + föregående period)
-- Top 10 pages by clicks (med position + delta)
-- Top 10 queries by clicks (med position + delta)
-- Om Ahrefs: domain rating, referring domains delta, top referring domains
+- GSC: clicks, impressions, CTR, avg position (period + föregående), top 10 pages + top 10 queries
+- Ahrefs: domain rating, referring domains delta, top referring domains
+- GA4: sessions, totalUsers, conversions (om konfigurerat)
+- Meta Ads: spend, impressions, clicks, conversions, top 5 kampanjer
+- Google Ads: cost, clicks, conversions, impression share, top 5 kampanjer
+- Länkrapport: alla levererade länkar för perioden med DR + status
 
-Spara råa tabeller i `.tmp/<client>-<period>/raw/*.json` för reproducerbarhet.
+Spara råa tabeller i `.tmp/<client>-<period>/raw/*.json` (normaliserade
+från respektive källa). CSV-importer kan stanna som CSV i raw/.
 
 ### 3. NARRATIVE PASS
 

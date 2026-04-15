@@ -38,6 +38,88 @@ tid att sätta upp per klient; använd bara om Ahrefs inte har klienten.
 | Organiska konkurrenter | `mcp__claude_ai_Ahrefs__site-explorer-organic-competitors` |
 | Rank-tracker (om konfigurerat) | `mcp__claude_ai_Ahrefs__rank-tracker-*` |
 
+## Meta Ads
+
+**Primary: Meta Marketing API** via `facebook-business` Python-paket. Kräver:
+- Business Manager access
+- System user + permanent access token per klient (eller agency token med klient-ad-account-access)
+
+Minimum per rapport:
+- spend, impressions, reach, clicks, CTR, CPC
+- conversions (från Meta Pixel)
+- Per-kampanj breakdown för topp 5
+
+**Fallback (v1 vanligast)**: CSV export från Looker Studio.
+1. I Looker Studio: högerklick på Meta Ads-chart → "Export" → CSV
+2. Spara till `clients/<slug>/csv_imports/meta-ads-<YYYY-MM>.csv`
+3. Skillen läser CSV:n om ingen API-config finns
+
+Förväntad CSV-kolumnstruktur (vanlig Looker-export):
+```
+campaign_name, impressions, reach, clicks, spend, ctr, cpc, conversions, cost_per_conversion
+```
+
+## Google Ads
+
+**Primary: Google Ads API** via `google-ads` Python-paket. Kräver:
+- Developer token
+- OAuth per kund eller Manager Account (MCC) setup
+- Customer ID
+
+Minimum per rapport:
+- Impressions, clicks, cost, conversions, cost/conv
+- Impression share (search)
+- Top 10 keywords by cost + top 10 by conversions
+- Per-kampanj breakdown
+
+**Fallback (v1 vanligast)**: CSV export från Looker Studio.
+Spara till `clients/<slug>/csv_imports/google-ads-<YYYY-MM>.csv`.
+
+Förväntad kolumnstruktur:
+```
+campaign, impressions, clicks, ctr, cost, avg_cpc, conversions, cost_per_conversion, search_impression_share
+```
+
+## Länkrapport (byråns leverans)
+
+Byråns egna levererade backlinks för klienten. **Agency-internal data** —
+inte hämtbar från publika API:er.
+
+**Primary: Google Sheets** via Sheets API (om byrån använder Sheets för tracking).
+Konfig i profile.yaml:
+```yaml
+link_delivery:
+  source_type: google_sheets
+  sheets_url: https://docs.google.com/spreadsheets/d/[ID]
+  sheets_tab: <klient-slug>
+```
+
+Läs via `gspread` eller direkt Sheets API. Filtrera rader på rapport-period.
+
+**Fallback**: CSV export från källsystem.
+Spara till `clients/<slug>/csv_imports/links-<YYYY-MM>.csv` med kolumner:
+```
+date, target_url, source_domain, dr, anchor_text, status
+```
+
+Där `status` är en av: `live` | `pending` | `indexed` | `removed`.
+
+**Om länkrapport saknas för en period**: rapportera explicit i sektionen
+"Levererade länkar": "Inga länkar levererade denna period — se [nästa period]
+för planerad leverans." Fabricera inte data.
+
+## Looker Studio som strukturreferens
+
+Skillen hämtar INTE data från Looker Studio direkt (ingen publik export-API).
+Men dashboarden definierar **strukturen** rapporten speglar:
+
+- Sektioner i dashboard → sektioner i rapport (overview, ahrefs, GSC, meta, google ads, link delivery)
+- Metrics som visas i dashboard → metrics som nämns i rapport (matcha KPI-urval)
+- Om klient är van vid ett visst metric-namn i dashboarden → använd samma namn i rapporten
+
+Detta gör rapporten konsistent med det klienten redan granskar — inga
+överraskande nya metrics eller utelämnade siffror.
+
 ## GA4 — Sessions, konverteringar, beteende
 
 **Google Analytics Data API.** Kräver service account JSON per klient eller

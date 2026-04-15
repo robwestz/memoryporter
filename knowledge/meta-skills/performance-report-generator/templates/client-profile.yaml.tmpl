@@ -8,7 +8,19 @@ language: sv                           # sv | en
 cadence: monthly                       # monthly | quarterly
 report_channel: markdown               # markdown | pdf | email-html | dashboard-embed
 
+# Looker Studio dashboard — den kanoniska strukturen rapporten speglar
+dashboard:
+  url: "https://datastudio.google.com/reporting/[DASHBOARD_ID]"
+  sections:                            # vilka sektioner finns i dashboard → rapporten täcker dem
+    - overview
+    - ahrefs
+    - search_console
+    - meta_ads
+    - google_ads
+    - link_delivery
+
 # Datakällor — fyll i de som finns, lämna utkommenterat för det som saknas
+# API-källor hämtas automatiskt. CSV-källor läses från csv_imports/ om API ej satt.
 
 data_sources:
   gsc:
@@ -22,6 +34,25 @@ data_sources:
   ahrefs:
     domain: "[klientens-domän].se"
     project_id: null                   # optional, om konfigurerat i Ahrefs
+
+  meta_ads:
+    ad_account_id: "[META_AD_ACCOUNT_ID]"   # t.ex. "act_1234567890"
+    # Primary: Meta Marketing API (kräver business token per klient)
+    # Fallback: CSV export från Looker Studio → csv_imports/meta-ads-<YYYY-MM>.csv
+    csv_fallback: true                 # om API inte konfigurerat, förvänta CSV
+
+  google_ads:
+    customer_id: "[123-456-7890]"
+    # Primary: Google Ads API (kräver OAuth + developer token)
+    # Fallback: CSV export → csv_imports/google-ads-<YYYY-MM>.csv
+    csv_fallback: true
+
+  link_delivery:                       # byråns levererade länkar för klienten
+    source_type: "google_sheets"       # google_sheets | csv | internal_api
+    sheets_url: "[SHEETS_URL]"         # om google_sheets
+    sheets_tab: "[klient-slug]"        # flik-namn
+    # Fallback: csv_imports/links-<YYYY-MM>.csv med kolumner:
+    # date,target_url,source_domain,dr,anchor_text,status
 
 # Rapport-metadata
 brand:
