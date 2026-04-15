@@ -1,0 +1,50 @@
+{
+  "name": "repo-strategy-orchestrator",
+  "description": "Repo-agnostic skill package for mandatory repo intake, option generation, and branch planning. Applies the same systematics to product strategy, architecture migration, incident post-mortems, documentation rescue, and tech-debt triage.",
+  "category": "orchestration-skill",
+  "author": {
+    "name": "OpenAI ChatGPT for Robin Westerlund"
+  },
+  "version": "1.1.0",
+  "schema_version": 2,
+  "tags": [
+    "repo-analysis",
+    "architecture",
+    "constraints",
+    "branch-planning",
+    "subskills",
+    "audit",
+    "evidence-classes",
+    "anti-simplification"
+  ],
+  "difficulty": "advanced",
+  "estimated_time": "15 minutes for scaffolding, variable for analysis depth",
+  "created": "2026-04-15",
+  "updated": "2026-04-15",
+  "outputs": {
+    "core_artifacts": [
+      "core/01-request-brief.md",
+      "core/02-repo-map.md",
+      "core/03-constraint-map.md",
+      "core/04-purpose-chain.md",
+      "core/05-failure-mode-atlas.md",
+      "core/06-options-matrix.md"
+    ],
+    "branch_artifacts": [
+      "branches/<branch>/01-branch-charter.md",
+      "branches/<branch>/02-evidence-plan.md",
+      "branches/<branch>/03-validation-plan.md",
+      "branches/<branch>/04-subskill-opportunities.md"
+    ],
+    "state": [
+      "case.json (schema_version, stage, branches)",
+      "<workspace>/cases.jsonl (append-only index)",
+      "presentation-brief.md (when scripts/present_case.py is run)"
+    ]
+  },
+  "stages": [
+    "core-in-progress",
+    "awaiting-user-choice",
+    "branch-active"
+  ]
+}
