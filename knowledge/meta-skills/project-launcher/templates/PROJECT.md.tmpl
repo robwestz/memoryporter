@@ -1,0 +1,99 @@
+# PROJECT.md — [VARIABLE: PROJECT_NAME]
+
+What this project is, what success looks like, what it explicitly is NOT.
+
+---
+
+## Concept
+
+[VARIABLE: ONE_PARAGRAPH_CONCEPT]
+
+---
+
+## Goals
+
+[VARIABLE: GOALS_LIST — 3-5 bullets, each with a measurable outcome]
+
+Example shape:
+- Ship a working [feature] that passes [test]
+- Support [use case] for [specific user]
+- Reach [performance metric] on [benchmark]
+
+---
+
+## Anti-goals (what this project is NOT)
+
+[VARIABLE: ANTI_GOALS_LIST — 2-4 bullets]
+
+Each anti-goal closes off a path the agent might drift into. Be specific:
+- NOT a [adjacent product] — we are not competing with X
+- NOT multi-tenant — single-user for v1
+- NOT mobile-responsive — desktop-first, mobile comes later
+
+---
+
+## Success criteria (testable)
+
+Project is "done" when ALL of these are true:
+
+[VARIABLE: SUCCESS_CRITERIA — 3-5 bullets, each verifiable]
+
+Each criterion must be one of:
+- **Artifact on disk**: `file at path/to/file.ext exists and contains [X]`
+- **Command returns 0**: `bash verify/final.sh exits 0`
+- **Demonstrable behavior**: `opening X in browser shows Y`
+
+Not allowed: "users are happy", "code is clean", "works well."
+
+---
+
+## Stakeholder
+
+- **Owner**: [VARIABLE: OWNER_NAME_OR_ROLE]
+- **Reviewer**: [VARIABLE: REVIEWER or "self"]
+- **Deployment target**: [VARIABLE: WHERE_IT_SHIPS]
+
+---
+
+## Constraints
+
+| Type | Constraint |
+|------|-----------|
+| **Time budget** | [VARIABLE: TIME_BUDGET] |
+| **Cost ceiling** | [VARIABLE: COST_CEILING or "not specified"] |
+| **Licensing** | [VARIABLE: LICENSE] |
+| **Data sensitivity** | [VARIABLE: PUBLIC / INTERNAL / CONFIDENTIAL] |
+| **Compliance** | [VARIABLE: NONE / GDPR / HIPAA / etc.] |
+
+---
+
+## Out of scope
+
+Explicit list of things agents might try to add but should NOT:
+
+[VARIABLE: OUT_OF_SCOPE — 3-5 bullets]
+
+Examples:
+- Admin panel
+- Multi-language support (en-only for v1)
+- Third-party SSO
+- Email notifications
+
+---
+
+## Dependencies on other projects
+
+[VARIABLE: DEPENDENCIES or "none"]
+
+If this project reads from or writes to another project, list:
+- Project name
+- Interface (file path / API / DB)
+- Contract — what shape of data flows
+
+---
+
+## Project history
+
+Created: [VARIABLE: CREATION_DATE]
+Launched via: project-launcher v1.0.0
+Source blueprint: [VARIABLE: BLUEPRINT_SOURCE or "forged inline"]

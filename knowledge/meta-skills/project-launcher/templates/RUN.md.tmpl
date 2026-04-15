@@ -1,0 +1,63 @@
+# RUN.md — [VARIABLE: PROJECT_NAME]
+
+Autonomous run entry for this workspace. Only present if `autonomous_level` was `autonomous` at launch.
+
+---
+
+## Prerequisites
+
+- Workspace composed by `project-launcher`
+- `ANTHROPIC_API_KEY` in environment
+- Archon available at `C:/Users/robin/Downloads/Archon` (or equivalent)
+
+---
+
+## Single-command autonomous build
+
+```bash
+cd "[VARIABLE: TARGET_PATH]"
+
+ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" \
+  bun run --cwd "C:/Users/robin/Downloads/Archon" cli workflow run autonomous-build \
+  --cwd "[VARIABLE: TARGET_PATH]" \
+  --no-worktree
+```
+
+The workflow reads `.archon/workflows/autonomous-build.yaml` in this workspace and executes each phase as a DAG node with verification between.
+
+---
+
+## Monitoring
+
+The agent writes progress to:
+
+- `docs/sessions/session-*.md` — per-session summaries
+- `docs/discoveries.md` — learnings
+- `docs/showcases/` — phase audits
+
+Tail the most recent session file to follow along.
+
+---
+
+## On completion
+
+When the final phase passes:
+
+1. Check `docs/showcases/final-showcase.md` for the final audit
+2. Review any `[BROKEN]` or `[INCOMPLETE]` badges — these are real issues
+3. If all green, the project is ready to ship
+
+---
+
+## On stuck
+
+Agent writes to `docs/questions.md` when it hits a decision it can't make autonomously. Check this file first if the run seems stalled.
+
+If truly stuck (agent crashed or exceeded budget), restart from the last passing phase:
+
+```bash
+# Find last passing verify
+ls -t verify/phase-*.sh | head -1
+
+# Resume from the next phase manually
+```

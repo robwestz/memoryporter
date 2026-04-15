@@ -1,0 +1,28 @@
+{
+  "name": "Project Launcher",
+  "description": "Composes an autonomous-build workspace for a new project outside portable-kit. Six-step process: INTAKE, BLUEPRINT, SKILL SELECT, COMPOSE, PHASE PLAN, HANDOFF. Output is a self-contained directory with AGENT.md, PROJECT.md, ARCHITECTURE.md, phased plans, copied skills, and protocols — an agent can walk in and build from there.",
+  "category": "meta-skill",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robwestz"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["Claude Code or compatible AI client", "bash (for compose-workspace.sh)"]
+  },
+  "tags": [
+    "meta-skill",
+    "project-bootstrap",
+    "workspace-composer",
+    "autonomous-build",
+    "phased-execution",
+    "skill-composition",
+    "conductor"
+  ],
+  "difficulty": "intermediate",
+  "estimated_time": "10-20 minutes for the launcher; days/weeks for the project it launches",
+  "created": "2026-04-14",
+  "updated": "2026-04-14"
+}

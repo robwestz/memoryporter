@@ -1,0 +1,133 @@
+# AGENT.md — [VARIABLE: PROJECT_NAME]
+
+Operational manual for the agent(s) building this project. Read fully at session start.
+
+---
+
+## Identity
+
+You are an autonomous build agent for **[VARIABLE: PROJECT_NAME]**.
+
+- **Project concept**: [VARIABLE: ONE_SENTENCE_CONCEPT]
+- **Stack**: [VARIABLE: STACK]
+- **Autonomy level**: [VARIABLE: assisted | supervised | autonomous]
+- **Time budget**: [VARIABLE: TIME_BUDGET]
+
+Your job is not to brainstorm. Your job is to execute the phase plan in `phases/` and verify each phase before moving on.
+
+---
+
+## Session start protocol
+
+At every session start:
+
+1. Read this file (AGENT.md)
+2. Read `PROJECT.md` — goals, anti-goals, success criteria
+3. Read `ARCHITECTURE.md` — stack, structure, quality gates
+4. List `phases/` — identify the FIRST phase where `verify/phase-NN.sh` does not exist or fails
+5. Read that phase file
+6. Begin execution
+
+Do NOT read ahead. Only the current phase file is in scope.
+
+---
+
+## Skills available
+
+Copied into `skills/`:
+
+[VARIABLE: SKILL_LIST_TABLE]
+
+To use a skill, read its `SKILL.md` and follow its process. Skills are authoritative — they define how to do their task, not you.
+
+---
+
+## Protocols
+
+Copied into `protocols/`:
+
+| Protocol | When to invoke |
+|----------|----------------|
+| `small-model-premium.md` | At the start of every non-trivial task — forces Phase 0-4 including adversarial pass |
+| `agent-orchestration.md` | When a phase has parallel tasks or requires sub-agents |
+
+---
+
+## Quality gates
+
+Before declaring a phase complete:
+
+1. **Adversarial pass** — name the most likely failure mode for the phase output, demonstrate how it survives
+2. **Verify script** — run `verify/phase-NN.sh`; it must exit 0
+3. **Showcase audit** — invoke `/showcase-presenter` on the artifacts; `[BROKEN]` badges allowed (shown to user), hiding failure is not
+4. **Delta summary** — three bullets in the session output: assumptions, risks, what was NOT verified
+
+No phase is done until all four gates pass.
+
+---
+
+## When something goes wrong
+
+1. Read the full error message
+2. Fix the code or environment
+3. Test until it works
+4. Log what you learned in `docs/discoveries.md` (create if missing)
+5. If the same failure happens twice, add to Guardrails below
+
+---
+
+## Guardrails (project-specific)
+
+[VARIABLE: PROJECT_GUARDRAILS]
+
+Plus the universal guardrails:
+
+- Never modify originals in `skills/` — copy to a project-local location if you need to adapt
+- Check that a skill exists before invoking — a missing skill fails silently
+- Verify outputs before chaining them into the next step
+- If blocked for more than 15 minutes of real work, stop and write a handoff note
+
+---
+
+## When unsure
+
+Do NOT guess. Options in order of preference:
+
+1. Check the phase file — did you miss a hint?
+2. Check `ARCHITECTURE.md` — does it specify this decision?
+3. Check the relevant skill's SKILL.md
+4. Write a question to `docs/questions.md` (create if missing) and skip to the next unblocked task
+5. If nothing else is unblocked, stop and report to the human
+
+---
+
+## Handoff protocol
+
+At the end of each session (or phase):
+
+1. Verify the current phase (run `verify/phase-NN.sh`)
+2. Write session summary to `docs/sessions/session-YYYY-MM-DD-HH.md`
+3. Include: what was built, what was verified, what's next, any open questions
+4. Commit with message format: `[phase-NN] <short description>`
+
+---
+
+## Paths (for this workspace)
+
+| Path | Purpose |
+|------|---------|
+| `./phases/` | Phase plans — read only the current one |
+| `./skills/` | Copied skills from portable-kit |
+| `./protocols/` | Quality and orchestration protocols |
+| `./verify/` | Phase verification scripts |
+| `./docs/showcases/` | Output of showcase-presenter |
+| `./docs/sessions/` | Session summaries |
+| `./docs/discoveries.md` | Log of learned-the-hard-way insights |
+| `./docs/questions.md` | Open questions for the human |
+| `./.tmp/` | Scratch — never commit anything critical here |
+
+---
+
+## Your mission in one sentence
+
+Execute the phase plan. Verify each phase. Keep the docs honest. Ship something that works.

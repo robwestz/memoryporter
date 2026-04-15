@@ -1,0 +1,79 @@
+# ARCHITECTURE.md — [VARIABLE: PROJECT_NAME]
+
+> This is a FALLBACK template used only when no blueprint was forged.
+> Prefer to have `/200k-blueprint` produce this file from the concept.
+> If you are reading this template as the final architecture doc, it
+> means the project-launcher skipped the blueprint step — consider
+> stopping and running `/200k-blueprint` before proceeding.
+
+---
+
+## Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Language | [VARIABLE] |
+| Framework | [VARIABLE] |
+| Database | [VARIABLE or "none"] |
+| Deployment target | [VARIABLE] |
+| Testing | [VARIABLE] |
+| Build tool | [VARIABLE] |
+
+---
+
+## Directory structure
+
+```
+[VARIABLE: ASCII TREE of the intended project directory]
+```
+
+---
+
+## Key modules
+
+| Module | Responsibility | Dependencies |
+|--------|----------------|--------------|
+| [VARIABLE] | [VARIABLE] | [VARIABLE] |
+
+---
+
+## Data flow
+
+[VARIABLE: DESCRIBE how data moves through the system — request → response, or event flow]
+
+---
+
+## External dependencies
+
+| Dependency | Purpose | Criticality |
+|-----------|---------|-------------|
+| [VARIABLE] | [VARIABLE] | [required / optional] |
+
+---
+
+## Quality gates
+
+- [VARIABLE: TEST_COVERAGE_TARGET]
+- [VARIABLE: PERFORMANCE_TARGET]
+- [VARIABLE: SECURITY_REQUIREMENTS]
+- All phases pass `verify/phase-NN.sh`
+- Final `showcase-presenter` audit has zero `[BROKEN]` badges
+
+---
+
+## Design decisions (to be filled)
+
+For each non-obvious decision, record:
+
+```
+Decision: [what]
+Alternatives considered: [what else]
+Choice: [which and why]
+Consequences: [what this forces downstream]
+```
+
+---
+
+## Out of scope (architectural)
+
+[VARIABLE: LIST architectural boundaries the project will NOT cross]
