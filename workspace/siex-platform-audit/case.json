@@ -12,6 +12,12 @@
       "branch_key": "research-spike",
       "branch_label": "research spike",
       "created_at": "2026-04-15T19:46:34+00:00"
+    },
+    {
+      "branch_name": "rescue-triage",
+      "branch_key": "custom",
+      "branch_label": "custom path",
+      "created_at": "2026-04-16T00:27:05+00:00"
     }
   ],
   "advanced_at": "2026-04-15T17:51:28+00:00"
