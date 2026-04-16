@@ -1,0 +1,48 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0 -- C:\Python314\python.exe
+cachedir: .pytest_cache
+rootdir: D:\sie_x
+plugins: anyio-4.12.1, asyncio-1.3.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 32 items
+
+core/test_core.py::TestKeyword::test_keyword_creation PASSED             [  3%]
+core/test_core.py::TestKeyword::test_keyword_score_validation PASSED     [  6%]
+core/test_core.py::TestKeyword::test_keyword_score_validation PASSED     [  6%]
+core/test_core.py::TestKeyword::test_keyword_confidence_validation PASSED [  9%]
+core/test_core.py::TestKeyword::test_keyword_str_representation PASSED   [ 12%]
+core/test_core.py::TestKeyword::test_keyword_serialization PASSED        [ 15%]
+core/test_core.py::TestKeyword::test_keyword_deserialization PASSED      [ 18%]
+core/test_core.py::TestExtractionOptions::test_default_options PASSED    [ 21%]
+core/test_core.py::TestExtractionOptions::test_custom_options PASSED     [ 25%]
+core/test_core.py::TestExtractionOptions::test_top_k_validation PASSED   [ 28%]
+core/test_core.py::TestExtractionOptions::test_language_validation PASSED [ 31%]
+core/test_core.py::TestExtractionRequest::test_valid_request PASSED      [ 34%]
+core/test_core.py::TestExtractionRequest::test_request_with_options PASSED [ 37%]
+core/test_core.py::TestExtractionRequest::test_empty_text_validation PASSED [ 40%]
+core/test_core.py::TestExtractionRequest::test_text_length_validation PASSED [ 43%]
+core/test_core.py::TestExtractionResponse::test_valid_response PASSED    [ 46%]
+core/test_core.py::TestExtractionResponse::test_response_with_metadata PASSED [ 50%]
+core/test_core.py::TestBatchExtractionRequest::test_valid_batch PASSED   [ 53%]
+core/test_core.py::TestBatchExtractionRequest::test_batch_size_limit PASSED [ 56%]
+core/test_core.py::TestBatchExtractionRequest::test_empty_batch PASSED   [ 59%]
+core/test_core.py::TestHealthResponse::test_healthy_response PASSED      [ 62%]
+core/test_core.py::TestHealthResponse::test_status_validation PASSED     [ 65%]
+core/test_core.py::TestSimpleEngineWithMocks::test_engine_initialization FAILED [ 68%]
+core/test_core.py::TestSimpleEngineWithMocks::test_extract_returns_keywords FAILED [ 71%]
+core/test_core.py::TestSimpleEngineWithMocks::test_extract_empty_text FAILED [ 75%]
+core/test_core.py::TestSimpleEngineWithMocks::test_extract_respects_top_k FAILED [ 78%]
+core/test_core.py::TestSimpleEngineWithMocks::test_get_stats FAILED      [ 81%]
+core/test_core.py::TestMockEngine::test_mock_engine_extract PASSED       [ 84%]
+core/test_core.py::TestMockEngine::test_mock_engine_respects_options PASSED [ 87%]
+core/test_core.py::TestMockEngine::test_mock_engine_stats PASSED         [ 90%]
+core/test_core.py::TestIntegrationPatterns::test_api_pattern PASSED      [ 93%]
+core/test_core.py::TestIntegrationPatterns::test_batch_pattern PASSED    [ 96%]
+core/test_core.py::TestIntegrationPatterns::test_health_check_pattern PASSED [100%]
+
+FAILED core/test_core.py::TestSimpleEngineWithMocks::test_engine_initialization - AttributeError: module 'sie_x.core' has no attribute 'simple_engine'
+FAILED core/test_core.py::TestSimpleEngineWithMocks::test_extract_returns_keywords - AttributeError: module 'sie_x.core' has no attribute 'simple_engine'
+FAILED core/test_core.py::TestSimpleEngineWithMocks::test_extract_empty_text - AttributeError: module 'sie_x.core' has no attribute 'simple_engine'
+FAILED core/test_core.py::TestSimpleEngineWithMocks::test_extract_respects_top_k - AttributeError: module 'sie_x.core' has no attribute 'simple_engine'
+FAILED core/test_core.py::TestSimpleEngineWithMocks::test_get_stats - AttributeError: module 'sie_x.core' has no attribute 'simple_engine'
+================== 5 failed, 27 passed, 6 warnings in 1.94s ===================

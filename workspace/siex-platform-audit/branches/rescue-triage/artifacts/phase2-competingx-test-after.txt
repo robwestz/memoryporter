@@ -1,0 +1,21 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0 -- C:\Python314\python.exe
+rootdir: D:\sie_x
+plugins: anyio-4.12.1, asyncio-1.3.0
+
+AFTER Competing-X changes (all 3 pairs applied):
+27 passed, 5 failed
+
+Changes applied:
+  1. api/server.py archived to .archive/2026-04-15-removed/api/server.py
+  2. core/multilang.py renamed to core/language_detector.py; import in api/minimal_server.py updated
+  3. auth/enterprise.py archived to .archive/2026-04-15-removed/auth/enterprise.py
+
+Failures (same pre-existing, no regression):
+  - TestSimpleEngineWithMocks::test_engine_initialization
+  - TestSimpleEngineWithMocks::test_extract_returns_keywords
+  - TestSimpleEngineWithMocks::test_extract_empty_text
+  - TestSimpleEngineWithMocks::test_extract_respects_top_k
+  - TestSimpleEngineWithMocks::test_get_stats
+
+RESULT: No regression introduced. Test profile identical to baseline.

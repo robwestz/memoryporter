@@ -1,0 +1,16 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0 -- C:\Python314\python.exe
+rootdir: D:\sie_x
+plugins: anyio-4.12.1, asyncio-1.3.0
+
+BASELINE (before Competing-X changes):
+27 passed, 5 failed
+
+Failures (pre-existing, unrelated to this phase):
+  - TestSimpleEngineWithMocks::test_engine_initialization — AttributeError: module 'sie_x.core' has no attribute 'simple_engine'
+  - TestSimpleEngineWithMocks::test_extract_returns_keywords — same
+  - TestSimpleEngineWithMocks::test_extract_empty_text — same
+  - TestSimpleEngineWithMocks::test_extract_respects_top_k — same
+  - TestSimpleEngineWithMocks::test_get_stats — same
+
+Root cause: simple_engine.py is not on the sie_x.core namespace path. Pre-existing issue, not introduced by this phase.
