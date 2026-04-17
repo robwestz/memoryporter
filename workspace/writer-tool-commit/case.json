@@ -7,5 +7,8 @@
   "skill": "repo-strategy-orchestrator",
   "stage": "awaiting-user-choice",
   "branches": [],
-  "advanced_at": "2026-04-15T13:29:14+00:00"
+  "advanced_at": "2026-04-15T13:29:14+00:00",
+  "resolved": true,
+  "resolved_at": "2026-04-15T08:00:00+00:00",
+  "resolution": "Writer-tool implemented as SIE-X adapter (adapters/writer.py) with 3 genre-specific prompt templates. Not a separate SaaS — an adapter-pair per the platform pattern. Options matrix Option B (Bacowr generation engine) was the closest match but evolved to 'SIE-X adapter' after the platform rescue revealed SIE-X as the real foundation."
 }
