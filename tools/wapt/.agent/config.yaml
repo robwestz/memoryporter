@@ -1,0 +1,89 @@
+# wapt — agent-framework config
+# Read by /agent:* commands. Updated as phases progress.
+
+project:
+  name: wapt
+  slug: wapt
+  charter: PROJECT.md
+  blueprint: BLUEPRINT.md
+  roadmap: ROADMAP.md
+  agents_manual: AGENTS.md
+  claude_manual: CLAUDE.md
+
+current_phase: 1
+current_wave: complete
+
+phases:
+  - id: 0
+    name: bootstrap
+    status: complete
+    plan: null  # this phase is the scaffolding itself
+  - id: 1
+    name: ecc-bridge
+    status: complete
+    plan: .agent/phases/phase-1-ecc-bridge/PLAN.md
+    stop_signal: primary_value_delivered
+  - id: 2
+    name: l0-core
+    status: pending
+    plan: .agent/phases/phase-2-l0-core/PLAN.md
+    stop_signal: minimum_viable_wapt
+  - id: 3
+    name: l0-operational
+    status: pending
+    plan: .agent/phases/phase-3-l0-operational/PLAN.md
+  - id: 4
+    name: l0-harden
+    status: pending
+    plan: .agent/phases/phase-4-l0-harden/PLAN.md
+    stop_signal: natural_shipping_point
+    human_review_required: true
+  - id: 5
+    name: l1-adapters
+    status: pending
+    plan: .agent/phases/phase-5-l1-adapters/PLAN.md
+    check_in_required: true
+  - id: 6
+    name: l3-packaging
+    status: pending
+    plan: .agent/phases/phase-6-l3-packaging/PLAN.md
+  - id: 7
+    name: integration-docs
+    status: pending
+    plan: .agent/phases/phase-7-integration-docs/PLAN.md
+
+verify_commands:
+  unit: pytest tests/unit -v
+  integration: pytest tests/integration -v
+  e2e: pytest tests/e2e -v
+  lint: ruff check src/wapt tests/
+  doctor: wapt doctor
+  full: pytest --cov=wapt --cov-report=term-missing
+
+subagents:
+  default:
+    - Explore
+    - tdd-guide
+    - python-reviewer
+  security_sensitive:
+    - security-reviewer
+  docs:
+    - documentation-lookup
+
+mcp_servers:
+  - context7
+  - sequential-thinking
+  - playwright
+
+hooks:
+  pre_phase: verify previous phase acceptance criteria
+  post_wave: run python-reviewer on diff
+  post_phase: run full verify suite + update BLUEPRINT.md LOC tracker
+
+stop_protocol:
+  - loc_violation_30pct
+  - acceptance_failure_3x
+  - check_in_gate
+  - no_touch_violation_proposed
+  - windows_env_unexpected
+  - external_auth_failure

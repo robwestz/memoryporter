@@ -1,0 +1,6 @@
+{
+	admin localhost:2019
+	auto_https disable_redirects
+}
+
+import sites-enabled/*.caddy

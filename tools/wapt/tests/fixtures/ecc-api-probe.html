@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>wapt — ECC API Probe</title>
+  <style>
+    body { font-family: monospace; padding: 2rem; background: #0d1117; color: #e6edf3; }
+    h1 { color: #58a6ff; }
+    .test { padding: 0.4rem 0; border-bottom: 1px solid #30363d; }
+    .pass { color: #3fb950; }
+    .fail { color: #f85149; }
+    .pending { color: #d29922; }
+    #summary { margin-top: 1.5rem; font-size: 1.2rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>wapt — ECC Localhost API Probe</h1>
+  <p>Tests that <code>https://ecc.localhost</code> unlocks all crippled Web APIs.</p>
+  <p>Serve via: <code>wapt add ecc &lt;path&gt;</code> → open <code>https://ecc.localhost/probe.html</code></p>
+  <div id="tests"></div>
+  <div id="summary" class="pending">Running…</div>
+
+  <script type="module">
+    const results = [];
+    const container = document.getElementById('tests');
+
+    function addResult(name, passed, detail = '') {
+      results.push({ name, passed });
+      const el = document.createElement('div');
+      el.className = `test ${passed ? 'pass' : 'fail'}`;
+      el.textContent = `${passed ? '✅' : '❌'} ${name}${detail ? ' — ' + detail : ''}`;
+      container.appendChild(el);
+      updateSummary();
+    }
+
+    function addPending(name) {
+      const el = document.createElement('div');
+      el.className = 'test pending';
+      el.id = `pending-${name.replace(/\s+/g, '-')}`;
+      el.textContent = `⏳ ${name}`;
+      container.appendChild(el);
+    }
+
+    function resolvePending(name, passed, detail = '') {
+      results.push({ name, passed });
+      const el = document.getElementById(`pending-${name.replace(/\s+/g, '-')}`);
+      if (el) {
+        el.className = `test ${passed ? 'pass' : 'fail'}`;
+        el.textContent = `${passed ? '✅' : '❌'} ${name}${detail ? ' — ' + detail : ''}`;
+      }
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const passed = results.filter(r => r.passed).length;
+      const total = results.length;
+      const el = document.getElementById('summary');
+      el.className = (total === 5 && passed === 5) ? 'pass' : (total === 5 ? 'fail' : 'pending');
+      el.textContent = `${passed}/${total} tests passed${total < 5 ? ' (running…)' : ''}`;
+    }
+
+    // Test 1: fetch() same-origin JSON
+    addPending('fetch() same-origin JSON');
+    fetch('/data.json')
+      .then(res => resolvePending('fetch() same-origin JSON', res.ok, `HTTP ${res.status}`))
+      .catch(e => resolvePending('fetch() same-origin JSON', false, e.message));
+
+    // Test 2: Service Worker registration
+    addPending('Service Worker registration');
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/probe-sw.js', { scope: '/' })
+        .then(reg => resolvePending('Service Worker registration', true, `scope: ${reg.scope}`))
+        .catch(e => resolvePending('Service Worker registration', false, e.message));
+    } else {
+      resolvePending('Service Worker registration', false, 'API not available');
+    }
+
+    // Test 3: localStorage persistence
+    try {
+      const KEY = '__wapt_probe__';
+      localStorage.setItem(KEY, 'ecc-localhost-ok');
+      const val = localStorage.getItem(KEY);
+      localStorage.removeItem(KEY);
+      addResult('localStorage read/write', val === 'ecc-localhost-ok', `got: "${val}"`);
+    } catch (e) {
+      addResult('localStorage read/write', false, e.message);
+    }
+
+    // Test 4: ES module dynamic import
+    addPending('ES module dynamic import');
+    import('/probe-module.js')
+      .then(mod => resolvePending('ES module dynamic import', mod.probe === 'ecc-ok', `probe="${mod.probe}"`))
+      .catch(e => resolvePending('ES module dynamic import', false, e.message));
+
+    // Test 5: Clipboard API
+    addPending('navigator.clipboard.writeText');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText('wapt-probe-ok')
+        .then(() => resolvePending('navigator.clipboard.writeText', true, 'write succeeded'))
+        .catch(e => resolvePending('navigator.clipboard.writeText', false, e.message));
+    } else {
+      resolvePending('navigator.clipboard.writeText', false, 'API not available');
+    }
+  </script>
+</body>
+</html>
