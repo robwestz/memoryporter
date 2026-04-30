@@ -4,17 +4,11 @@ __version__ = "0.1.0"
 
 
 from .scraper import Scraper, ScrapeScope
+from .context_engine import ContextEngine, ChunkStrategy
 
 
 class StorageManager:
     """Vector storage management via ChromaDB."""
-
-    def __init__(self) -> None:
-        pass
-
-
-class ContextEngine:
-    """Query processing and context ranking engine."""
 
     def __init__(self) -> None:
         pass
@@ -36,6 +30,7 @@ __all__ = [
     "ScrapeScope",
     "StorageManager",
     "ContextEngine",
+    "ChunkStrategy",
     "KBIndex",
     "main",
 ]
