@@ -1,0 +1,20 @@
+{
+  "name": "KB-Scrape",
+  "description": "Scrape documentation from URLs and save to a structured, searchable knowledge base. Enables AI agents to capture web documentation and make it retrievable for later tasks using Firecrawl or Tavily MCP.",
+  "category": "skills",
+  "author": {
+    "name": "KB-Forge Team",
+    "github": "kb-forge"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": ["firecrawl-mcp", "tavily-mcp"],
+    "tools": ["kb-forge-cli"]
+  },
+  "tags": ["scraping", "documentation", "knowledge-base", "web-capture", "firecrawl", "tavily"],
+  "difficulty": "beginner",
+  "estimated_time": "5 minutes",
+  "created": "2026-04-30",
+  "updated": "2026-04-30"
+}

@@ -1,0 +1,20 @@
+{
+  "name": "KB-Context",
+  "description": "Prepare knowledge base content for optimal agent retrieval through semantic chunking and vector indexing. Transforms scraped content into retrievable format for RAG applications.",
+  "category": "skills",
+  "author": {
+    "name": "KB-Forge Team",
+    "github": "kb-forge"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["kb-forge-cli"]
+  },
+  "tags": ["chunking", "indexing", "rag", "context-engineering", "embeddings", "retrieval"],
+  "difficulty": "intermediate",
+  "estimated_time": "5 minutes",
+  "created": "2026-04-30",
+  "updated": "2026-04-30"
+}

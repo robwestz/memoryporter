@@ -1,0 +1,20 @@
+{
+  "name": "KB-Query",
+  "description": "Query a knowledge base using natural language and retrieve relevant chunks with source attribution. Enables semantic search over indexed knowledge bases for RAG applications.",
+  "category": "skills",
+  "author": {
+    "name": "KB-Forge Team",
+    "github": "kb-forge"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["kb-forge-cli"]
+  },
+  "tags": ["query", "search", "retrieval", "rag", "semantic-search", "knowledge-base"],
+  "difficulty": "beginner",
+  "estimated_time": "2 minutes",
+  "created": "2026-04-30",
+  "updated": "2026-04-30"
+}
