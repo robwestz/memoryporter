@@ -1,0 +1,98 @@
+{
+  "skill": "repo-rescue",
+  "version": "1.0.0",
+  "description": "Eval cases for validating the repo-rescue skill. Run via skill-creator eval loop.",
+  "cases": [
+    {
+      "id": "rr-01",
+      "name": "Build-failing Python repo — torch version mismatch",
+      "input": {
+        "prompt": "Rescue the repo at /tmp/test-repo. The build is broken and I don't know why.",
+        "context": "Python repo with requirements.txt containing torch==1.12.0, running Python 3.11. No CI config."
+      },
+      "expected": {
+        "phases_executed": ["DISCOVER", "DIAGNOSE", "PLAN", "FIX", "REPORT"],
+        "findings_include": ["build failure", "torch version", "missing CI"],
+        "plan_tiers_present": ["Quick Win", "Day 1", "Week 1"],
+        "report_produced": true,
+        "build_verified_after_fix": true,
+        "fix_order_respected": true
+      },
+      "anti_goals": [
+        "Fixing during DIAGNOSE phase",
+        "Skipping build verification after each fix",
+        "Omitting 'What Remains' section from report"
+      ]
+    },
+    {
+      "id": "rr-02",
+      "name": "Repo with hardcoded API key — security escalation",
+      "input": {
+        "prompt": "Diagnose and fix this repo. It's been abandoned for 6 months.",
+        "context": "Node.js repo with api_key = 'sk-prod-abc123xyz789' hardcoded in config.js. Build otherwise passes."
+      },
+      "expected": {
+        "phases_executed": ["DISCOVER", "DIAGNOSE", "PLAN", "FIX", "REPORT"],
+        "hardcoded_secret_classified_as": "Quick Win",
+        "security_finding_severity": "Critical",
+        "secret_fix_applied_before_other_fixes": true,
+        "env_example_created": true,
+        "report_notes_rotation_requirement": true
+      },
+      "anti_goals": [
+        "Classifying hardcoded secret as Week 1",
+        "Fixing the secret without noting that rotation is required",
+        "Skipping DISCOVER phase because 'the build passes'"
+      ]
+    },
+    {
+      "id": "rr-03",
+      "name": "Multiple issues — correct tier assignment and fix order",
+      "input": {
+        "prompt": "Rescue this repo and give me a full report.",
+        "context": "Rust repo. cargo build fails with 3 errors: (1) unused import in lib.rs, (2) missing dependency in Cargo.toml, (3) .env committed with real values."
+      },
+      "expected": {
+        "phases_executed": ["DISCOVER", "DIAGNOSE", "PLAN", "FIX", "REPORT"],
+        "tier_assignments": {
+          "committed_.env": "Quick Win",
+          "missing_dependency": "Day 1",
+          "unused_import": "Quick Win"
+        },
+        "fix_order": [".env removal before dep fix before unused import"],
+        "each_fix_verified_with_build": true,
+        "report_includes_build_output": true
+      },
+      "anti_goals": [
+        "Applying all fixes before running any builds",
+        "Marking committed .env as Day 1 instead of Quick Win",
+        "Omitting build verification output from report"
+      ]
+    },
+    {
+      "id": "rr-04",
+      "name": "Build passing but hygiene issues — correct scope and no over-fixing",
+      "input": {
+        "prompt": "Audit this repo and give me a plan. The build passes but something feels off.",
+        "context": "Node.js repo. npm test passes. Found: stale .gitignore (node_modules tracked), outdated README (references removed make target), no CI config, dev deps in prod dependencies."
+      },
+      "expected": {
+        "phases_executed": ["DISCOVER", "DIAGNOSE", "PLAN", "FIX", "REPORT"],
+        "no_build_failure_finding": true,
+        "tier_assignments": {
+          "stale_gitignore": "Quick Win",
+          "outdated_readme": "Quick Win",
+          "missing_ci": "Day 1",
+          "dev_deps_in_prod": "Day 1"
+        },
+        "report_executive_summary_notes_passing_build": true,
+        "week_1_items_documented_not_executed": true
+      },
+      "anti_goals": [
+        "Marking the repo as 'clean' because the build passes — hygiene findings still apply",
+        "Executing Week 1 items when not explicitly requested",
+        "Skipping DIAGNOSE because the build is green"
+      ]
+    }
+  ]
+}

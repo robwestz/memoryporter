@@ -3,11 +3,7 @@
 __version__ = "0.1.0"
 
 
-class Scraper:
-    """Content scraper with pluggable backends."""
-
-    def __init__(self) -> None:
-        pass
+from .scraper import Scraper, ScrapeScope
 
 
 class StorageManager:
@@ -37,6 +33,7 @@ from .cli import main
 __all__ = [
     "__version__",
     "Scraper",
+    "ScrapeScope",
     "StorageManager",
     "ContextEngine",
     "KBIndex",

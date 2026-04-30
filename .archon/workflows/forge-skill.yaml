@@ -1,0 +1,76 @@
+name: forge-skill
+description: |
+  Forge a marketplace-ready skill package from a codebase or domain.
+  Uses the skill-forge meta-skill from knowledge/meta-skills/skill-forge/.
+  Example: "Create a chart-visualization skill" or "Forge a code-review skill from this repo"
+provider: claude
+model: sonnet
+
+nodes:
+  - id: analyze
+    prompt: |
+      Read knowledge/meta-skills/skill-forge/SKILL.md fully.
+
+      Execute Step 1 (ANALYZE) on the user's request:
+      $ARGUMENTS
+
+      Extract: core workflow, decision points, patterns, trigger phrases,
+      output format, dependencies, what varies vs what is fixed.
+
+      Write the analysis to a file at docs/forge-artifacts/analysis.md
+      (create the directory if needed).
+
+  - id: classify
+    depends_on: [analyze]
+    prompt: |
+      Read docs/forge-artifacts/analysis.md.
+      Read knowledge/meta-skills/skill-forge/references/package-shapes.md.
+
+      Execute Step 2 (CLASSIFY): determine the package shape
+      (Minimal / Standard / Full / Production).
+
+      Execute Step 3 (SCAFFOLD): create the complete directory structure
+      under knowledge/meta-skills/ using the skill name from the analysis.
+
+      Use the templates from knowledge/meta-skills/skill-forge/templates/
+      as literal starting points. Copy the template, fill the Variable zones.
+
+  - id: author
+    depends_on: [classify]
+    loop:
+      prompt: |
+        Read the scaffolded skill directory you created in the previous step.
+        Read knowledge/meta-skills/skill-forge/SKILL.md Step 4 (AUTHOR).
+        Read knowledge/meta-skills/skill-forge/references/skill-anatomy.md.
+
+        Write or improve all files in the skill package:
+        - SKILL.md (tables over prose, anti-patterns, imperative form)
+        - README.md (if Standard+ shape)
+        - metadata.json (if Standard+ shape)
+        - templates/ and references/ (if Full+ shape)
+
+        When all files are written and you have self-reviewed against
+        knowledge/meta-skills/skill-forge/references/quality-gate.md,
+        emit: <promise>COMPLETE</promise>
+      until: COMPLETE
+      max_iterations: 5
+      fresh_context: true
+
+  - id: verify
+    depends_on: [author]
+    prompt: |
+      Run the full quality gate from
+      knowledge/meta-skills/skill-forge/references/quality-gate.md
+      against the skill package you created.
+
+      Check all 5 categories:
+      1. Structural integrity
+      2. Content quality
+      3. Progressive disclosure
+      4. Compatibility
+      5. Marketplace readiness
+
+      Write the verification report to docs/forge-artifacts/verification.md.
+      List any MUST items that fail.
+
+      Then present the result: file tree, SKILL.md summary, and pass/fail status.

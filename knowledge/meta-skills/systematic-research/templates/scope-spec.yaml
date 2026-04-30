@@ -1,0 +1,26 @@
+# Research Scope Spec — produced in Step 1, confirmed by user before Step 2.
+# Every field is required. Do not proceed without user confirmation.
+
+question: "[VARIABLE: one-sentence testable question]"
+
+success_criteria:
+  - "[VARIABLE: criterion 1 — must be checkable as yes/no]"
+  - "[VARIABLE: criterion 2]"
+  # minimum 2, add more as needed
+
+anti_goals:
+  - "[VARIABLE: what we are NOT trying to find]"
+  # minimum 1, prevents scope creep
+
+stakes: "[VARIABLE: low | medium | high]"
+# low = nice to know; medium = informs a decision; high = building on this
+
+source_minimum: 5
+# 5 for low/medium, 8 for high
+
+source_type_minimum: 2
+# 2 for low, 3 for medium/high
+# types: docs, article, paper, repo, discussion, talk, case-study
+
+requested_by: "[VARIABLE: user name or session ID]"
+date: "[VARIABLE: YYYY-MM-DD]"

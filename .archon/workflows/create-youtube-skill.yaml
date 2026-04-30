@@ -1,0 +1,155 @@
+name: create-youtube-skill
+description: |
+  Purpose-built workflow for creating the youtube-video-digest skill.
+  Goes beyond generic forge-skill: researches tools, builds extraction
+  scripts, tests against real videos, verifies output quality.
+provider: claude
+model: sonnet
+
+nodes:
+  - id: research-tools
+    prompt: |
+      Research what tools and methods exist for extracting YouTube video content.
+      Focus on:
+      1. yt-dlp — how to extract transcripts, subtitles, metadata, chapters
+      2. YouTube Data API v3 — what metadata is available without API key
+      3. youtube-transcript-api (Python) — direct transcript extraction
+      4. Any other relevant tools or libraries
+
+      For each tool: how to install, how to use for transcript extraction,
+      limitations, and whether it works without an API key.
+
+      Test which tools are actually installed on this system:
+      - Run: yt-dlp --version
+      - Run: python -c "import youtube_transcript_api"
+      - Check if YOUTUBE_API_KEY is set
+
+      Write findings to docs/forge-artifacts/youtube-tool-research.md
+
+  - id: design-skill
+    depends_on: [research-tools]
+    prompt: |
+      Read docs/forge-artifacts/youtube-tool-research.md and
+      knowledge/meta-skills/skill-forge/SKILL.md.
+
+      Design the youtube-video-digest skill package:
+      1. Which extraction method to use (based on what's available)
+      2. What output modes to support (full transcript, summary, key-points, Q&A)
+      3. What the directory structure should be
+      4. What templates are needed for each output mode
+      5. How to handle long videos (chunking strategy)
+      6. How to handle videos without transcripts
+
+      Package shape: Full (SKILL.md + README + metadata + scripts + templates + references)
+
+      Write the design document to docs/forge-artifacts/youtube-skill-design.md
+
+  - id: build-scripts
+    depends_on: [design-skill]
+    prompt: |
+      Read docs/forge-artifacts/youtube-skill-design.md.
+
+      Create the extraction scripts under knowledge/meta-skills/youtube-video-digest/scripts/:
+
+      1. extract-transcript.py (or .ts) — takes a YouTube URL, outputs structured
+         transcript with timestamps. Use the best available tool from research.
+      2. extract-metadata.py (or .ts) — extracts title, channel, description,
+         duration, publish date, chapters, tags.
+
+      Each script must:
+      - Accept a YouTube URL as argument
+      - Output structured JSON to stdout
+      - Handle errors gracefully (no transcript available, private video, etc.)
+      - Include a usage comment at the top
+      - Work without an API key if possible
+
+      Test the scripts against this video: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+      (short, well-known, guaranteed to have transcript)
+
+      Write test results to docs/forge-artifacts/youtube-script-test.md
+
+  - id: create-templates
+    depends_on: [design-skill]
+    prompt: |
+      Read docs/forge-artifacts/youtube-skill-design.md.
+
+      Create output format templates under knowledge/meta-skills/youtube-video-digest/templates/
+      using the Fixed/Variable zone pattern from knowledge/meta-skills/skill-forge/templates/.
+
+      Templates needed:
+      1. full-transcript.md — complete timestamped transcript
+      2. summary.md — executive summary (key points, main arguments, conclusions)
+      3. key-points.md — bullet-point extraction of main ideas
+      4. qa-extraction.md — questions the video answers + the answers
+      5. study-notes.md — structured notes for learning from the video
+
+      Each template should have:
+      - FIXED: metadata header (video title, channel, URL, duration, date)
+      - FIXED: section structure for that output mode
+      - VARIABLE: actual content zones
+
+  - id: author-skill
+    depends_on: [build-scripts, create-templates]
+    loop:
+      prompt: |
+        Read all docs/forge-artifacts/youtube-*.md files for context.
+        Read knowledge/meta-skills/skill-forge/SKILL.md for authoring standards.
+        Read knowledge/meta-skills/skill-forge/references/skill-anatomy.md.
+
+        Create the complete skill package at knowledge/meta-skills/youtube-video-digest/:
+        - SKILL.md (the main skill — process, decision tables, anti-patterns)
+        - README.md (install, triggers, expected outcomes, files table)
+        - metadata.json (standard schema)
+        - references/ (YouTube API patterns, transcript format docs)
+
+        The SKILL.md workflow should be:
+        1. RECEIVE — accept YouTube URL or video ID
+        2. EXTRACT — run scripts to get transcript + metadata
+        3. CLASSIFY — determine video type (tutorial, talk, interview, etc.)
+        4. STRUCTURE — apply the right template based on requested output mode
+        5. DELIVER — produce the formatted output
+
+        Follow all skill-forge quality standards: tables > prose, anti-patterns,
+        imperative form, front-loaded value, < 500 lines.
+
+        When complete, emit: <promise>COMPLETE</promise>
+      until: COMPLETE
+      max_iterations: 3
+      fresh_context: true
+
+  - id: test-real-video
+    depends_on: [author-skill]
+    prompt: |
+      Test the complete youtube-video-digest skill against a real YouTube video.
+
+      1. Pick a short educational video (< 10 min)
+      2. Run the extraction scripts from knowledge/meta-skills/youtube-video-digest/scripts/
+      3. Apply the skill's process: RECEIVE → EXTRACT → CLASSIFY → STRUCTURE → DELIVER
+      4. Generate output in at least 2 modes (summary + key-points)
+      5. Save the test output to docs/forge-artifacts/youtube-skill-test-output.md
+
+      Evaluate:
+      - Did extraction work?
+      - Is the output structured correctly per the template?
+      - Is the quality good enough that a user would find it useful?
+      - What failed or needs improvement?
+
+      Write the test report to docs/forge-artifacts/youtube-skill-test-report.md
+
+  - id: verify
+    depends_on: [test-real-video]
+    prompt: |
+      Run the full quality gate from
+      knowledge/meta-skills/skill-forge/references/quality-gate.md
+      against knowledge/meta-skills/youtube-video-digest/.
+
+      Also verify:
+      - Scripts actually execute (not just templates)
+      - Templates have proper Fixed/Variable annotations
+      - All 5 output mode templates exist
+      - metadata.json is valid JSON with all required fields
+      - README Files table matches actual directory
+
+      Write verification to docs/forge-artifacts/youtube-skill-verification.md
+
+      Present the final result: file tree, pass/fail status, and any issues.

@@ -1,0 +1,20 @@
+{
+  "name": "Source Grounding",
+  "description": "Fetches real web sources for a given topic via search API, verifies each URL resolves and contains relevant content, and returns a SourceContext ready for injection into any generation prompt. Eliminates hallucinated citations by grounding every factual claim in confirmed-live sources before generation starts.",
+  "category": "meta-skills",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robinwesterlund"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": ["brave-search-api", "serper-api"],
+    "tools": ["web-fetch", "web-search"]
+  },
+  "tags": ["source-verification", "citation-grounding", "search-api", "hallucination-prevention", "writing-tool", "fact-checking"],
+  "difficulty": "intermediate",
+  "estimated_time": "5 minutes",
+  "created": "2026-04-14",
+  "updated": "2026-04-14"
+}

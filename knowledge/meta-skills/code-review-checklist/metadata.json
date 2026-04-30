@@ -1,0 +1,20 @@
+{
+  "name": "Code Review Checklist",
+  "description": "Structured pull request review producing a severity-ranked checklist across correctness, security, performance, style, testing, documentation, and PR hygiene. Walks every changed file against a 7-category checklist. Findings classified as Blocker, Warning, or Nitpick. Output: structured findings table with file:line references and Approve / Request changes verdict.",
+  "category": "skills",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robwestz"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["read", "bash"]
+  },
+  "tags": ["code-review", "pull-request", "qa", "security", "diff-review", "pr-review"],
+  "difficulty": "intermediate",
+  "estimated_time": "3-10 minutes per PR",
+  "created": "2026-04-13",
+  "updated": "2026-04-13"
+}

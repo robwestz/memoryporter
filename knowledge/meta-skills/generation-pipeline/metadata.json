@@ -1,0 +1,20 @@
+{
+  "name": "Generation Pipeline",
+  "description": "Orchestrates the full multi-pass generation sequence for a skill-based writing tool: parallel source-fetching and prompt compilation, outline generation, streaming draft generation, quality assertion, and document persistence. Wires skill-template-engine and source-grounding together into a single, reliable generation path.",
+  "category": "meta-skills",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robinwesterlund"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": ["anthropic-api", "brave-search-api", "supabase"],
+    "tools": ["web-fetch", "web-search", "file-write", "bash"]
+  },
+  "tags": ["generation", "pipeline", "streaming", "sse", "multi-pass", "writing-tool", "orchestration"],
+  "difficulty": "advanced",
+  "estimated_time": "45 minutes",
+  "created": "2026-04-14",
+  "updated": "2026-04-14"
+}

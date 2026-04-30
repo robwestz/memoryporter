@@ -1,0 +1,20 @@
+{
+  "name": "Skill Template Engine",
+  "description": "Compiles a SkillTemplate definition and a user Brief into a structured prompt architecture for Claude. Validates the Brief against the skill's schema, injects genre conventions, scaffolding, source context, and constraints, and attaches quality markers for downstream assertion. The foundation of every skill-based generation pipeline.",
+  "category": "meta-skills",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robinwesterlund"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["file-read", "typescript"]
+  },
+  "tags": ["prompt-compilation", "template-engine", "skill-platform", "writing-tool", "brief-validation", "prompt-architecture"],
+  "difficulty": "intermediate",
+  "estimated_time": "10 minutes",
+  "created": "2026-04-14",
+  "updated": "2026-04-14"
+}

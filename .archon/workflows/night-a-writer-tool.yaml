@@ -1,0 +1,83 @@
+name: night-a-writer-tool
+description: |
+  End-to-end chain test: Blueprint the writer-tool concept → forge skills
+  it needs → showcase the result. Proves the full 200k pipeline works.
+provider: claude
+model: sonnet
+
+nodes:
+  - id: blueprint
+    prompt: |
+      Read knowledge/meta-skills/200k-blueprint/SKILL.md fully.
+
+      Execute the FULL 7-step blueprint process on this product concept:
+
+      "An AI writing tool for content professionals who can't prompt.
+      The market: writers, agencies, marketing teams who use AI but produce
+      recognizably AI output because they're bad at prompting.
+      The differentiation: source-verified output indistinguishable from
+      human writers, with skill-templates (genre + format) that bake in
+      the prompting expertise. Each skill in the catalog IS a niche.
+      Bacowr is the first instance (backlink content). This is the generalization."
+
+      Answer the Five Questions:
+      1. Product: AI writing tool where skill-templates replace prompting skill
+      2. User: Content professionals (freelance writers, agencies, marketing teams)
+      3. ONE thing: Output indistinguishable from human writers, consistently
+      4. Competition: ChatGPT (generic), Jasper (template-based), Copy.ai (marketing-focused)
+      5. 30-day target: 3 skill-templates working (reaction piece, long-form essay, product announcement)
+
+      Save blueprint to docs/night-projects/a/blueprint-writer-tool.md
+
+  - id: identify-skills
+    depends_on: [blueprint]
+    prompt: |
+      Read docs/night-projects/a/blueprint-writer-tool.md.
+
+      From the blueprint's Skill Map section, identify exactly which skills
+      need to be forged for the writer-tool MVP.
+
+      For each skill, determine:
+      - Name (kebab-case)
+      - What it does (1 sentence)
+      - Package shape (Minimal/Standard/Full)
+      - Priority (P1 = blocks MVP, P2 = enhances MVP)
+
+      Write the skill map to docs/night-projects/a/skill-map.md
+
+  - id: forge-skills
+    depends_on: [identify-skills]
+    loop:
+      prompt: |
+        Read docs/night-projects/a/skill-map.md.
+        Read knowledge/meta-skills/skill-forge/SKILL.md.
+
+        Forge the NEXT unforged P1 skill from the skill map.
+        Follow the full 6-step process: ANALYZE → CLASSIFY → SCAFFOLD → AUTHOR → VERIFY → PACKAGE.
+        Save each skill to knowledge/meta-skills/[skill-name]/.
+
+        After forging each skill, update docs/night-projects/a/skill-map.md
+        with status: FORGED.
+
+        When ALL P1 skills are forged: <promise>COMPLETE</promise>
+      until: COMPLETE
+      max_iterations: 5
+      fresh_context: true
+
+  - id: showcase
+    depends_on: [forge-skills]
+    prompt: |
+      Read knowledge/meta-skills/showcase-presenter/SKILL.md.
+
+      Run BOTH modes on Project A results:
+
+      MODE 1 (Report): Present what was built
+      - Input: docs/night-projects/a/*.md
+      - Show: blueprint summary, skills forged, chain demonstrated
+
+      MODE 2 (Demo): Show how the writer-tool skills work
+      - Input: all skill packages created in forge-skills step
+      - Show: capability cards, try-it prompts, integration chain
+      - Run documentation audit
+
+      Save to docs/night-projects/a/showcase.md

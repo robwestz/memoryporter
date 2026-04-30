@@ -1,0 +1,53 @@
+{
+  "name": "launch-package",
+  "description": "Generates a complete, narrative-consistent product launch package — 6 deliverables (landing page, pitch deck, email sequence, Product Hunt listing, social calendar, demo script) — from a product blueprint. All assets share a Narrative Spine for consistency. Includes two-layer QA and a verdict report.",
+  "category": "skills",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robinwesterlund"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["Read", "Write", "Edit", "Bash"]
+  },
+  "tags": [
+    "launch",
+    "product-launch",
+    "landing-page",
+    "pitch-deck",
+    "email-sequence",
+    "product-hunt",
+    "social-media",
+    "demo-script",
+    "copywriting",
+    "go-to-market",
+    "saas",
+    "narrative",
+    "marketing"
+  ],
+  "trigger_phrases": [
+    "create a launch package",
+    "build launch assets",
+    "write my launch copy",
+    "prepare for launch",
+    "generate pitch deck + landing page",
+    "full launch kit",
+    "launch my product"
+  ],
+  "difficulty": "advanced",
+  "shape": "Production",
+  "deliverables": [
+    "landing-page-copy",
+    "pitch-deck-outline",
+    "email-launch-sequence",
+    "product-hunt-listing",
+    "social-media-calendar",
+    "demo-script"
+  ],
+  "quality_model": "two-layer (Layer 1: structural 12 checks, Layer 2: narrative 8 dimensions)",
+  "estimated_time": "45-90 minutes",
+  "created": "2026-04-14",
+  "updated": "2026-04-14"
+}

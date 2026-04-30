@@ -1,0 +1,188 @@
+name: create-showcase-presenter
+description: |
+  Purpose-built workflow for creating a showcase-presenter skill.
+  Two modes: REPORT mode (present what was built/achieved) and
+  DEMO mode (show how things work with live examples).
+  Also serves as documentation audit — if something can't be demoed,
+  it's broken or undocumented.
+provider: claude
+model: sonnet
+
+nodes:
+  - id: research-formats
+    prompt: |
+      Research presentation formats that work for AI-generated showcases.
+      Search the web for:
+
+      1. "interactive markdown presentation" — tools like Marp, Slidev, reveal.js
+      2. "project showcase template" — how open source projects present themselves
+      3. "demo day presentation structure" — YC, startup demo days
+      4. "technical demo script" — how to structure a product walkthrough
+      5. "architecture decision record presentation" — ADR as visual narrative
+
+      Also research:
+      - How Devin.ai presents their capabilities
+      - How Cursor showcases features
+      - How Archon's own web dashboard presents workflow runs
+
+      Key question: What makes a showcase feel "professional product" vs "dev side project"?
+
+      Write findings to docs/forge-artifacts/showcase-research.md
+
+      Focus on formats that can be generated as MARKDOWN (rendered in browser
+      or converted to slides) — no PowerPoint, no Figma, no custom apps.
+
+  - id: design-skill
+    depends_on: [research-formats]
+    prompt: |
+      Read docs/forge-artifacts/showcase-research.md.
+      Read knowledge/meta-skills/skill-forge/SKILL.md for packaging standards.
+      Read knowledge/meta-skills/seo-article-audit/SKILL.md as quality reference.
+
+      Design the showcase-presenter skill with TWO MODES:
+
+      === MODE 1: REPORT SHOWCASE ===
+      Takes a project + its reports/artifacts and produces a presentation-ready
+      document showing what was built, what works, key metrics, and next steps.
+
+      Input: project path + report files (morning reports, audit reports, build reports)
+      Output: A polished showcase document with:
+      - Executive summary (3 sentences)
+      - Timeline visualization (what happened when)
+      - Key metrics dashboard (files created, tests passed, issues fixed)
+      - Before/after comparisons
+      - Architecture diagrams (mermaid)
+      - Decision log (what was decided and why)
+      - Risk/gap register (honest about what's missing)
+      - Next steps with effort estimates
+
+      === MODE 2: DEMO SHOWCASE ===
+      Takes a project + its skill packages/tools and produces a live demonstration
+      document with RUNNABLE EXAMPLES showing how each capability works.
+
+      Input: project path + skill packages to demonstrate
+      Output: A demo document with:
+      - Capability inventory (what exists, what it does)
+      - Per-capability demo section:
+        - What it is (1 sentence)
+        - How to invoke it (exact command/prompt)
+        - Example input → example output (REAL, not placeholder)
+        - Edge case that shows robustness
+        - "Try it yourself" prompt the reader can copy-paste
+      - Integration demos (how capabilities chain together)
+      - Documentation audit checklist (for each capability: does README exist?
+        does it have all sections? can you actually run it? is the output correct?)
+
+      === DOCUMENTATION AUDIT (built into both modes) ===
+      For every item showcased, verify:
+      - [ ] File exists
+      - [ ] README/SKILL.md present and complete
+      - [ ] Can be invoked (command works, skill triggers)
+      - [ ] Output matches expected format
+      - [ ] No broken references or dead links
+
+      Items that fail the audit get flagged with [BROKEN] or [INCOMPLETE] badges
+      in the presentation — this forces honesty.
+
+      Package shape: Full (SKILL.md + README + metadata + templates + references)
+
+      Templates needed:
+      - report-showcase.md (Mode 1 output)
+      - demo-showcase.md (Mode 2 output)
+      - capability-card.md (per-capability demo section)
+      - metrics-dashboard.md (key numbers visualization)
+      - audit-checklist.md (documentation health check)
+
+      Write design to docs/forge-artifacts/showcase-design.md
+
+  - id: build-skill
+    depends_on: [design-skill]
+    loop:
+      prompt: |
+        Read docs/forge-artifacts/showcase-research.md and showcase-design.md.
+        Read knowledge/meta-skills/skill-forge/SKILL.md Step 4 (AUTHOR).
+        Read knowledge/meta-skills/skill-forge/references/skill-anatomy.md.
+
+        Create the complete skill package at knowledge/meta-skills/showcase-presenter/:
+
+        SKILL.md — Two modes (REPORT + DEMO), documentation audit built in,
+        anti-patterns for both modes, verdict logic for doc health.
+
+        templates/
+          report-showcase.md — Mode 1 output (Fixed/Variable zones)
+          demo-showcase.md — Mode 2 output
+          capability-card.md — Per-capability demo section
+          metrics-dashboard.md — Key numbers in table/ASCII chart format
+          audit-checklist.md — Documentation health check template
+
+        references/
+          presentation-patterns.md — What makes showcases professional
+          mermaid-cheatsheet.md — Quick reference for architecture diagrams
+          quality-standard.md — Two-layer gate (structural + narrative)
+          anti-patterns.md — Common showcase mistakes
+
+        README.md + metadata.json
+
+        Craftsmanship rules:
+        - Mermaid diagrams for all architecture visualizations
+        - ASCII charts for metrics (works in any terminal/markdown viewer)
+        - Every "example" must be REAL and RUNNABLE, never placeholder
+        - [BROKEN] and [INCOMPLETE] badges are features, not failures
+        - Tables for all parallel information
+        - Decision tables for mode selection and capability routing
+
+        When complete: <promise>COMPLETE</promise>
+      until: COMPLETE
+      max_iterations: 4
+      fresh_context: true
+
+  - id: test-on-portable-kit
+    depends_on: [build-skill]
+    prompt: |
+      Test the showcase-presenter skill in BOTH modes against portable-kit itself.
+
+      === TEST 1: REPORT MODE ===
+      Generate a report showcase for the entire day's work (2026-04-13).
+      Input: docs/day-report-2026-04-13.md + docs/morning-report-2026-04-10.md
+      + all docs/forge-artifacts/*.md
+
+      The showcase should present:
+      - What was built today (9 skill packages, 9 workflows, Bacowr scaffold, RepoBrain fixes)
+      - Key metrics (files created, builds passed, quality gates passed)
+      - Before/after for RepoBrain and Bacowr
+      - Architecture diagram of the 200k-pipeline
+      - Timeline of the day
+
+      Save to docs/showcases/day-report-showcase.md
+
+      === TEST 2: DEMO MODE ===
+      Generate a demo showcase for the 200k-pipeline skill system.
+      Input: ~/.claude/skills/200k-pipeline/ + all skill packages in knowledge/meta-skills/
+
+      The demo should:
+      - Inventory all capabilities (skill-forge, 200k-blueprint, code-review-checklist,
+        youtube-video-digest, repo-rescue, seo-article-audit, market-intelligence-report)
+      - For each: what it is, how to invoke, example input→output
+      - Show the chain: concept → blueprint → forge → verify → deploy
+      - Run the documentation audit on every package
+      - Flag anything [BROKEN] or [INCOMPLETE]
+
+      Save to docs/showcases/pipeline-demo-showcase.md
+
+      Write test evaluation to docs/forge-artifacts/showcase-test-evaluation.md
+
+  - id: verify
+    depends_on: [test-on-portable-kit]
+    prompt: |
+      Run quality gate from knowledge/meta-skills/skill-forge/references/quality-gate.md
+      against knowledge/meta-skills/showcase-presenter/.
+
+      Also verify:
+      - Both test showcases are readable and professional
+      - Mermaid diagrams render correctly (valid syntax)
+      - All [BROKEN]/[INCOMPLETE] badges are justified
+      - Metrics are accurate (cross-check against actual file counts)
+      - "Try it yourself" prompts actually work if copy-pasted
+      - No placeholder examples — everything is real
+
+      Write to docs/forge-artifacts/showcase-verification.md

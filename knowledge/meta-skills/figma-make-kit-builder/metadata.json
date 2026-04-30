@@ -1,0 +1,37 @@
+{
+  "name": "Figma Make Kit Builder",
+  "description": "Produces publishable Figma Make custom kits at CMS-complexity level. Ships 8 seed kits (cms-admin-shell, workflow-builder, multi-tenant-workspace, analytics-composer, power-data-table, marketplace-console, ai-search-chat-shell, creator-lms) sharing a foundation-locked token system so components cut from one kit compose cleanly with another. Complexity gate rejects generic landing/pricing proposals.",
+  "category": "skills",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robinwesterlund"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["Read", "Write", "Edit", "Bash", "Glob"]
+  },
+  "tags": [
+    "figma",
+    "figma-make",
+    "design-system",
+    "component-kit",
+    "tailwind",
+    "vite",
+    "cms",
+    "admin-ui",
+    "dashboard",
+    "workflow-builder",
+    "marketplace",
+    "ai-ux",
+    "lms",
+    "design-tokens",
+    "foundation-lock",
+    "monetization"
+  ],
+  "difficulty": "advanced",
+  "estimated_time": "30 minutes per kit generation",
+  "created": "2026-04-16",
+  "updated": "2026-04-16"
+}

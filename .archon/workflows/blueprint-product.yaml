@@ -1,0 +1,70 @@
+name: blueprint-product
+description: |
+  Create a 200k-level product blueprint from a concept.
+  Uses the 200k-blueprint meta-skill. Walks through intake, research,
+  architecture, quality gates, skill map, and build order.
+  Example: "A code-wiki SaaS for Swedish developers"
+provider: claude
+model: sonnet
+
+nodes:
+  - id: intake
+    prompt: |
+      Read knowledge/meta-skills/200k-blueprint/SKILL.md fully.
+
+      Execute Step 1 (INTAKE) on the user's concept:
+      $ARGUMENTS
+
+      Answer the Five Questions. Infer what you can from the description.
+      For anything you cannot infer, state your assumption.
+
+      Write the captured concept to docs/blueprints/concept.md
+      (create the directory if needed).
+
+  - id: research
+    depends_on: [intake]
+    prompt: |
+      Read docs/blueprints/concept.md.
+      Read knowledge/meta-skills/200k-blueprint/references/domain-research.md.
+
+      Execute Step 2 (RESEARCH) — search the web for:
+      competitors, technical landscape, common pitfalls, compliance needs.
+
+      Write the domain brief to docs/blueprints/domain-brief.md
+
+  - id: architect
+    depends_on: [research]
+    prompt: |
+      Read docs/blueprints/concept.md and docs/blueprints/domain-brief.md.
+      Read knowledge/meta-skills/200k-blueprint/SKILL.md Step 3 (ARCHITECT).
+
+      Make the core decisions: stack, architecture pattern, directory structure,
+      data model. Use the simplest stack that handles the requirements.
+
+      Write architecture decisions to docs/blueprints/architecture.md
+
+  - id: gates-and-skills
+    depends_on: [architect]
+    prompt: |
+      Read all docs/blueprints/*.md files.
+      Read knowledge/meta-skills/200k-blueprint/SKILL.md Steps 4-5.
+
+      Define quality gates (200k baseline + product-specific).
+      Audit existing skills in skill-engine/explicit-skills.md
+      and knowledge/skills/.
+      Produce the forge list for skills that need to be created.
+
+      Write to docs/blueprints/quality-gates.md and
+      docs/blueprints/skill-map.md
+
+  - id: assemble
+    depends_on: [gates-and-skills]
+    prompt: |
+      Read all docs/blueprints/*.md files.
+      Read knowledge/meta-skills/200k-blueprint/templates/blueprint.md.
+
+      Assemble the complete blueprint using the template.
+      Fill all Variable zones: concept, domain brief, architecture,
+      quality gates, skill map, build order, risk register, effort estimate.
+
+      Write the final blueprint to docs/blueprint-final.md

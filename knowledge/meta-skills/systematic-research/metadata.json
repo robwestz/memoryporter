@@ -1,0 +1,34 @@
+{
+  "name": "Systematic Research",
+  "description": "Locked 6-step research pipeline (SCOPE → SOURCE → EXTRACT → CROSS-VERIFY → SYNTHESIZE → GRADE) with hard gates that guarantees structured, cross-verified findings with citations, confidence scores, and explicit gap reporting. Topic-agnostic.",
+  "category": "skills",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robinwesterlund"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["WebSearch", "WebFetch"]
+  },
+  "tags": [
+    "research",
+    "systematic-research",
+    "deep-research",
+    "agentic-research",
+    "due-diligence",
+    "cross-verification",
+    "evidence-based",
+    "structured-output",
+    "pipeline",
+    "hard-gates",
+    "source-analysis",
+    "claim-verification",
+    "confidence-scoring"
+  ],
+  "difficulty": "intermediate",
+  "estimated_time": "15-45 minutes per research",
+  "created": "2026-04-16",
+  "updated": "2026-04-16"
+}

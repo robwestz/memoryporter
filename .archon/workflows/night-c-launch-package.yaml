@@ -1,0 +1,99 @@
+name: night-c-launch-package
+description: |
+  Forge a launch-package skill that produces everything needed to LAUNCH
+  a product. Test against RepoBrain. This fills the gap between BUILD and SHIP.
+provider: claude
+model: sonnet
+
+nodes:
+  - id: research-launches
+    prompt: |
+      Research what makes a successful product launch package. Search for:
+
+      1. "product launch checklist" — what deliverables are needed
+      2. "YC demo day pitch deck structure" — the 12-slide format
+      3. "product hunt launch strategy" — what makes a top launch
+      4. "SaaS launch email sequence" — the 5-email pre-launch drip
+      5. "landing page copy framework" — hero, benefits, social proof, CTA
+
+      Also research:
+      - What Stripe, Linear, Vercel did for their launches
+      - "social media launch calendar template"
+
+      Write findings to docs/night-projects/c/launch-research.md
+
+  - id: design-skill
+    depends_on: [research-launches]
+    prompt: |
+      Read docs/night-projects/c/launch-research.md.
+      Read knowledge/meta-skills/skill-forge/SKILL.md for packaging.
+      Read knowledge/meta-skills/seo-article-audit/SKILL.md for quality model reference.
+
+      Design a launch-package skill that takes a product + its blueprint
+      and produces ALL of these deliverables:
+
+      1. Landing page copy (hero + 3 benefit sections + social proof + CTA + FAQ)
+      2. Pitch deck outline (12 slides: problem, solution, demo, market, traction,
+         business model, competition, team, financials, roadmap, ask, contact)
+      3. Email launch sequence (5 emails: teaser, announce, features, social proof, last call)
+      4. Product Hunt listing (tagline, description, first comment, maker comment)
+      5. Social media calendar (30 days: 10 pre-launch, 5 launch week, 15 post-launch)
+      6. Demo script (3-minute walkthrough: hook, core feature, wow moment, CTA)
+
+      Quality layers:
+      Layer 1: STRUCTURAL (all 6 deliverables present, correct format)
+      Layer 2: NARRATIVE (consistent voice, compelling story, clear differentiation)
+
+      Package shape: Production (SKILL.md + README + metadata + templates for all 6 + references)
+
+      Write design to docs/night-projects/c/launch-skill-design.md
+
+  - id: build-skill
+    depends_on: [design-skill]
+    loop:
+      prompt: |
+        Read docs/night-projects/c/launch-research.md and launch-skill-design.md.
+        Read knowledge/meta-skills/skill-forge/SKILL.md Step 4 (AUTHOR).
+
+        Create the complete launch-package skill at knowledge/meta-skills/launch-package/:
+        - SKILL.md (process, quality layers, anti-patterns)
+        - README.md + metadata.json
+        - templates/ (6 templates, one per deliverable, Fixed/Variable zones)
+        - references/ (frameworks, pitch-deck-anatomy, email-sequence-patterns)
+
+        When complete: <promise>COMPLETE</promise>
+      until: COMPLETE
+      max_iterations: 4
+      fresh_context: true
+
+  - id: test-on-repobrain
+    depends_on: [build-skill]
+    prompt: |
+      Test the launch-package skill against RepoBrain.
+
+      Read knowledge/meta-skills/launch-package/SKILL.md.
+      Read C:/Users/robin/Pictures/repobrain/README.md for product context.
+      Read C:/Users/robin/Pictures/repobrain/docs/architecture-audit.md for current state.
+
+      Execute the FULL process — produce all 6 deliverables for RepoBrain:
+      1. Landing page copy
+      2. Pitch deck outline (12 slides with actual content, not placeholders)
+      3. Email launch sequence (5 emails with subject lines and body)
+      4. Product Hunt listing
+      5. Social media calendar (30 days)
+      6. Demo script (3-minute)
+
+      Save ALL output to docs/night-projects/c/repobrain-launch-package/
+
+  - id: showcase
+    depends_on: [test-on-repobrain]
+    prompt: |
+      Read knowledge/meta-skills/showcase-presenter/SKILL.md.
+
+      Run DEMO mode on the launch-package skill:
+      - Inventory: the skill package + the RepoBrain test output
+      - Capability cards for each of the 6 deliverables
+      - Documentation audit
+      - Verdict
+
+      Save to docs/night-projects/c/showcase.md

@@ -1,0 +1,127 @@
+name: create-seo-article-audit
+description: |
+  Purpose-built workflow for creating an SEO backlink article audit skill.
+  Uses Bacowr's article_validator.py as the quality foundation.
+  The skill should be able to audit any backlink article against
+  the same 200k-standard that Bacowr enforces.
+provider: claude
+model: sonnet
+
+nodes:
+  - id: study-validator
+    prompt: |
+      Read these files to understand the quality standard for SEO backlink articles:
+
+      1. C:/Users/robin/Downloads/Bacowr-v6.3/article_validator.py — the 11-check QA system
+      2. C:/Users/robin/Downloads/Bacowr-v6.3/SYSTEM.md — the article rules
+      3. C:/Users/robin/Downloads/Bacowr-v6.3/skills/editorial-overlay.md — the premium writing process
+      4. C:/Users/robin/Downloads/Bacowr-v6.3/articles/job_07.md — example produced article
+      5. C:/Users/robin/Downloads/Bacowr-v6.3/articles/job_08.md — another example
+
+      Extract and document:
+      - All 11 validator checks with exact thresholds
+      - The editorial overlay quality markers (spänning, tes, röd tråd, specialist-test)
+      - The forbidden AI phrases (all 23)
+      - What makes a GOOD article vs a MEDIOCRE one (from the anti-patterns in editorial-overlay)
+      - The structural rules (word count, anchor position, trustlink placement, no bullets, etc.)
+
+      Write analysis to docs/forge-artifacts/seo-audit-foundation.md
+
+  - id: design-audit-skill
+    depends_on: [study-validator]
+    prompt: |
+      Read docs/forge-artifacts/seo-audit-foundation.md.
+      Read knowledge/meta-skills/skill-forge/SKILL.md for packaging standards.
+
+      Design the seo-article-audit skill:
+
+      This skill takes a backlink article (markdown) + its metadata (anchor, target URL,
+      publisher domain) and produces a DETAILED quality audit — not just pass/fail,
+      but actionable feedback per dimension.
+
+      The audit has TWO layers:
+      Layer 1: MECHANICAL (the 11 validator checks — binary pass/fail)
+      Layer 2: EDITORIAL (the craft quality — requires judgment)
+
+      Layer 2 checks (from editorial-overlay.md):
+      - Hook quality: Does it lead with observation, not background?
+      - Thesis clarity: Can you state the argument in one sentence?
+      - Entity integration: Are SERP entities deployed as precision, not listed?
+      - Trustlink integration: Are they woven into argument, not footnotes?
+      - Anchor naturalness: Does the link feel like a natural destination?
+      - Red thread: Does each section build/complicate/deepen the thesis?
+      - Closing quality: Insight, not summary?
+      - AI smell: Any of the 10 mediocrity signs from editorial-overlay anti-patterns?
+
+      Package shape: Full (SKILL.md + README + metadata + templates + references + scripts)
+
+      Write design to docs/forge-artifacts/seo-audit-design.md
+
+  - id: build-skill
+    depends_on: [design-audit-skill]
+    loop:
+      prompt: |
+        Read docs/forge-artifacts/seo-audit-foundation.md and seo-audit-design.md.
+        Read knowledge/meta-skills/skill-forge/SKILL.md Step 4 (AUTHOR).
+
+        Create the complete skill package at knowledge/meta-skills/seo-article-audit/:
+
+        SKILL.md — The audit process:
+          1. RECEIVE article + metadata (anchor, target URL, publisher domain, SERP entities if available)
+          2. MECHANICAL AUDIT — run all 11 checks, produce pass/fail table
+          3. EDITORIAL AUDIT — evaluate all 8 craft dimensions with evidence
+          4. VERDICT — overall score (Reject / Revise / Acceptable / Premium)
+          5. FEEDBACK — specific, actionable rewrites for every failing dimension
+
+        templates/audit-report.md — Output template with Fixed/Variable zones
+        templates/feedback-card.md — Per-dimension feedback format
+
+        references/quality-standard.md — The complete rules extracted from SYSTEM.md + editorial-overlay
+        references/forbidden-phrases.md — All 23 AI-smell phrases + the 10 mediocrity anti-patterns
+
+        scripts/mechanical-audit.py — Python script that runs the 11 validator checks
+          (imports article_validator.py if available, falls back to inline checks)
+
+        README.md + metadata.json
+
+        Follow all skill-forge standards: tables > prose, anti-patterns,
+        imperative form, front-loaded value, < 500 lines for SKILL.md.
+
+        When complete: <promise>COMPLETE</promise>
+      until: COMPLETE
+      max_iterations: 3
+      fresh_context: true
+
+  - id: test-against-real-article
+    depends_on: [build-skill]
+    prompt: |
+      Test the seo-article-audit skill against a REAL Bacowr article.
+
+      1. Read knowledge/meta-skills/seo-article-audit/SKILL.md
+      2. Read C:/Users/robin/Downloads/Bacowr-v6.3/articles/job_07.md as the test article
+      3. Execute the FULL audit process from the skill:
+         - MECHANICAL: run all 11 checks
+         - EDITORIAL: evaluate all 8 craft dimensions
+         - VERDICT: score it
+         - FEEDBACK: write specific improvement suggestions
+      4. Save the audit result to docs/forge-artifacts/seo-audit-test-result.md
+
+      Then evaluate: Is this audit report worth paying for?
+      Would an SEO professional find this useful?
+      Is the feedback specific enough to act on?
+
+      Write evaluation to docs/forge-artifacts/seo-audit-evaluation.md
+
+  - id: verify
+    depends_on: [test-against-real-article]
+    prompt: |
+      Run quality gate from knowledge/meta-skills/skill-forge/references/quality-gate.md
+      against knowledge/meta-skills/seo-article-audit/.
+
+      Also check:
+      - Does the mechanical audit produce the same results as article_validator.py?
+      - Are the editorial checks specific enough (not just "good/bad")?
+      - Is the verdict calibration reasonable? (a Bacowr article should score Acceptable or Premium)
+      - Is forbidden-phrases.md complete (all 23)?
+
+      Write to docs/forge-artifacts/seo-audit-verification.md

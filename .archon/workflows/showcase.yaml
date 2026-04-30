@@ -1,0 +1,29 @@
+name: showcase
+description: |
+  On-demand showcase generator. Run whenever you want to see what exists,
+  what works, and how to use it — presented cleanly.
+  Usage: "archon workflow run showcase 'Show me what we built today'"
+  Or: "archon workflow run showcase 'Demo the 200k-pipeline'"
+  Or: "archon workflow run showcase 'Present Bacowr platform status'"
+provider: claude
+model: sonnet
+
+nodes:
+  - id: present
+    prompt: |
+      Read knowledge/meta-skills/showcase-presenter/SKILL.md fully.
+
+      The user wants a presentation:
+      $ARGUMENTS
+
+      Determine the right mode:
+      - If they want to see WHAT WAS BUILT/ACHIEVED → REPORT mode
+      - If they want to see HOW THINGS WORK/DEMOS → DEMO mode
+      - If unclear → run BOTH
+
+      Follow the skill's process exactly. Use the templates.
+      Save the showcase to docs/showcases/ with a descriptive filename.
+
+      CRITICAL: Every example must be REAL and RUNNABLE.
+      Flag anything [BROKEN] or [INCOMPLETE] honestly.
+      Include the documentation audit.

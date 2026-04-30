@@ -1,0 +1,33 @@
+{
+  "name": "market-intelligence-report",
+  "description": "Seven-phase process that produces a consulting-grade competitive intelligence report for a market niche. Covers competitor profiling, TAM/SAM/SOM sizing (dual methodology), Porter's Five Forces, pricing analysis, and differentiation recommendations. Two-layer quality model: structural completeness (11 checks) + strategic defensibility (8 dimensions). Runs on secondary research — honest about scope and limitations.",
+  "category": "skills",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robinwesterlund"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": ["web_search"],
+    "tools": ["WebSearch", "WebFetch"]
+  },
+  "tags": [
+    "competitive-intelligence",
+    "market-analysis",
+    "market-sizing",
+    "tam-sam-som",
+    "porter-five-forces",
+    "business-strategy",
+    "consulting",
+    "market-research",
+    "competitive-landscape",
+    "positioning",
+    "blue-ocean",
+    "swot"
+  ],
+  "difficulty": "advanced",
+  "estimated_time": "60-120 minutes",
+  "created": "2026-04-13",
+  "updated": "2026-04-13"
+}

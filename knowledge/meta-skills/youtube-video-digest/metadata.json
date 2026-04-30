@@ -1,0 +1,21 @@
+{
+  "name": "YouTube Video Digest",
+  "description": "Extracts transcript, metadata, and chapters from any public YouTube video and renders them in one of five output modes: digest (default), summary, key-points, transcript, or Q&A. Classifies video type (tutorial, talk, interview, lecture, essay) to guide output structure. No API key required.",
+  "category": "skills",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robinwesterlund"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["yt-dlp"],
+    "optional_tools": ["youtube-transcript-api", "openai-whisper"]
+  },
+  "tags": ["youtube", "transcript", "video", "digest", "summarize", "key-points", "qa", "research", "notes", "yt-dlp"],
+  "difficulty": "beginner",
+  "estimated_time": "1-3 minutes",
+  "created": "2026-04-13",
+  "updated": "2026-04-13"
+}

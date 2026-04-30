@@ -1,0 +1,133 @@
+name: create-market-intelligence
+description: |
+  Purpose-built workflow for creating a market-intelligence-report skill.
+  This skill produces consulting-grade competitive analysis reports —
+  the kind that costs 100-500k SEK from a boutique consultancy and takes
+  2-6 weeks. Our framework does it in hours, consistently.
+provider: claude
+model: sonnet
+
+nodes:
+  - id: research-methodology
+    prompt: |
+      Research what makes a McKinsey/BCG/boutique consultancy competitive
+      analysis report worth 100-500k SEK. Search the web for:
+
+      1. "competitive analysis framework" — Porter's Five Forces, Blue Ocean,
+         SWOT, competitive positioning maps
+      2. "market intelligence report template" — what sections, what data
+      3. "market sizing methodology" — TAM/SAM/SOM, bottom-up vs top-down
+      4. "competitive pricing analysis" — how to map competitor pricing
+      5. Real examples of paid competitive analysis reports (find structure, not content)
+
+      Write findings to docs/forge-artifacts/market-intel-methodology.md
+
+      Key question: What separates a free blog post about competitors from
+      a 200k SEK consulting deliverable? Answer: specificity, sourced data,
+      actionable positioning recommendations, and a decision framework.
+
+  - id: design-skill
+    depends_on: [research-methodology]
+    prompt: |
+      Read docs/forge-artifacts/market-intel-methodology.md.
+      Read knowledge/meta-skills/skill-forge/SKILL.md for packaging standards.
+      Read knowledge/meta-skills/seo-article-audit/SKILL.md as a quality reference
+      (two-layer model, rating scales, verdict logic — apply same rigor).
+
+      Design the market-intelligence-report skill:
+
+      The skill takes a MARKET NICHE (not a company) and produces a complete
+      competitive intelligence report in consulting-grade quality.
+
+      Process:
+      1. SCOPE — define the market, key questions, and report audience
+      2. DISCOVER — web search for competitors, market data, trends, pricing
+      3. MAP — build competitor matrix (features, pricing, positioning, strengths/weaknesses)
+      4. SIZE — estimate TAM/SAM/SOM with methodology shown
+      5. ANALYZE — Porter's Five Forces + SWOT + positioning map
+      6. POSITION — blue ocean opportunities, differentiation recommendations
+      7. DELIVER — structured report using template
+
+      Quality layers (like seo-article-audit):
+      Layer 1: STRUCTURAL (all required sections present, data sourced, no claims without evidence)
+      Layer 2: STRATEGIC (recommendations are actionable, positioning is defensible, market sizing is grounded)
+
+      Package shape: Full (SKILL.md + README + metadata + templates + references)
+
+      Write design to docs/forge-artifacts/market-intel-design.md
+
+  - id: build-skill
+    depends_on: [design-skill]
+    loop:
+      prompt: |
+        Read docs/forge-artifacts/market-intel-methodology.md and market-intel-design.md.
+        Read knowledge/meta-skills/skill-forge/SKILL.md Step 4 (AUTHOR).
+        Read knowledge/meta-skills/skill-forge/references/skill-anatomy.md.
+
+        Create the complete skill package at knowledge/meta-skills/market-intelligence-report/:
+
+        SKILL.md — 7-step process with decision tables, anti-patterns, quality layers
+        README.md — installation, triggers, expected outcomes
+        metadata.json — standard schema
+
+        templates/
+          competitive-report.md — Full report output template (Fixed/Variable zones)
+            Sections: Executive Summary, Market Overview, Competitor Landscape,
+            Feature Comparison Matrix, Pricing Analysis, Market Sizing (TAM/SAM/SOM),
+            Porter's Five Forces, SWOT, Positioning Map, Recommendations, Risk Assessment
+          competitor-card.md — Per-competitor profile template
+          positioning-canvas.md — Blue Ocean / differentiation template
+
+        references/
+          frameworks.md — Porter's, SWOT, Blue Ocean methodology quick-reference
+          market-sizing.md — TAM/SAM/SOM calculation methods with examples
+          quality-standard.md — Two-layer quality gate (structural + strategic)
+          anti-patterns.md — Common mistakes in competitive analysis
+
+        Follow all skill-forge standards: tables > prose, anti-patterns,
+        imperative form, front-loaded value, < 500 lines for SKILL.md.
+
+        When complete: <promise>COMPLETE</promise>
+      until: COMPLETE
+      max_iterations: 3
+      fresh_context: true
+
+  - id: test-real-market
+    depends_on: [build-skill]
+    prompt: |
+      Test the market-intelligence-report skill against a REAL market:
+      "Swedish developer tools / code intelligence market"
+
+      This is the market RepoBrain competes in. Perfect test because Robin
+      can verify the analysis from domain knowledge.
+
+      Execute the FULL 7-step process:
+      1. SCOPE — define the market
+      2. DISCOVER — search for competitors (Sourcegraph, DeepWiki, Cursor,
+         GitHub Copilot, Cody, Bloop, etc.)
+      3. MAP — feature matrix
+      4. SIZE — estimate market (Swedish dev tools market)
+      5. ANALYZE — Five Forces + SWOT for RepoBrain specifically
+      6. POSITION — where RepoBrain should position
+      7. DELIVER — complete report
+
+      Save to docs/forge-artifacts/market-intel-test-report.md
+
+      Then evaluate: Would Robin pay 100k for this report from a consultant?
+      Is it specific enough to make business decisions from?
+      Write evaluation to docs/forge-artifacts/market-intel-evaluation.md
+
+  - id: verify
+    depends_on: [test-real-market]
+    prompt: |
+      Run quality gate from knowledge/meta-skills/skill-forge/references/quality-gate.md
+      against knowledge/meta-skills/market-intelligence-report/.
+
+      Also verify:
+      - Report template has all required sections
+      - Market sizing methodology is shown (not just a number)
+      - Competitor data is sourced (no made-up claims)
+      - Recommendations are specific enough to act on
+      - The test report would pass as a consulting deliverable
+
+      Write to docs/forge-artifacts/market-intel-verification.md

@@ -1,0 +1,77 @@
+{
+  "name": "showcase-presenter",
+  "display_name": "Showcase Presenter",
+  "description": "Generates professional showcase documents from build artifacts, reports, or skill packages. Mode 1 (Report) extracts real metrics, timelines, and architecture decisions from build logs into a stakeholder-ready narrative. Mode 2 (Demo) builds a capability inventory with status badges and per-capability demo cards from SKILL.md files. Documentation audit runs in both modes — broken items are surfaced with badges, never hidden.",
+  "category": "presentation",
+  "subcategory": "documentation",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robinwesterlund"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": [
+      "read",
+      "glob",
+      "grep",
+      "write"
+    ]
+  },
+  "tags": [
+    "presentation",
+    "documentation",
+    "showcase",
+    "audit",
+    "report",
+    "demo",
+    "metrics",
+    "timeline",
+    "capability-inventory",
+    "mermaid",
+    "markdown"
+  ],
+  "difficulty": "intermediate",
+  "estimated_time": "15-45 minutes",
+  "package_shape": "full",
+  "modes": [
+    {
+      "name": "report-showcase",
+      "trigger": "reports, build logs, ADRs, morning reports",
+      "output": "report-showcase.md + metrics-dashboard + audit-checklist",
+      "verdict_options": ["SHOWCASE-READY", "SHOWCASE-WITH-GAPS", "DRAFT-ONLY"]
+    },
+    {
+      "name": "demo-showcase",
+      "trigger": "SKILL.md files, skill packages, tool directories",
+      "output": "demo-showcase.md + capability-cards + audit-checklist",
+      "verdict_options": ["DEMO-READY", "DEMO-WITH-CAVEATS", "INVENTORY-ONLY"]
+    }
+  ],
+  "audit_layer": {
+    "mandatory": true,
+    "checks": ["A1-exists", "A2-readme", "A3-frontmatter", "A4-invokable", "A5-output", "A6-no-dead-refs", "A7-real-examples"],
+    "badges": ["[READY]", "[UNTESTED]", "[INCOMPLETE]", "[BROKEN]", "[ILLUSTRATIVE]"]
+  },
+  "templates": [
+    "templates/report-showcase.md",
+    "templates/demo-showcase.md",
+    "templates/capability-card.md",
+    "templates/metrics-dashboard.md",
+    "templates/audit-checklist.md"
+  ],
+  "references": [
+    "references/presentation-patterns.md",
+    "references/mermaid-cheatsheet.md",
+    "references/quality-standard.md",
+    "references/anti-patterns.md"
+  ],
+  "integration": {
+    "upstream": ["buildr-executor", "skill-forge"],
+    "downstream": ["project-wiki", "skill-creator"],
+    "compatible_with": ["seo-article-audit", "200k-pipeline"]
+  },
+  "created": "2026-04-13",
+  "updated": "2026-04-13"
+}

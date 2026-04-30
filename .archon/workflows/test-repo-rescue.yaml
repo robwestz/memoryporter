@@ -1,0 +1,68 @@
+name: test-repo-rescue
+description: |
+  Integration test for the repo-rescue skill. Runs it against RepoBrain
+  and compares output with the manually-proven results from 2026-04-10/13.
+  This validates that the SKILL produces the same quality as the manual process.
+provider: claude
+model: sonnet
+
+nodes:
+  - id: run-rescue
+    prompt: |
+      You are testing the repo-rescue skill package.
+
+      1. Read knowledge/meta-skills/repo-rescue/SKILL.md fully
+      2. Execute the COMPLETE process against RepoBrain at C:/Users/robin/Pictures/repobrain
+      3. Follow every step in the skill exactly as written — do not improvise
+      4. Write ALL output to docs/rescue-test/repobrain/
+
+      This is a TEST — your job is to see if the skill produces useful results
+      when followed literally. Do not use any prior knowledge about RepoBrain
+      from this conversation. Pretend you're seeing it for the first time.
+
+  - id: compare
+    depends_on: [run-rescue]
+    prompt: |
+      Compare the rescue skill's output against the manually-proven results.
+
+      Read:
+      - docs/rescue-test/repobrain/ (what the skill just produced)
+      - C:/Users/robin/Pictures/repobrain/docs/morning-report-2026-04-10.md (manual results)
+      - C:/Users/robin/Pictures/repobrain/docs/architecture-audit.md (manual audit)
+
+      Produce a comparison report at docs/rescue-test/comparison.md:
+
+      | Aspect | Manual (2026-04-10) | Skill output | Match? |
+      |--------|--------------------|--------------| -------|
+      | Build state discovered | ... | ... | ... |
+      | Critical issues found | ... | ... | ... |
+      | Fixes proposed | ... | ... | ... |
+      | Fixes that would work | ... | ... | ... |
+      | Action plan quality | ... | ... | ... |
+      | Things manual caught that skill missed | ... | ... | ... |
+      | Things skill caught that manual missed | ... | ... | ... |
+
+      Score the skill:
+      - DISCOVERY accuracy (did it find the same architecture?)
+      - DIAGNOSIS completeness (did it find the same issues?)
+      - PLAN quality (are the fixes correct and prioritized?)
+      - REPORT usefulness (would Robin know what to do next?)
+
+      Overall verdict: PASS (skill matches or exceeds manual) / PARTIAL (some gaps) / FAIL (major misses)
+
+  - id: improve-if-needed
+    depends_on: [compare]
+    prompt: |
+      Read docs/rescue-test/comparison.md.
+
+      If verdict is PARTIAL or FAIL:
+      1. Identify what the skill missed
+      2. Read knowledge/meta-skills/repo-rescue/SKILL.md
+      3. Add the missing steps, anti-patterns, or checks
+      4. Write the improved SKILL.md back
+
+      If verdict is PASS:
+      1. Note any minor improvements anyway
+      2. Write a short "skill verified" note to docs/rescue-test/verified.md
+
+      Either way, update the verification report.

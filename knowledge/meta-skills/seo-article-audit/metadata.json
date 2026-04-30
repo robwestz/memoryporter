@@ -1,0 +1,20 @@
+{
+  "name": "SEO Article Audit",
+  "description": "Two-layer audit for backlink SEO articles. Layer 1: 11 deterministic mechanical checks (word count, anchor placement, trustlink validity, forbidden phrases, paragraph count). Layer 2: 8 editorial quality dimensions (hook, thesis, entity integration, trustlink quality, anchor naturalness, red thread, closing quality, AI smell). Produces structured report with ratings, quoted evidence, actionable fixes, and a PUBLISH-READY / REVISE-THEN-PUBLISH / REWRITE-REQUIRED verdict.",
+  "category": "skills",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robwestz"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["read", "write"]
+  },
+  "tags": ["seo", "content-audit", "backlink", "qa", "editorial", "writing-quality"],
+  "difficulty": "intermediate",
+  "estimated_time": "5-10 minutes per article",
+  "created": "2026-04-13",
+  "updated": "2026-04-13"
+}

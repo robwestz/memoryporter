@@ -1,0 +1,20 @@
+{
+  "name": "200k Prompt Engineering",
+  "description": "The engineering skill behind every 200k-class output. Three layers: prompt engineering (writing instructions), context engineering (designing agent knowledge), and agentic workflow engineering (designing autonomous execution). The third pillar of the 200k system.",
+  "category": "meta-skills",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robwestz"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["AI client with file writing capability"]
+  },
+  "tags": ["prompt-engineering", "context-engineering", "agentic-workflow", "200k-standard", "meta-skill", "skill-design", "agent-architecture", "DAG-workflows"],
+  "difficulty": "intermediate",
+  "estimated_time": "10 minutes per layer",
+  "created": "2026-04-14",
+  "updated": "2026-04-14"
+}

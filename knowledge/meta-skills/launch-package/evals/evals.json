@@ -1,0 +1,198 @@
+{
+  "version": "1.0.0",
+  "description": "Regression test cases for the launch-package skill. Two blueprints: one B2B SaaS, one consumer app. Each test case specifies the input blueprint, the expected Narrative Spine fields, and assertions against key output properties.",
+  "test_cases": [
+    {
+      "id": "tc-001",
+      "name": "B2B SaaS — Launch Copy Generator",
+      "description": "A B2B SaaS tool for early-stage founders that generates complete, narrative-consistent launch packages from a product brief.",
+      "blueprint": {
+        "product_name": "Acme",
+        "icp": "Growth-stage SaaS founders with 1–5 person marketing teams launching their first or second product",
+        "problem": "Writing launch copy takes 3–5 days and still comes out inconsistent — the landing page sounds like one product, the email sequence sounds like another, and the pitch deck is a third voice. By launch day, the team can't agree on what problem they're solving.",
+        "solution": "Acme generates a complete launch package — 6 deliverables — from a 10-field product brief. All 6 assets share a Narrative Spine, so the landing page hero headline, email E1 subject, and pitch deck punchline are different expressions of the same sentence.",
+        "unique_mechanism": "Narrative Spine derivation — a shared context object derived before any template is touched, ensuring all 6 deliverables draw from the same canonical language",
+        "pricing": "freemium, $79/mo Pro",
+        "tone": ["direct", "no-jargon", "confident"],
+        "launch_date": "2026-06-01",
+        "traction": "320 beta users, 38% 7-day retention, growing 20% MoM over 8 weeks",
+        "testimonials": [
+          "Cut our launch prep from 4 days to 4 hours — Alex Chen, Head of Marketing, Linktree",
+          "First time our landing page and email sequence sounded like the same company — Jamie Park, Founder, Buildstack"
+        ],
+        "competitor_names": ["Copy.ai", "Jasper", "ChatGPT (direct)", "Manual copywriter"],
+        "why_now": "LLMs can now generate coherent copy at scale, but without a narrative layer, they produce content without story. The tooling exists; the framework to make it consistent didn't — until now."
+      },
+      "expected_spine": {
+        "hook_statement_contains": ["founders", "days", "inconsistent"],
+        "solution_promise_formula": "OUTCOME for ICP without OBSTACLE",
+        "unique_mechanism_present": true,
+        "canonical_cta_pattern": "^(Get|Ship|Start|Generate|Launch)",
+        "voice_adjectives_count_min": 2,
+        "icp_one_liner_contains": ["founder", "marketing"]
+      },
+      "assertions": {
+        "landing_page": {
+          "headline_word_count_max": 12,
+          "subheadline_word_count_max": 25,
+          "benefit_sections": 3,
+          "benefit_rows_per_section": 3,
+          "faq_count_min": 3,
+          "faq_count_max": 5,
+          "hero_cta_not_in": ["Sign up", "Learn more", "Click here"],
+          "headline_not_starts_with_product_name": true
+        },
+        "pitch_deck": {
+          "slide_count": 12,
+          "competition_axes_not_generic": true,
+          "traction_numbers_not_invented": true
+        },
+        "email_sequence": {
+          "email_count": 5,
+          "e1_subject_max_chars": 40,
+          "e2_subject_max_chars": 40,
+          "e1_product_name_absent": true,
+          "e2_product_name_absent": true,
+          "e4_testimonial_present": true,
+          "e5_early_bird_has_explicit_expiry": true,
+          "no_opening_line_starts_with_i": true
+        },
+        "product_hunt": {
+          "tagline_max_chars": 60,
+          "description_max_chars": 260,
+          "tagline_not_starts_with_product_name": true,
+          "tagline_no_banned_phrases": true,
+          "first_comment_word_count_min": 150,
+          "first_comment_word_count_max": 250
+        },
+        "social_calendar": {
+          "post_count": 30,
+          "promotional_count_max": 9,
+          "each_post_has_visual_descriptor": true,
+          "each_post_has_platform": true
+        },
+        "demo_script": {
+          "word_count_min": 375,
+          "word_count_max": 525,
+          "wow_moment_references_unique_mechanism": true,
+          "social_proof_before_cta": true,
+          "no_opening_with_hi_im": true
+        },
+        "quality_gate": {
+          "layer1_all_pass": true,
+          "layer2_failing_count_max": 0,
+          "layer2_weak_count_max": 2,
+          "expected_verdict": "LAUNCH-READY"
+        }
+      },
+      "known_challenges": [
+        "Competition axes must be 'narrative consistency vs. speed' — not generic 'price vs. features'",
+        "E1 and E2 must not mention 'Acme' anywhere — verify explicitly",
+        "Proof sections must use real beta numbers — no invented traction",
+        "Canonical CTA must propagate consistently to all 6 deliverables"
+      ]
+    },
+    {
+      "id": "tc-002",
+      "name": "Consumer App — Personal Finance Habit Tracker",
+      "description": "A consumer mobile app that helps people in their 20s–30s build saving habits through micro-commitments and social accountability.",
+      "blueprint": {
+        "product_name": "Stash",
+        "icp": "People in their 20s and 30s who earn enough to save but spend it anyway — often because saving feels abstract and the reward is too far away",
+        "problem": "Most people know they should be saving more but don't. Not because they lack money — because saving money today for a reward in 20 years feels meaningless. Every app shows them their balance. None of them makes saving feel real right now.",
+        "solution": "Stash turns saving into a social habit. You make a micro-commitment — $5 to a shared goal — and your friend matches it or challenges it. The accountability is immediate; the progress is visible; the reward isn't abstract anymore.",
+        "unique_mechanism": "Peer micro-commitments — saving triggers only when a friend accepts your challenge, making the act of saving a social event rather than a solitary decision",
+        "pricing": "free, $4.99/mo Premium for goal templates and analytics",
+        "tone": ["warm", "direct", "human", "no-finance-jargon"],
+        "launch_date": "2026-07-15",
+        "traction": "1,200 waitlist signups, 4.8/5 average rating from 80 TestFlight users",
+        "testimonials": [
+          "Saved $800 in 3 months because I didn't want to let my friend down — Maya R., 26, Chicago",
+          "Finally saved for that trip — we both did it together — Tom K., 29, Austin"
+        ],
+        "team_bios": [
+          "Sara Lin, CEO — previously product lead at Robinhood (0 to 1M users)",
+          "Alex Mori, CTO — built payments infrastructure at Stripe for 4 years"
+        ],
+        "why_now": "Gen Z and millennials are the first generation to grow up with social apps as primary behavior-change tools. Fitness habits moved to social (Strava). Sleep moved to social (Rise). Saving hasn't — yet.",
+        "raise_amount": "$2.5M pre-seed"
+      },
+      "expected_spine": {
+        "hook_statement_contains": ["save", "abstract", "social"],
+        "solution_promise_formula": "OUTCOME for ICP without OBSTACLE",
+        "unique_mechanism_present": true,
+        "canonical_cta_pattern": "^(Start|Save|Build|Join)",
+        "voice_adjectives_count_min": 2,
+        "icp_one_liner_contains": ["20s", "30s", "save"]
+      },
+      "assertions": {
+        "landing_page": {
+          "headline_word_count_max": 12,
+          "subheadline_word_count_max": 25,
+          "benefit_sections": 3,
+          "benefit_rows_per_section": 3,
+          "faq_count_min": 3,
+          "faq_count_max": 5,
+          "hero_cta_not_in": ["Sign up", "Download", "Learn more"],
+          "icp_specificity_not_generic": true
+        },
+        "pitch_deck": {
+          "slide_count": 12,
+          "team_slide_has_past_wins": true,
+          "ask_slide_has_raise_amount": true,
+          "competition_axes_not_generic": true
+        },
+        "email_sequence": {
+          "email_count": 5,
+          "e1_subject_max_chars": 40,
+          "e1_product_name_absent": true,
+          "e2_product_name_absent": true,
+          "e4_testimonial_present": true,
+          "e5_early_bird_has_explicit_expiry": true
+        },
+        "product_hunt": {
+          "tagline_max_chars": 60,
+          "description_max_chars": 260,
+          "tagline_not_starts_with_product_name": true,
+          "tagline_no_banned_phrases": true,
+          "first_comment_personal_story": true
+        },
+        "social_calendar": {
+          "post_count": 30,
+          "promotional_count_max": 9,
+          "each_post_has_visual_descriptor": true
+        },
+        "demo_script": {
+          "word_count_min": 375,
+          "word_count_max": 525,
+          "wow_moment_references_unique_mechanism": true,
+          "opens_on_problem_not_product": true
+        },
+        "quality_gate": {
+          "layer1_all_pass": true,
+          "layer2_failing_count_max": 0,
+          "layer2_weak_count_max": 2,
+          "expected_verdict": "LAUNCH-READY"
+        }
+      },
+      "known_challenges": [
+        "ICP is consumer — tone must shift from B2B confidence to personal warmth without losing directness",
+        "Unique mechanism (peer micro-commitments) is behavioral, not technical — demo script must show the social interaction, not just the UI",
+        "Competition axes: not 'budgeting apps vs. investment apps' — the real axis is 'solo vs. social savings behavior'",
+        "Consumer testimonials should use first names only (no last name + company) — this is acceptable for consumer products",
+        "Product Hunt tagline must not mention 'social saving app' as a category label — lead with the outcome"
+      ]
+    }
+  ],
+  "evaluation_instructions": {
+    "how_to_run": "For each test case: (1) provide the blueprint to the skill, (2) confirm the Narrative Spine matches expected_spine fields, (3) verify all assertions in the assertions block, (4) run validate-lengths.py on the generated templates directory, (5) record quality_gate verdict.",
+    "pass_criteria": "A test case passes if: (a) all structural assertions match, (b) validate-lengths.py exits 0, (c) quality_gate verdict matches expected_verdict.",
+    "fail_criteria": "A test case fails if: (a) any structural assertion fails, (b) validate-lengths.py exits 1, (c) spine fields don't satisfy expected_spine patterns, (d) verdict is worse than expected.",
+    "regression_notes": [
+      "tc-001 is the canonical B2B case — use it first. If it fails, do not proceed to tc-002.",
+      "tc-002 tests tone-shift from B2B to consumer. Voice consistency (N1) is the hardest dimension here.",
+      "Both test cases should produce LAUNCH-READY verdicts with all traction fields populated.",
+      "If traction fields are emptied from the blueprint, expected verdict downgrades to REVISE-THEN-LAUNCH."
+    ]
+  }
+}

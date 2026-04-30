@@ -1,0 +1,28 @@
+{
+  "name": "Session Launcher",
+  "description": "The conductor skill — takes a task or project intent and produces a complete startup prompt for a new Codex session. Maps task needs to available skills, identifies capability gaps, and outputs a copy-pasteable launch configuration under 500 words.",
+  "category": "meta-skill",
+  "author": {
+    "name": "Robin Westerlund",
+    "github": "robwestz"
+  },
+  "version": "1.0.0",
+  "requires": {
+    "open_brain": false,
+    "services": [],
+    "tools": ["Codex or compatible AI client with file reading and skill loading"]
+  },
+  "tags": [
+    "meta-skill",
+    "session-setup",
+    "skill-routing",
+    "orchestration",
+    "startup-prompt",
+    "gap-analysis",
+    "conductor"
+  ],
+  "difficulty": "beginner",
+  "estimated_time": "5 minutes",
+  "created": "2026-04-13",
+  "updated": "2026-04-13"
+}
