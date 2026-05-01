@@ -98,6 +98,37 @@ def query(
         typer.echo()
 
 
+@app.command()
+def build(
+    request: str = typer.Argument(..., help="What to build (e.g., 'Devin docs from https://docs.devin.ai')"),
+    max_iter: int = typer.Option(10, "--max-iter", help="Maximum iterations"),
+    threshold: float = typer.Option(7.0, "--threshold", help="Pass threshold (0-10)"),
+):
+    """Build KB autonomously using GAN-style harness."""
+    from .agents.kb_builder_harness.harness import KBBuilderHarness
+    
+    typer.echo(f"Starting autonomous KB build...")
+    typer.echo(f"Request: {request}")
+    typer.echo(f"Max iterations: {max_iter}, Pass threshold: {threshold}")
+    typer.echo()
+    
+    harness = KBBuilderHarness()
+    result = harness.run(request, max_iterations=max_iter)
+    
+    typer.echo()
+    typer.echo("=" * 60)
+    if result.status == "success":
+        typer.echo(f"✓ SUCCESS! Score: {result.score:.1f} >= {threshold}")
+    elif result.status == "max_iterations":
+        typer.echo(f"⚠ Max iterations reached. Score: {result.score:.1f}")
+    else:
+        typer.echo(f"✗ Failed")
+    
+    typer.echo(f"  KB Path: {result.kb_path}")
+    typer.echo(f"  Iterations: {result.iterations}")
+    typer.echo("=" * 60)
+
+
 # This is needed for the entry point
 def main():
     """Entry point for CLI."""

@@ -1,1 +1,0 @@
-"""KB-Forge agent harnesses."""

@@ -1,0 +1,32 @@
+# GAN Harness Configuration
+
+max_iterations: 10
+pass_threshold: 7.0
+
+planner:
+  model: opus
+  prompt_file: planner_agent.md
+
+generator:
+  model: opus
+  prompt_file: generator_agent.md
+  timeout_per_doc: 60  # seconds
+
+evaluator:
+  model: opus
+  prompt_file: evaluator_agent.md
+  criteria:
+    - coverage
+    - structure
+    - retrievability
+    - chunk_quality
+  weights:
+    coverage: 0.30
+    structure: 0.25
+    retrievability: 0.25
+    chunk_quality: 0.20
+
+output:
+  feedback_dir: ./feedback
+  manifest_dir: ./manifests
+  progress_log: ./progress.log

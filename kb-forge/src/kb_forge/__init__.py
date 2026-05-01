@@ -12,13 +12,29 @@ from .kb_index import KBIndex
 from .cli import main
 
 
-__all__ = [
-    "__version__",
-    "Scraper",
-    "ScrapeScope",
-    "StorageManager",
-    "ContextEngine",
-    "ChunkStrategy",
-    "KBIndex",
-    "main",
-]
+# Optional: GAN-style harness for autonomous building
+try:
+    from .agents.kb_builder_harness import KBBuilderHarness, HarnessResult
+    __all__ = [
+        "__version__",
+        "Scraper",
+        "ScrapeScope",
+        "StorageManager",
+        "ContextEngine",
+        "ChunkStrategy",
+        "KBIndex",
+        "KBBuilderHarness",
+        "HarnessResult",
+        "main",
+    ]
+except ImportError:
+    __all__ = [
+        "__version__",
+        "Scraper",
+        "ScrapeScope",
+        "StorageManager",
+        "ContextEngine",
+        "ChunkStrategy",
+        "KBIndex",
+        "main",
+    ]
