@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KB-Forge</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">KB-Forge</div>
+            <nav class="nav-tabs">
+                <button class="nav-tab active" data-tab="scrape">Scrape</button>
+                <button class="nav-tab" data-tab="query">Query</button>
+                <button class="nav-tab" data-tab="build">Build</button>
+                <button class="nav-tab" data-tab="settings">Settings</button>
+            </nav>
+        </header>
+
+        <!-- App Body -->
+        <div class="app-body">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="kb-section-title">Knowledge Bases</div>
+                <div id="kb-list">
+                    <p style="color: var(--color-text-muted); text-align: center; padding: var(--space-md);">
+                        Loading...
+                    </p>
+                </div>
+                <button class="btn-new-kb" id="btn-new-kb">+ New KB</button>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Scrape View -->
+                <div id="view-scrape" class="view active">
+                    <h2>Scrape Documentation</h2>
+                    <form id="scrape-form">
+                        <div class="form-group">
+                            <label class="form-label" for="scrape-url">URL</label>
+                            <input type="url" id="scrape-url" class="form-input" 
+                                   placeholder="https://docs.devin.ai" required>
+                        </div>
+
+                        <div class="form-group">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
+                                <div>
+                                    <label class="form-label" for="scrape-storage">Storage Backend</label>
+                                    <select id="scrape-storage" class="form-select">
+                                        <option value="markdown">📝 Markdown</option>
+                                        <option value="obsidian">🏛️ Obsidian</option>
+                                        <option value="chroma">🔍 ChromaDB</option>
+                                        <option value="hybrid">⚡ Hybrid</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="form-label">Scraping Depth</label>
+                                    <div class="radio-group">
+                                        <label class="radio-label">
+                                            <input type="radio" name="scrape-depth" value="single" class="radio-input">
+                                            Single page
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="scrape-depth" value="section" class="radio-input" checked>
+                                            Section
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="scrape-depth" value="full" class="radio-input">
+                                            Full site
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="scrape-name">KB Name (optional)</label>
+                            <input type="text" id="scrape-name" class="form-input" 
+                                   placeholder="Auto-generated from URL">
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="btn-scrape">Start Scraping</button>
+
+                        <div id="scrape-status" class="status-card" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="status-text">Ready to scrape</div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Query View -->
+                <div id="view-query" class="view">
+                    <h2>Query Knowledge Base</h2>
+                    <form id="query-form">
+                        <div class="form-group">
+                            <label class="form-label" for="query-kb">Knowledge Base</label>
+                            <select id="query-kb" class="form-select" required>
+                                <option value="">Select a KB...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="query-question">Your Question</label>
+                            <textarea id="query-question" class="form-textarea" 
+                                      placeholder="How do I set up a custom MCP server?" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="btn-query">Search Knowledge Base</button>
+
+                        <div id="query-results">
+                            <!-- Results will be rendered here -->
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Build View -->
+                <div id="view-build" class="view">
+                    <h2>Autonomous Build</h2>
+                    <form id="build-form">
+                        <div class="form-group">
+                            <label class="form-label" for="build-spec">Specification</label>
+                            <textarea id="build-spec" class="form-textarea" 
+                                      placeholder="Build a Python CLI tool that:
+- Takes a URL argument
+- Scrapes the page
+- Extracts all links
+- Outputs to JSON
+
+Context: Devin docs from https://docs.devin.ai" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="btn-build">Start Autonomous Build</button>
+
+                        <div style="margin-top: var(--space-xl);">
+                            <div class="kb-section-title">Active Jobs</div>
+                            <div id="active-jobs">
+                                <p style="color: var(--color-text-muted);">No active jobs</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Settings View -->
+                <div id="view-settings" class="view">
+                    <h2>Settings</h2>
+                    <div class="form-group">
+                        <label class="form-label">Storage Location</label>
+                        <div class="status-card">
+                            <code style="color: var(--color-text-secondary);">
+                                ~/.kb-forge/
+                            </code>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Version</label>
+                        <div class="status-card">
+                            <span style="color: var(--color-text-secondary);">KB-Forge v0.1.0</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Documentation</label>
+                        <p style="color: var(--color-text-secondary);">
+                            See <a href="https://github.com/yourusername/kb-forge" 
+                                   style="color: var(--color-primary);">GitHub</a> for documentation.
+                        </p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
