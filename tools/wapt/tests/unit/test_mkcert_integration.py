@@ -133,7 +133,7 @@ class TestCheckExpiry:
         cert = tmp_path / "ecc.pem"
         cert.write_text("x", encoding="utf-8")
         monkeypatch.setattr("wapt.mkcert_integration.shutil.which", lambda _: None)
-        assert mki.check_expiry(cert).days >= 365
+        assert mki.check_expiry(cert) == _dt.timedelta(days=999)
 
     def test_parses_openssl_output(self, monkeypatch, tmp_path):
         cert = tmp_path / "ecc.pem"

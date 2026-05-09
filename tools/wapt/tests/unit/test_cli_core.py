@@ -1,7 +1,6 @@
 """Unit tests for wapt.cli_core skeleton — help, subcommand stubs, --json flag."""
 from __future__ import annotations
 
-import pytest
 from typer.testing import CliRunner
 
 from wapt.cli_core import app
