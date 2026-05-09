@@ -27,11 +27,23 @@ from wapt.config_validation import (
     utc_now_iso,
     write_config,
 )
+from wapt.contract_tests import validate_admin_api_schema
+from wapt.doctor_command import (
+    overall_exit_code as doctor_exit_code,
+)
+from wapt.doctor_command import (
+    run_all_checks as run_doctor_checks,
+)
 from wapt.error_library import (
     DomainInvalid,
     InvalidConfig,
     PathNotAbsolute,
     WaptError,
+)
+from wapt.health_check import (
+    HealthStatus,
+    check_all_sites,
+    overall_exit_code,
 )
 from wapt.mkcert_integration import ensure_cert
 from wapt.site_registry import SiteRegistry
@@ -376,28 +388,55 @@ def list_sites(ctx: typer.Context) -> None:
 
 @app.command()
 def health(ctx: typer.Context) -> None:
-    """Check whether Caddy is reachable via the Admin API."""
+    """Check the status of every registered site via HTTPS HEAD.
+
+    With sites: per-site polling, exit code aggregates statuses.
+    Without sites: falls back to Caddy admin reachability (exit 0).
+    """
     use_json = _use_json(ctx)
     try:
         cfg = _load_or_die(DEFAULT_CONFIG_PATH)
         paths = _resolve_paths(cfg, DEFAULT_CONFIG_PATH)
+        registry = SiteRegistry(paths.registry)
+        results = check_all_sites(registry)
+    except WaptError as err:
+        _handle_wapt_error(err)
+
+    if not results:
+        # Fall back to caddy admin status when registry is empty
         wrapper = CaddyWrapper(
             caddyfile=paths.caddyfile,
             admin_url=cfg.caddy.admin_url,
             binary_path=cfg.caddy.binary_path,
         )
         status = wrapper.status()
-    except WaptError as err:
-        _handle_wapt_error(err)
+        if use_json:
+            typer.echo(json.dumps({"sites": [], "caddy": status}))
+        else:
+            if status["running"]:
+                ver = status.get("version") or "unknown"
+                typer.echo(f"No sites registered. caddy: running ({ver}) at {status['admin_url']}")
+            else:
+                typer.echo(f"No sites registered. caddy: NOT running ({status.get('error', 'unknown')})")
+        return
 
     if use_json:
-        typer.echo(json.dumps(status))
-    else:
-        if status["running"]:
-            ver = status.get("version") or "unknown"
-            typer.echo(f"caddy: running ({ver}) at {status['admin_url']}")
-        else:
-            typer.echo(f"caddy: NOT running ({status.get('error', 'unknown')})")
+        typer.echo(json.dumps({"sites": [r.to_dict() for r in results]}))
+        raise typer.Exit(code=overall_exit_code(results))
+
+    width = max(len(r.name) for r in results)
+    for r in results:
+        marker = {
+            HealthStatus.OK: "  OK ",
+            HealthStatus.DEGRADED: "WARN ",
+            HealthStatus.DOWN: "DOWN ",
+        }[r.status]
+        latency = f"{r.latency_ms:.0f}ms" if r.latency_ms is not None else "—"
+        line = f"  [{marker}] {r.name.ljust(width)}  https://{r.domain}  {latency}"
+        if r.error:
+            line += f"  ({r.error})"
+        typer.echo(line)
+    raise typer.Exit(code=overall_exit_code(results))
 
 
 # ---------------------------------------------------------------------------
@@ -406,14 +445,45 @@ def health(ctx: typer.Context) -> None:
 
 
 @app.command()
-def doctor(ctx: typer.Context) -> None:
-    """Run system health checks: caddy, mkcert, registry, config."""
+def doctor(
+    ctx: typer.Context,
+    contract_check: Annotated[
+        bool,
+        typer.Option(
+            "--contract-check",
+            help="Also validate Caddy Admin API schema against committed snapshot.",
+        ),
+    ] = False,
+) -> None:
+    """Run system health checks: caddy, mkcert, ports, certs, registry."""
     use_json = _use_json(ctx)
-    checks = {"caddy": "skip", "mkcert": "skip", "registry": "skip"}
+    try:
+        cfg = _load_or_die(DEFAULT_CONFIG_PATH)
+        paths = _resolve_paths(cfg, DEFAULT_CONFIG_PATH)
+        results = run_doctor_checks(
+            config=cfg,
+            caddyfile=paths.caddyfile,
+            registry_path=paths.registry,
+            certs_dir=paths.certs_dir,
+        )
+        if contract_check:
+            results.append(validate_admin_api_schema(admin_url=cfg.caddy.admin_url))
+    except WaptError as err:
+        _handle_wapt_error(err)
+
     if use_json:
-        typer.echo(json.dumps({"status": "stub", "checks": checks}))
+        typer.echo(json.dumps({"checks": [r.to_dict() for r in results]}))
     else:
-        typer.echo("wapt doctor: stub (Phase 3)")
+        marker = {
+            "info": "  OK ",
+            "warning": "WARN ",
+            "error": "FAIL ",
+        }
+        width = max(len(r.name) for r in results)
+        for r in results:
+            tag = marker["info"] if r.ok else marker.get(r.severity, "  ?  ")
+            typer.echo(f"  [{tag}] {r.name.ljust(width)}  {r.message}")
+    raise typer.Exit(code=doctor_exit_code(results))
 
 
 # ---------------------------------------------------------------------------

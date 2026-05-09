@@ -10,7 +10,7 @@ project:
   agents_manual: AGENTS.md
   claude_manual: CLAUDE.md
 
-current_phase: 2
+current_phase: 3
 current_wave: complete
 
 phases:
@@ -30,7 +30,7 @@ phases:
     stop_signal: minimum_viable_wapt
   - id: 3
     name: l0-operational
-    status: pending
+    status: complete
     plan: .agent/phases/phase-3-l0-operational/PLAN.md
   - id: 4
     name: l0-harden

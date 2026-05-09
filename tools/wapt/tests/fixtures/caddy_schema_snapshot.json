@@ -1,0 +1,11 @@
+{
+  "caddy_version": "2.11.2",
+  "top_level_keys": [
+    "apps"
+  ],
+  "apps_keys": [
+    "http",
+    "tls"
+  ],
+  "_note": "Conservative snapshot — only the keys wapt actively depends on. 'apps' must exist for any Caddyfile-loaded config; 'http' + 'tls' must exist for the mkcert/HTTPS flow. Caddy 2.11+ may also expose 'admin', 'logging', 'storage', 'pki' depending on directives — those are bonuses, not contracts. Update via wapt.contract_tests.fetch_schema_snapshot() when Caddy major-bumps and a key wapt depends on changes."
+}

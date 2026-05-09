@@ -75,10 +75,13 @@ class TestSubcommandSmoke:
         result = runner.invoke(app, ["health"])
         assert result.exit_code == 5
 
-    def test_doctor_runs(self):
-        # doctor is still a stub (Phase 3) — does not need config yet.
+    def test_doctor_exits_cleanly_without_config(self, monkeypatch, tmp_path):
+        # Phase 3: doctor now needs config (was a stub in Phase 2).
+        monkeypatch.setattr(
+            "wapt.cli_core.DEFAULT_CONFIG_PATH", tmp_path / "missing.toml"
+        )
         result = runner.invoke(app, ["doctor"])
-        assert result.exit_code == 0
+        assert result.exit_code == 5  # InvalidConfig
 
     def test_init_writes_config(self, monkeypatch, tmp_path):
         cfg = tmp_path / "config.toml"
