@@ -10,7 +10,7 @@ project:
   agents_manual: AGENTS.md
   claude_manual: CLAUDE.md
 
-current_phase: 1
+current_phase: 2
 current_wave: complete
 
 phases:
@@ -25,7 +25,7 @@ phases:
     stop_signal: primary_value_delivered
   - id: 2
     name: l0-core
-    status: pending
+    status: complete
     plan: .agent/phases/phase-2-l0-core/PLAN.md
     stop_signal: minimum_viable_wapt
   - id: 3

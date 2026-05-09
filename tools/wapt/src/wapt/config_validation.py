@@ -1,0 +1,195 @@
+"""Pydantic v2 schemas for wapt.toml + atomic load/write helpers.
+
+The single source of truth for wapt config is `~/.wapt/config.toml`. This
+module owns the schema, default values, and reads/writes.
+
+Schema versioning lives in the registry (site_registry.py); the config
+file itself is unversioned because all fields have safe defaults.
+"""
+from __future__ import annotations
+
+import os
+import tempfile
+import tomllib
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+from wapt.error_library import ConfigValidationError, InvalidConfig
+
+TLSMode = Literal["mkcert", "internal", "none"]
+
+
+class PathsConfig(BaseModel):
+    """File-system paths used by wapt at runtime."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    caddyfile: str = "~/portable-kit/tools/wapt/caddy/Caddyfile"
+    sites_enabled: str = "~/portable-kit/tools/wapt/caddy/sites-enabled"
+    registry: str = "~/.wapt/registry.json"
+    snapshots: str = "~/.wapt/snapshots"  # L2 deferred
+
+
+class FeatureFlags(BaseModel):
+    """Opt-in switches for L1/L3 modules."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    target_ghpages: bool = False
+    target_heroku: bool = False
+    jetbrains_ext: bool = False
+    sentry_hook: bool = False
+    log_tail: bool = False
+    status_json_api: bool = False
+    vhost_codegen: bool = False
+    colored_output: bool = True  # L3 default-on (cheap)
+
+
+class CaddyConfig(BaseModel):
+    """Caddy binary + Admin API location."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    admin_url: str = "http://localhost:2019"
+    binary_path: str = "auto"  # "auto" → PATH lookup; otherwise absolute
+
+
+class MkcertConfig(BaseModel):
+    """mkcert binary + CA root."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    ca_root: str = "auto"  # "auto" → `mkcert -CAROOT`
+
+
+class SiteEntry(BaseModel):
+    """Single registered site. Mirrors registry.json schema."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    name: str = Field(..., pattern=r"^[a-z0-9][a-z0-9-]*$")
+    domain: str
+    root: str
+    template: str = "site"
+    tls: TLSMode = "mkcert"
+    created_at: str
+    targets: list[str] = Field(default_factory=lambda: ["local"])
+    integrations: list[str] = Field(default_factory=list)
+
+    @field_validator("domain")
+    @classmethod
+    def _domain_lowercase(cls, v: str) -> str:
+        if v != v.lower():
+            raise ValueError("domain must be lowercase")
+        return v
+
+
+class WaptConfig(BaseModel):
+    """Top-level wapt.toml schema."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    paths: PathsConfig = Field(default_factory=PathsConfig)
+    features: FeatureFlags = Field(default_factory=FeatureFlags)
+    caddy: CaddyConfig = Field(default_factory=CaddyConfig)
+    mkcert: MkcertConfig = Field(default_factory=MkcertConfig)
+
+
+# ---------------------------------------------------------------------------
+# I/O helpers
+# ---------------------------------------------------------------------------
+
+
+def default_config() -> WaptConfig:
+    """Return a WaptConfig with all-default values."""
+    return WaptConfig()
+
+
+def load_config(path: Path) -> WaptConfig:
+    """Load and validate a wapt.toml file.
+
+    Raises:
+        InvalidConfig:           file missing or unreadable.
+        ConfigValidationError:   schema validation failed.
+    """
+    if not path.exists():
+        raise InvalidConfig(f"Config file not found: {path}")
+    try:
+        with path.open("rb") as f:
+            data = tomllib.load(f)
+    except tomllib.TOMLDecodeError as exc:
+        raise InvalidConfig(f"Failed to parse {path}: {exc}") from exc
+    except OSError as exc:
+        raise InvalidConfig(f"Cannot read {path}: {exc}") from exc
+
+    try:
+        return WaptConfig.model_validate(data)
+    except Exception as exc:  # noqa: BLE001 — Pydantic ValidationError
+        raise ConfigValidationError(f"Invalid config in {path}: {exc}") from exc
+
+
+def write_config(config: WaptConfig, path: Path) -> None:
+    """Atomically write a WaptConfig to disk as TOML.
+
+    Implementation: write tmp file in same directory, os.replace.
+    Same-directory tmp ensures the rename is on the same filesystem.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    rendered = _render_toml(config)
+    tmp_fd, tmp_path = tempfile.mkstemp(
+        prefix=path.name + ".", suffix=".tmp", dir=path.parent
+    )
+    try:
+        with os.fdopen(tmp_fd, "w", encoding="utf-8") as f:
+            f.write(rendered)
+        os.replace(tmp_path, path)
+    except Exception:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass
+        raise
+
+
+def _render_toml(config: WaptConfig) -> str:
+    """Render WaptConfig to TOML.
+
+    Hand-rendered to keep deps slim. Output is stable and parseable by tomllib.
+    """
+    lines: list[str] = ["# wapt config — generated by `wapt init`. Edit freely.", ""]
+    for section in ("paths", "caddy", "mkcert"):
+        lines.append(f"[{section}]")
+        block = getattr(config, section).model_dump()
+        for k, v in block.items():
+            lines.append(f'{k} = "{v}"')
+        lines.append("")
+    lines.append("[features]")
+    for k, v in config.features.model_dump().items():
+        lines.append(f"{k} = {str(bool(v)).lower()}")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def utc_now_iso() -> str:
+    """ISO-8601 UTC timestamp for SiteEntry.created_at."""
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+__all__ = [
+    "CaddyConfig",
+    "ConfigValidationError",
+    "FeatureFlags",
+    "InvalidConfig",
+    "MkcertConfig",
+    "PathsConfig",
+    "SiteEntry",
+    "TLSMode",
+    "WaptConfig",
+    "default_config",
+    "load_config",
+    "utc_now_iso",
+    "write_config",
+]
