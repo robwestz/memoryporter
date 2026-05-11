@@ -1,0 +1,42 @@
+{
+  "name": "legitimacy-block",
+  "version": "1.0.0",
+  "author": "Robin Westerlund",
+  "category": "meta-skill",
+  "purpose": "Append epistemic structure (claims-status, disputes, gaps, self-grade) to any analytical output",
+  "composes_with": [
+    "systematic-research",
+    "200k-blueprint",
+    "market-intelligence-report",
+    "code-review-checklist",
+    "performance-report-generator",
+    "youtube-video-digest",
+    "source-grounding"
+  ],
+  "trigger_phrases": [
+    "add legitimacy block",
+    "grade this",
+    "wrap with epistemic status",
+    "make this traceable",
+    "audit claims",
+    "what's verified here",
+    "status per claim",
+    "honest about gaps"
+  ],
+  "outputs": [
+    "Claims table (id, statement, status, confidence, sources, critical?)",
+    "Disputes section",
+    "Gaps section",
+    "Grade YAML block (coverage, confidence, verdict, loop_backs_used)",
+    "Optional Delta summary"
+  ],
+  "when_to_use": "Composed AFTER another skill that produced substantive claims. For analytical/research/decision-grade output that will be quoted downstream.",
+  "when_not_to_use": "Conversational replies, single-fact answers, creative writing, outputs with <=3 substantive claims.",
+  "stability": "stable",
+  "related_patterns": [
+    "Bacowrs HC-1..HC-9",
+    "HarWestRs SPEC_LOCK",
+    "small-model-premium-protocol Phase 4 (Delta summary)",
+    "systematic-research GRADE step"
+  ]
+}

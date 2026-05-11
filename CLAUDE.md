@@ -9,12 +9,13 @@ Läs den vid sessionsstart. Följ den.
 
 ```
 1. Läs denna fil (du gör det nu)
-2. Läs AGENTS.md i projektroten (verify-kommandon, stack, regler)
-3. Anropa mempalace_status (MCP) — laddar palace-översikt + AAAK-spec + minnesprotokoll
-4. Skanna knowledge/INDEX.md för tillgängliga mönster
-5. Kolla .skills/ för projektlokala anpassade skills
-6. Om en pågående uppgift finns → fortsätt den
-7. Annars → fråga vad som ska göras
+2. Läs AGENT_MAP.md — kartan över hela repots subsystem, capabilities, WIP och tysta zoner
+3. Läs AGENTS.md i projektroten (verify-kommandon, stack, regler)
+4. Anropa mempalace_status (MCP) — laddar palace-översikt + AAAK-spec + minnesprotokoll
+5. Skanna knowledge/INDEX.md för tillgängliga mönster
+6. Kolla .skills/ för projektlokala anpassade skills
+7. Om en pågående uppgift finns → fortsätt den
+8. Annars → fråga vad som ska göras
 ```
 
 ---

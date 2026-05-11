@@ -1,0 +1,37 @@
+# Grade block template — copy into upstream output's legitimacy-block.
+# Every field is required. Compute, don't estimate.
+
+grade:
+  # Percentage (0-100) of identified success criteria or questions answered
+  # with Status >= Supported. Round DOWN.
+  coverage: 0
+
+  # Weighted average across CRITICAL claims:
+  #   High = 1.0, Medium = 0.6, Low = 0.3
+  # Range: 0.0 to 1.0
+  confidence: 0.0
+
+  # Integer: count of claims where Critical=yes AND Status=Unverified
+  critical_unverified: 0
+
+  # Integer: how many times the upstream skill looped back to gather more sources
+  # (0 if upstream skill doesn't have a loop-back concept)
+  loop_backs_used: 0
+
+  # String: "<types-of-sources used> / <required minimum>"
+  # Source types: video, docs, article, paper, repo, discussion, talk, standard
+  source_diversity: "0 / 0"
+
+  # List of specific gaps. Format: "Did not <verify X>. Closes by <action>."
+  gaps:
+    - ""
+
+  # One of: sufficient | needs-more-research | inconclusive
+  #
+  # Rules:
+  #   sufficient            -> coverage >= 80 AND confidence >= 0.7 AND critical_unverified == 0
+  #   needs-more-research   -> coverage 50-79 OR confidence 0.5-0.69 OR critical_unverified > 0
+  #   inconclusive          -> coverage < 50 OR confidence < 0.5
+  #
+  # If in doubt: round DOWN to the more conservative verdict.
+  verdict: needs-more-research

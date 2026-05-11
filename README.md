@@ -3,6 +3,8 @@
 Komplett, portabelt toolkit for autonom AI-driven utveckling.
 Kopiera till ett nytt projekt, kor bootstrap, borja bygga.
 
+> **For agents:** Read [`AGENT_MAP.md`](AGENT_MAP.md) — full karta över repots subsystem, capabilities, WIP och tysta zoner.
+
 ## Snabbstart
 
 ```bash
